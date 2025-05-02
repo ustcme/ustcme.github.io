@@ -1,246 +1,250 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"/><meta name="theme-color" content="#222"/><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/><meta name="renderer" content="webkit"/><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"/><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"/><link rel="alternate" href="/rss.xml" title="Sakura" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="Sakura" type="application/atom+xml"><link rel="alternate" type="application/json" title="Sakura" href="https://sakurame.eu.org/feed.json"/><link rel="preconnect" href="https://s4.zstatic.net"/><link rel="preconnect" href="https://at.alicdn.com"/><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"/><link rel="dns-prefetch" href="https://unpkg.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&display=swap&subset=latin,latin-ext" media="none" onload="this.media&#x3D;&#39;all&#39;"><link rel="stylesheet" href="/css/app.css?v=0.4.11"><link rel="modulepreload" href="/js/chunk-5Y6VMMPJ.js"></link><link rel="modulepreload" href="/js/chunk-BYJYVCTD.js"></link><link rel="modulepreload" href="/js/chunk-PNO2NHAN.js"></link><link rel="modulepreload" href="/js/chunk-XJ6P2B3P.js"></link><link rel="modulepreload" href="/js/copy-tex-AOYBWFMG.js"></link><link rel="modulepreload" href="/js/index.esm-JAJ67G4Q.js"></link><link rel="modulepreload" href="/js/post-3OMOVAIW.js"></link><link rel="modulepreload" href="/js/quicklink-MJWYQOW3.js"></link><link rel="modulepreload" href="/js/siteInit.js"></link><link rel="modulepreload" href="/js/tcomments-MH65CAA6.js"></link><link rel="preload" href="https://ptpimg.me/ysg110.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/u3j8yl.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/82g248.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/gzt9vt.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/996d4a.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/qnu794.jpg" as="image" fetchpriority="high"><meta name="keywords" content="游戏引擎"/><meta name="description" content="&lt;blockquote&gt;
-&lt;p&gt;这个系列是 GAMES104 - 现代游戏引擎：从入门到实践 (&lt;a href=&quot;https://games104.boomingtech.com/en/&quot;&gt;GAMES 104: Modern Game Engine-Theory and Practice&lt;/a&gt;) 的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏引擎中的工具链。&lt;br /&gt;"/><link rel="canonical" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/"><title>games104系列笔记（十三）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="container"><header id="header" itemscope itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（十三）</h1><div class="meta"><span class="item" title="创建时间：2023-06-28 23:00:46"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">发表于</span><time itemprop="dateCreated datePublished" datetime="2023-06-28T23:00:46+08:00">2023-06-28</time></span><span class="item" title="本文字数"><span class="icon"><i class="ic i-pen"></i></span><span class="text">本文字数</span><span>12k</span><span class="text">字</span></span><span class="item" title="阅读时长"><span class="icon"><i class="ic i-clock"></i></span><span class="text">阅读时长</span><span>11 分钟</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="切换导航栏"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/ysg110.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/u3j8yl.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/82g248.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/gzt9vt.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/996d4a.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/qnu794.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemListElement itemscope itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">首页</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="分类于游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"/></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/"/><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"/><meta itemprop="name" content="Sakura"/><meta itemprop="description" content=", 一个专注于技术和思考分享的博客"/></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="Sakura"/></span><div class="body md" itemprop="articleBody"><blockquote>
-<p>这个系列是 GAMES104 - 现代游戏引擎：从入门到实践 (<a target="_blank" rel="noopener" href="https://games104.boomingtech.com/en/">GAMES 104: Modern Game Engine-Theory and Practice</a>) 的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏引擎中的工具链。<br />
-<span id="more"></span></p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"/><meta name="theme-color" content="#222"/><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/><meta name="renderer" content="webkit"/><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"/><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"/><link rel="alternate" href="/rss.xml" title="Sakura" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="Sakura" type="application/atom+xml"><link rel="alternate" type="application/json" title="Sakura" href="https://sakurame.eu.org/feed.json"/><link rel="preconnect" href="https://lf9-cdn-tos.bytecdntp.com"/><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"/><link rel="dns-prefetch" href="https://unpkg.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext"><link rel="stylesheet" href="/css/app.css?v=0.3.6"><script src="https://cdn.staticfile.org/vue/3.2.45/vue.global.prod.js"></script><link rel="stylesheet" href="/css/twikoo.css?v=0.3.6"><script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.40/dist/twikoo.all.min.js"></script><meta name="keywords" content="游戏引擎"/><link rel="canonical" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/"><title>games104系列笔记（十三）</title><meta name="generator" content="Hexo 6.3.0"></head><body itemscope itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="container"><header id="header" itemscope itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（十三）</h1><div class="meta"><span class="item" title="创建时间：2023-06-28 23:00:46"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">发表于</span><time itemprop="dateCreated datePublished" datetime="2023-06-28T23:00:46+08:00">2023-06-28</time></span><span class="item" title="本文字数"><span class="icon"><i class="ic i-pen"></i></span><span class="text">本文字数</span><span>12k</span><span class="text">字</span></span><span class="item" title="阅读时长"><span class="icon"><i class="ic i-clock"></i></span><span class="text">阅读时长</span><span>11 分钟</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="切换导航栏"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme" @click="changeThemeByBtn"><i class="ic" :class="{'i-sun': !themeStatus,'i-moon': themeStatus}"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" data-background-image="https://ptpimg.me/0j50c8.jpg"></li><li class="item" data-background-image="https://ptpimg.me/e8k2yf.jpg"></li><li class="item" data-background-image="https://ptpimg.me/1bpj1i.jpg"></li><li class="item" data-background-image="https://ptpimg.me/58864f.jpg"></li><li class="item" data-background-image="https://ptpimg.me/dpco9h.jpg"></li><li class="item" data-background-image="https://ptpimg.me/q8lgy3.jpg"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemListElement itemscope itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">首页</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="分类于游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"/></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/"/><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"/><meta itemprop="name" content="Sakura"/><meta itemprop="description" content=", 一个专注于技术和思考分享的博客"/></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="Sakura"/></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>这个系列是 GAMES104 - 现代游戏引擎：从入门到实践 (<span class="exturl" data-url="aHR0cHM6Ly9nYW1lczEwNC5ib29taW5ndGVjaC5jb20vZW4v">GAMES 104: Modern Game Engine-Theory and Practice</span>) 的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏引擎中的工具链。</p>
+<span id="more"></span>
 </blockquote>
 <h2 id="tool-chain"><a class="anchor" href="#tool-chain">#</a> Tool Chain</h2>
 <p>** 工具链 (tool chain)** 是沟通游戏引擎用户以及更底层 run time (渲染系统、物理引擎、网络通信等) 之间的桥梁。对于商业级游戏引擎来说，工具链的工程量往往要比 run time 大得多。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/0NRgQ9s.png">https://search.pstatic.net/common?src=https://i.imgur.com/0NRgQ9s.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/0NRgQ9s.png" width="80%">
+</div>
 <p>另一方面，工具链也是连接游戏引擎以及第三方 DCC 工具的核心。在现代游戏工业中需要使用到大量的第三方工具如 MAYA、3DS MAX 等，在进行游戏开发时需要通过工具链将这些第三方 DCC 的资源加载到游戏引擎中。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OWjN2oF.png">https://search.pstatic.net/common?src=https://i.imgur.com/OWjN2oF.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/OWjN2oF.png" width="80%">
+</div>
 <p>从更高级的视角来看，工具链的本质是调和不同背景和思维方式用户的一套平台。对于开发者，工具链需要方便开发者管理游戏中大量资源和对象；对于设计师，工具链需要帮助他们快速实现不同的游戏逻辑；而对于艺术家，工具链则需要帮助他们表达不同的创意。工具链需要服务这些拥有不同知识背景的用户以便更好地完成游戏开发的过程。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CN0im4K.png">https://search.pstatic.net/common?src=https://i.imgur.com/CN0im4K.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/CN0im4K.png" width="80%">
+</div>
 <h2 id="complicated-tool"><a class="anchor" href="#complicated-tool">#</a> Complicated Tool</h2>
 <h3 id="gui"><a class="anchor" href="#gui">#</a> GUI</h3>
 <p>GUI 是工具链与用户直接进行交互的接口，在现代软件工程中 GUI 是人机交互的必要模块。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/d5Vo39i.png">https://search.pstatic.net/common?src=https://i.imgur.com/d5Vo39i.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/d5Vo39i.png" width="80%">
+</div>
 <p>目前 GUI 主要有两大类实现方式，其一是<strong> immediate mode</strong>。在 immediate mode 中用户的操作会直接调用 GUI 模块进行绘制，让用户立刻看到操作后的效果。这种模式的特点是它非常直观而且易于实现，但它的效率和可拓展性往往不尽如人意。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/mULZMjS.png">https://search.pstatic.net/common?src=https://i.imgur.com/mULZMjS.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ss1pyou.png">https://search.pstatic.net/common?src=https://i.imgur.com/ss1pyou.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/mULZMjS.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/ss1pyou.png" width="80%">
+</div>
 <p>在现代游戏引擎中更常用的 GUI 实现方式是<strong> retained mode</strong>。在 retained mode 中用户的操作不会直接进行绘制，而是会把用户提交的指令先存储到一个 buffer 中，然后在引擎的绘制系统中再进行绘制。这样做的好处是可以极大地提高系统的运行效率和可拓展性，当然代价是这种方式的实现要更加复杂。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WMShmUa.png">https://search.pstatic.net/common?src=https://i.imgur.com/WMShmUa.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fj7b0OF.png">https://search.pstatic.net/common?src=https://i.imgur.com/fj7b0OF.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/WMShmUa.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/fj7b0OF.png" width="80%">
+</div>
 <h3 id="design-pattern"><a class="anchor" href="#design-pattern">#</a> Design Pattern</h3>
 <p>在设计 GUI 系统时需要 ** 设计模式 (design pattern)** 相关的知识，这里简要介绍一些在 GUI 设计中常用的设计模式。</p>
 <h4 id="mvc"><a class="anchor" href="#mvc">#</a> MVC</h4>
 <p>MVC 是经典的人机交互设计模式。MVC 的思想是把<strong>用户 (user)</strong>、** 视图 (view)<strong> 和</strong>模型 (model)<strong> 进行分离，当用户想要修改视图时只能通过</strong>控制器 (controller)** 进行操作并由控制器转发给模型，从而避免用户直接操作数据产生各种冲突。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/UYl6x0x.png">https://search.pstatic.net/common?src=https://i.imgur.com/UYl6x0x.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/UYl6x0x.png" width="80%">
+</div>
 <h4 id="mvp"><a class="anchor" href="#mvp">#</a> MVP</h4>
 <p>MVP 可以看做是对 MVC 的演变。MVP 模式对视图和模型进行了更彻底的分离，视图只负责对数据进行展示而模型只负责对数据进行处理，它们之间的通信则通过 ** 展示者 (presenter)** 来实现。当用户想要修改数据时，用户的请求会通过视图提交给展示者，然后再由它转发给模型进行处理。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZGIJtvh.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZGIJtvh.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/ZGIJtvh.png" width="80%">
+</div>
 <h4 id="mvvm"><a class="anchor" href="#mvvm">#</a> MVVM</h4>
 <p>MVVM 是目前游戏引擎中大量使用的 UI 设计模式，在 MVVM 中视图和模型的中间层称为<strong> ViewModel</strong>。在 MVVM 模式中，视图只包含简单的 UI 状态数据，这些数据通过 ViewModel 解析成合适的数据结构再提交给模型进行处理。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/DZhWLgl.png">https://search.pstatic.net/common?src=https://i.imgur.com/DZhWLgl.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5CrPt9f.png">https://search.pstatic.net/common?src=https://i.imgur.com/5CrPt9f.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/A3haF2l.png">https://search.pstatic.net/common?src=https://i.imgur.com/A3haF2l.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/DZhWLgl.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/5CrPt9f.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/A3haF2l.png" width="80%">
+</div>
 <h3 id="load-and-save"><a class="anchor" href="#load-and-save">#</a> Load and Save</h3>
 <p>加载和保存各种不同类型的数据是工具链的核心功能。在保存数据时需要使用 ** 序列化 (serialization)<strong> 的技术来将各种不同的数据结构或是 GO 转换成二进制格式，而当需要加载数据时则需要通过</strong>反序列化 (deserialization)** 从二进制格式恢复原始的数据。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/1htdhGc.png">https://search.pstatic.net/common?src=https://i.imgur.com/1htdhGc.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/1htdhGc.png" width="80%">
+</div>
 <p>最简单的序列化方法是把数据打包成 text 文件。text 文件虽然简单，但实际上目前很多系统仍然是使用 text 文件进行信息的传输。目前常用的 text 文件格式包括 json、yaml、xml 等。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/hymNWCB.png">https://search.pstatic.net/common?src=https://i.imgur.com/hymNWCB.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/hymNWCB.png" width="80%">
+</div>
 <p>text 文件可以方便开发人员理解存储数据的内容，但计算机对于文本的读取和处理往往是比较低效的。当需要序列化的数据不断增长时就需要使用更加高效的存储格式，通常情况下我们会使用二进制格式来对数据进行存储。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/44an1yH.png">https://search.pstatic.net/common?src=https://i.imgur.com/44an1yH.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/44an1yH.png" width="80%">
+</div>
 <p>和 text 文件相比，二进制文件往往只占用非常小的存储空间，而且对数据进行读取也要高效得多。因此在现代游戏引擎中一般都会使用二进制文件来进行数据的保存和加载。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/uIWX55d.png">https://search.pstatic.net/common?src=https://i.imgur.com/uIWX55d.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/uIWX55d.png" width="80%">
+</div>
 <h3 id="asset-reference"><a class="anchor" href="#asset-reference">#</a> Asset Reference</h3>
 <p>在很多情况下游戏的资产是重复的，此时为每一个实例单独进行保存就会浪费系统的资源。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6o4TUa4.png">https://search.pstatic.net/common?src=https://i.imgur.com/6o4TUa4.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/6o4TUa4.png" width="80%">
+</div>
 <p>因此，在现代游戏引擎中会使用 ** 资产引用 (asset reference)** 的方式来管理各种重复的资产。实际上资产的引用和去重是游戏引擎工具链最重要的底层逻辑之一。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dWNWesQ.png">https://search.pstatic.net/common?src=https://i.imgur.com/dWNWesQ.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/dWNWesQ.png" width="80%">
+</div>
 <p>在游戏开发过程中工具链往往还需要提供对 GO 进行修改，从而实现不同的艺术效果。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/nQuoZpq.png">https://search.pstatic.net/common?src=https://i.imgur.com/nQuoZpq.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/88u3JwT.png">https://search.pstatic.net/common?src=https://i.imgur.com/88u3JwT.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/nQuoZpq.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/88u3JwT.png" width="80%">
+</div>
 <p>在调整和修改数据时直接进行复制很可能会破坏 GO 之间的关联而且容易造成数据的冗余，因此在现代游戏引擎中对于数据引入了 ** 继承 (inheritance)** 的概念。数据之间的继承可以很方便地派生出更多更复杂的游戏对象，从而方便设计师和艺术家实现不同的效果。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/AAkNNR4.png">https://search.pstatic.net/common?src=https://i.imgur.com/AAkNNR4.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Yp383W1.png">https://search.pstatic.net/common?src=https://i.imgur.com/Yp383W1.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/AAkNNR4.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/Yp383W1.png" width="80%">
+</div>
 <h2 id="how-to-load-asset"><a class="anchor" href="#how-to-load-asset">#</a> How to Load Asset</h2>
 <h3 id="parsing"><a class="anchor" href="#parsing">#</a> Parsing</h3>
 <p>在上一节我们主要是考虑如何对数据进行保存，而游戏引擎中工具链的一大难点在于如何加载不同的资产，即反序列化的过程。反序列化的过程可以理解为对文件进行<strong>解析 (parsing)</strong>，文件中的不同字段往往有着不同的关键字以及域。我们需要对整个文件进行扫描来获得整个文件的结构。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/hPZ4DWO.png">https://search.pstatic.net/common?src=https://i.imgur.com/hPZ4DWO.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/hPZ4DWO.png" width="80%">
+</div>
 <p>对文件完成解析后可以得到一棵由 &lt;key-value&gt; 对组成的树来表达不同类型的数据。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WjLLDGo.png">https://search.pstatic.net/common?src=https://i.imgur.com/WjLLDGo.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/WjLLDGo.png" width="80%">
+</div>
 <p>实际上这样的过程与对文本文件的解析过程是非常类似的。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/kZu63C2.png">https://search.pstatic.net/common?src=https://i.imgur.com/kZu63C2.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/kZu63C2.png" width="80%">
+</div>
 <h3 id="endianness"><a class="anchor" href="#endianness">#</a> Endianness</h3>
 <p>对二进制文件进行反序列化和解析时需要额外注意<strong> endianness</strong> 的问题。在不同的硬件和操作系统上同样的二进制文件可能会被解析为不同的数据，这对于跨平台的应用需要额外注意。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/uWBVtfN.png">https://search.pstatic.net/common?src=https://i.imgur.com/uWBVtfN.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/uWBVtfN.png" width="80%">
+</div>
 <h3 id="version-compatibility"><a class="anchor" href="#version-compatibility">#</a> Version Compatibility</h3>
 <p>在工具链的反序列化过程中还需要考虑资产的兼容性问题。游戏的开发周期往往是比较长的，在这一过程中可能会不可避免地出现引擎以及各种工具的升级。而我们希望新版本可以对旧版本中设计好的资源进行兼容，从而避免重复的劳动。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tRLCjXu.png">https://search.pstatic.net/common?src=https://i.imgur.com/tRLCjXu.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/tRLCjXu.png" width="80%">
+</div>
 <p>在版本更迭中最常见的情况是数据的域发生了修改，新版本的数据定义可能会添加或删去老版本定义的域。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/l4695Kj.png">https://search.pstatic.net/common?src=https://i.imgur.com/l4695Kj.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/l4695Kj.png" width="80%">
+</div>
 <p>为了处理这种问题可以手动为数据添加版本号，在加载数据时根据版本号来控制加载过程。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7YLfES1.png">https://search.pstatic.net/common?src=https://i.imgur.com/7YLfES1.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/7YLfES1.png" width="80%">
+</div>
 <p>更好的处理方法是使用 guid 来进行管理。如 Google 就提出了使用 protocol 来为每一个域赋予一个 uid，在进行反序列化时只需要对域的 uid 进行比较即可。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gxLIBKK.png">https://search.pstatic.net/common?src=https://i.imgur.com/gxLIBKK.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/gxLIBKK.png" width="80%">
+</div>
 <h2 id="how-to-make-robust-tools"><a class="anchor" href="#how-to-make-robust-tools">#</a> How to Make Robust Tools</h2>
 <p>在游戏引擎中工具链对于鲁棒性有非常高的要求，一旦游戏引擎的工具链出现问题会对整个游戏开发流程产生巨大的影响。鲁棒性最基本的要求是允许程序从崩溃中进行恢复，从而还原初始的开发状态。为了实现这样的功能我们需要将用户所有的行为抽象为原子化的<strong>命令 (command)</strong>，通过命令的序列来表示整个开发的过程。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6SedPCb.png">https://search.pstatic.net/common?src=https://i.imgur.com/6SedPCb.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/6SedPCb.png" width="80%">
+</div>
 <p>对 command 类进行抽象时需要为每一个 command 实例赋予单调的 UID 从而保证顺序的正确性，同时每一个 command 定义都需要实现 <code>Invoke()</code>  和 <code>Revoke()</code>  方法表示执行命令以及恢复到执行命令前的状态。除此之外还需要实现 <code>Serialize()</code>  和 <code>Deserialize()</code>  方法来控制生成的数据序列化以及反序列化过程。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FENLvoB.png">https://search.pstatic.net/common?src=https://i.imgur.com/FENLvoB.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/xkpOW7x.png">https://search.pstatic.net/common?src=https://i.imgur.com/xkpOW7x.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/g5Asrev.png">https://search.pstatic.net/common?src=https://i.imgur.com/g5Asrev.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/FENLvoB.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/xkpOW7x.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/g5Asrev.png" width="80%">
+</div>
 <p>整个 command 系统可以划分为三种不同类型的指令，包括添加数据、删除数据以及更新数据。实际上几乎所有的 command 都可以视为这三种基本指令的组合。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2dbDrAt.png">https://search.pstatic.net/common?src=https://i.imgur.com/2dbDrAt.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/2dbDrAt.png" width="80%">
+</div>
 <h2 id="how-to-make-a-tool-chain"><a class="anchor" href="#how-to-make-a-tool-chain">#</a> How to Make a Tool Chain</h2>
 <p>现代游戏引擎的工具链往往包含成百上千个不同的工具程序，这些程序会面向不同背景的开发人员并实现相应的功能。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/26uLq3N.png">https://search.pstatic.net/common?src=https://i.imgur.com/26uLq3N.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/26uLq3N.png" width="80%">
+</div>
 <p>而对于工具链来说，一个基本要求是要保证不同工具之间的沟通以及整个系统的可拓展性。我们不希望每个工具程序都使用单独的一套数据定义方式，这会导致整个工具链系统过于庞大而且难以进行维护。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/B2MRb3I.png">https://search.pstatic.net/common?src=https://i.imgur.com/B2MRb3I.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/B2MRb3I.png" width="80%">
+</div>
 <p>因此我们需要去寻找不同工具中的一些共性，并把这些共同的数据封装为基本的单元。利用对这些基本单元的组合来描述更加复杂的数据结构。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/wuHwT5L.png">https://search.pstatic.net/common?src=https://i.imgur.com/wuHwT5L.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/wuHwT5L.png" width="80%">
+</div>
 <h3 id="schema"><a class="anchor" href="#schema">#</a> Schema</h3>
 <p><strong>schema</strong> 是一种对数据进行描述的结构，它描述了具体的数据结构是由哪些基本单元构成的。在工具链系统中所有流动的数据都要通过 schema 来进行描述，从而保证不同的程序都可以对数据进行解读。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ywGKReN.png">https://search.pstatic.net/common?src=https://i.imgur.com/ywGKReN.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ItSMQfM.png">https://search.pstatic.net/common?src=https://i.imgur.com/ItSMQfM.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/ywGKReN.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/ItSMQfM.png" width="80%">
+</div>
 <p>在 schema 的实现中一般也需要实现继承和引用功能来方便定义新的数据类型。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/boGhyQO.png">https://search.pstatic.net/common?src=https://i.imgur.com/boGhyQO.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fyCio81.png">https://search.pstatic.net/common?src=https://i.imgur.com/fyCio81.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/boGhyQO.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/fyCio81.png" width="80%">
+</div>
 <p>不难发现 schema 与高级语言有着很多相似之处，实际上 schema 确实可以直接使用高级语言来进行定义。目前游戏引擎中的 schema 系统主要有两种实现方式，其一是单独实现 schema 的定义，而另一种则是使用高级语言进行定义。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bIniZQh.png">https://search.pstatic.net/common?src=https://i.imgur.com/bIniZQh.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/bIniZQh.png" width="80%">
+</div>
 <p>这两种实现方式各有各的优缺点，它们的特点可以总结如下：</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZRSr5wJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZRSr5wJ.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/ZRSr5wJ.png" width="80%">
+</div>
 <h3 id="three-views-for-engine-data"><a class="anchor" href="#three-views-for-engine-data">#</a> Three Views for Engine Data</h3>
 <p>基于 schema 系统我们可以发现同样的数据在游戏引擎的不同系统和工具中可能会有不同的表现形式。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/RToxc9E.png">https://search.pstatic.net/common?src=https://i.imgur.com/RToxc9E.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/RToxc9E.png" width="80%">
+</div>
 <p>在 runtime 中一般会以运行和计算效率为第一要务。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/F3nPiEJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/F3nPiEJ.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/F3nPiEJ.png" width="80%">
+</div>
 <p>而在进行存储时则要游戏考虑数据的读写速度和空间需求。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/RwcMtLi.png">https://search.pstatic.net/common?src=https://i.imgur.com/RwcMtLi.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/RwcMtLi.png" width="80%">
+</div>
 <p>而在面向开发者的工具程序中需要根据不同使用者的背景和需求来设计不同的数据表现形式。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/YqZDjkg.png">https://search.pstatic.net/common?src=https://i.imgur.com/YqZDjkg.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/P6VuXCs.png">https://search.pstatic.net/common?src=https://i.imgur.com/P6VuXCs.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/8h4bf9J.png">https://search.pstatic.net/common?src=https://i.imgur.com/8h4bf9J.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/YqZDjkg.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/P6VuXCs.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/8h4bf9J.png" width="80%">
+</div>
 <h2 id="what-you-see-is-what-you-get"><a class="anchor" href="#what-you-see-is-what-you-get">#</a> What You See is What You Get</h2>
 <p>** 所见即所得 (what you see is what you get, WYSIWYG)** 是我们设计构建整个工具链系统的核心精神，它的目标是保证设计师和艺术家在工具链中的设计结果能完美地重现在实际的游戏场景中。在早期的游戏引擎中一般会设计一个独立工具层用来辅助开发者进行设计，但这种设计方式往往会违背 WYSIWYG 原则因此在现代游戏引擎中基本已经被弃用。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7KGoWr1.png">https://search.pstatic.net/common?src=https://i.imgur.com/7KGoWr1.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/7KGoWr1.png" width="80%">
+</div>
 <p>目前商用级游戏引擎一般会把工具层设计在整个游戏引擎的最上层，换句话说工具层会调用底层的模块来辅助游戏开发者的工作。这种设计方式的好处是可以严格遵循 WYSIWYG 原则，提高开发效率。当然其缺陷在于此时的工具层依赖于整个引擎的实现，当引擎崩溃时工具链也会直接崩溃。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/zsJdnzo.png">https://search.pstatic.net/common?src=https://i.imgur.com/zsJdnzo.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/zsJdnzo.png" width="80%">
+</div>
 <h3 id="play-in-editor"><a class="anchor" href="#play-in-editor">#</a> Play in Editor</h3>
 <p>基于 in game 的设计模式就可以实现在工具层中进行游戏，当然这也要求我们在工具层上再设置一个编辑器来编辑游戏的功能。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/k0fAnwK.png">https://search.pstatic.net/common?src=https://i.imgur.com/k0fAnwK.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/k0fAnwK.png" width="80%">
+</div>
 <p>在编辑器中进行游玩时同样有两种实现方式，包括直接在编辑器中进行游戏或是基于编辑器当前的状态生成一个新的游戏窗口进行游戏。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/q8FFyyj.png">https://search.pstatic.net/common?src=https://i.imgur.com/q8FFyyj.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/q8FFyyj.png" width="80%">
+</div>
 <p>直接在编辑器中进行游戏可以无缝地对当前游戏场景进行编辑，但需要注意在进行编辑时不要污染游戏场景中的数据。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9T5XAiF.png">https://search.pstatic.net/common?src=https://i.imgur.com/9T5XAiF.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/9T5XAiF.png" width="80%">
+</div>
 <p>另一种实现方式是新建一个沙盒来重现当前的游戏环境，整个游戏过程都在沙盒中进行。这种设计方式可以保证编辑器中的数据与实际游戏中的数据保持相互独立，避免出现数据污染的情况。在大型游戏引擎的开发中一般会使用这种模式。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bBt73oT.png">https://search.pstatic.net/common?src=https://i.imgur.com/bBt73oT.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/bBt73oT.png" width="80%">
+</div>
 <h2 id="plugin"><a class="anchor" href="#plugin">#</a> Plugin</h2>
 <p>在工具链中我们往往还需要允许用户根据自身的需要自行设计并开发新的工具，也即<strong>插件 (plugin)</strong>。实际上这些插件定义了整个游戏引擎的可拓展性，在现代游戏开发过程中需要使用到各种各样的插件以实现不同的功能。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rx3m7YQ.png">https://search.pstatic.net/common?src=https://i.imgur.com/rx3m7YQ.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/j0rqiuq.png">https://search.pstatic.net/common?src=https://i.imgur.com/j0rqiuq.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/rx3m7YQ.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/j0rqiuq.png" width="80%">
+</div>
 <p>目前市面上的商业级游戏引擎都对插件有很好的支持，方便用户自行开发和分享各种插件。</p>
-<p>&lt;div align=center&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/s3uTdtW.png">https://search.pstatic.net/common?src=https://i.imgur.com/s3uTdtW.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fFWKIUB.png">https://search.pstatic.net/common?src=https://i.imgur.com/fFWKIUB.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5KpxVqb.png">https://search.pstatic.net/common?src=https://i.imgur.com/5KpxVqb.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Vm2YJQe.png">https://search.pstatic.net/common?src=https://i.imgur.com/Vm2YJQe.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;img src=&quot;<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/NLw62RS.png">https://search.pstatic.net/common?src=https://i.imgur.com/NLw62RS.png</a>&quot; width=&quot;80%&quot;&gt;<br />
-&lt;/div&gt;</p>
+<div align=center>
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/s3uTdtW.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/fFWKIUB.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/5KpxVqb.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/Vm2YJQe.png" width="80%">
+<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/NLw62RS.png" width="80%">
+</div>
 <h2 id="reference"><a class="anchor" href="#reference">#</a> Reference</h2>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV11T411G7qB/?spm_id_from=333.788&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 13：Tool Chains</a></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMTFUNDExRzdxQi8/c3BtX2lkX2Zyb209MzMzLjc4OCZhbXA7dmRfc291cmNlPTdhMjU0MmM2YzkwOWIzZWUxZmFiNTUxMjc3MzYwODI2">Lecture 13：Tool Chains</span></li>
 </ul>
-<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="icon"><i class="ic i-eye"></i></span><span>此文章已被阅读次数:</span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/28/game-engine/games104系列笔记（十三）/">正在加载...</span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">更新于</span><time title="修改时间：2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>赞赏</button><p>请我喝[茶]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" data-src="/assets/bitcoin.png" alt="Sakura 比特币"/><p>比特币</p></div><div><img loading="lazy" data-src="/assets/monero.png" alt="Sakura monero"/><p>monero</p></div></div></div><div id="copyright"><ul><li class="author"><strong>本文作者：</strong>Sakura<i class="ic i-at"><em>@</em></i>Sakura</li><li class="link"><strong>本文链接：</strong><a href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" title="games104系列笔记（十三）">https://sakurame.eu.org/2023/06/28/game-engine/games104系列笔记（十三）/</a></li><li class="license"><strong>版权声明：</strong>本站所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https:&#x2F;&#x2F;ptpimg.me&#x2F;u5r244.jpg" title="games104系列笔记（十二）"><span class="type">上一篇</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十二）</h3></a></div><div class="item right"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="next" itemprop="url" data-background-image="https:&#x2F;&#x2F;ptpimg.me&#x2F;75djw9.jpg" title="games104系列笔记（十四）"><span class="type">下一篇</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十四）</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tool-chain"><span class="toc-number">1.</span> <span class="toc-text"> Tool Chain</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#complicated-tool"><span class="toc-number">2.</span> <span class="toc-text"> Complicated Tool</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gui"><span class="toc-number">2.1.</span> <span class="toc-text"> GUI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#design-pattern"><span class="toc-number">2.2.</span> <span class="toc-text"> Design Pattern</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#mvc"><span class="toc-number">2.2.1.</span> <span class="toc-text"> MVC</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mvp"><span class="toc-number">2.2.2.</span> <span class="toc-text"> MVP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mvvm"><span class="toc-number">2.2.3.</span> <span class="toc-text"> MVVM</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#load-and-save"><span class="toc-number">2.3.</span> <span class="toc-text"> Load and Save</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#asset-reference"><span class="toc-number">2.4.</span> <span class="toc-text"> Asset Reference</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#how-to-load-asset"><span class="toc-number">3.</span> <span class="toc-text"> How to Load Asset</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#parsing"><span class="toc-number">3.1.</span> <span class="toc-text"> Parsing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#endianness"><span class="toc-number">3.2.</span> <span class="toc-text"> Endianness</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#version-compatibility"><span class="toc-number">3.3.</span> <span class="toc-text"> Version Compatibility</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#how-to-make-robust-tools"><span class="toc-number">4.</span> <span class="toc-text"> How to Make Robust Tools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#how-to-make-a-tool-chain"><span class="toc-number">5.</span> <span class="toc-text"> How to Make a Tool Chain</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#schema"><span class="toc-number">5.1.</span> <span class="toc-text"> Schema</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#three-views-for-engine-data"><span class="toc-number">5.2.</span> <span class="toc-text"> Three Views for Engine Data</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#what-you-see-is-what-you-get"><span class="toc-number">6.</span> <span class="toc-text"> What You See is What You Get</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#play-in-editor"><span class="toc-number">6.1.</span> <span class="toc-text"> Play in Editor</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#plugin"><span class="toc-number">7.</span> <span class="toc-text"> Plugin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">8.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="系列文章"><ul><li ><a href="/2023/05/01/game-engine/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%EF%BC%88%E5%BC%80%E5%9D%91%EF%BC%89/" rel="bookmark" title="游戏引擎架构（开坑）">游戏引擎架构（开坑）</a></li><li ><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li  class="active"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="站点概览"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="Sakura" src="/assets/avatar.jpg"/><p class="name" itemprop="name">Sakura</p><div class="description" itemprop="description">一个专注于技术和思考分享的博客</div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">76</span><span class="name">文章</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">分类</span></a></div><div class="item tags"><a href="/tags/"><span class="count">25</span><span class="name">标签</span></a></div></nav><div class="social"><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>首页</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>关于</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>关于本站</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>赞赏博主</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>隐私政策</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>文章</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>友链</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>随机文章</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/04/30/basic-theory/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA%E7%AC%AC%E5%9B%9B%E7%89%88%EF%BC%88%E6%8C%81%E7%BB%AD%EF%BC%89/">算法导论第四版（持续）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2024/05/12/basic-theory/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%8E%B0%E4%BB%A3%E6%96%B9%E6%B3%95%EF%BC%88%E7%AC%AC%E5%9B%9B%E7%89%88%EF%BC%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">人工智能现代方法（第四版）读书笔记</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%8D%81%E7%AB%A0%E5%88%9D%E7%AD%8930fps%E5%A4%84%E7%90%86/">第十章初等30fps处理</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/08/16/basic-theory/Detecting-faults-and-channels-while-enhancing-seismic-structural-and-stratigraphic-features/">Detecting_faults_and_channels_while_enhancing_seismic_structural_and_stratigraphic_features</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">games104系列笔记（三）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%BA%94%E7%AB%A0VapourSynth%E5%9F%BA%E7%A1%80/">第五章VapourSynth基础</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/privacy/" title="分类于隐私保护指北">隐私保护指北</a></div><span><a href="/2024/03/21/privacy/%E6%9F%90%E7%A7%91%E5%AD%A6%E7%9A%84PGP%E7%AE%97%E5%8F%B7%E6%8C%87%E5%8D%97/">某科学的PGP算号指南</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">games104系列笔记（一）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/05/31/basic-theory/3D-TSV-The-3D-Trajectory-based-Stress-Visualizer/">3D-TSV_The_3D_Trajectory-based_Stress_Visualizer</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%B9%9D%E7%AB%A0%E5%88%9D%E7%BA%A7%E8%A7%86%E9%A2%91%E7%91%95%E7%96%B5%E4%BF%AE%E5%A4%8D/">第九章初级视频瑕疵修复</a></span></li></ul></div><div class="rpost pjax"><h2>最新评论</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><div class="status"><div class="copyright">&copy; Sun Apr 23 2023 08:00:00 GMT+0800 (中国标准时间) -<span itemprop="copyrightYear">2024</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">Sakura @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="站点总字数">1.6m 字</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="站点阅读时长">24:11</span></div><div class="powered-by">基于 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><br/><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:var(--grey-5);"><a target="_blank" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号 </a><br/><a target="_blank" href="https://beian.mps.gov.cn/#/query/webSearch?code=能躺在床上摸鱼摆烂是一天中最幸福的时刻"><img loading="lazy" decoding="async" data-src="/assets/search.png" style="max-width: 2em;display:inline;" width="20" height="20" alt="备案"/>能躺在床上摸鱼摆烂是一天中最幸福的时刻</a></span><div style="width: 100%;text-align:center;"><span id="time"></span></div><script>function createtime() {
+<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="icon"><i class="ic i-eye"></i></span><span>此文章已被阅读次数:</span><span class="waline-pageview-count" id="twikoo_visitors" data-path="2023/06/28/game-engine/games104系列笔记（十三）/">正在加载...</span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">更新于</span><time title="修改时间：2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>赞赏</button><p>请我喝[茶]~(￣▽￣)~*</p><div id="qr"><div><img data-src="/assets/bitcoin.png" alt="Sakura 比特币"/><p>比特币</p></div><div><img data-src="/assets/monero.png" alt="Sakura monero"/><p>monero</p></div></div></div><div id="copyright"><ul><li class="author"><strong>本文作者：</strong>Sakura<i class="ic i-at"><em>@</em></i>Sakura</li><li class="link"><strong>本文链接：</strong><a href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" title="games104系列笔记（十三）">https://sakurame.eu.org/2023/06/28/game-engine/games104系列笔记（十三）/</a></li><li class="license"><strong>版权声明：</strong>本站所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https:&#x2F;&#x2F;ptpimg.me&#x2F;1736wk.jpg" title="games104系列笔记（十二）"><span class="type">上一篇</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十二）</h3></a></div><div class="item right"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="next" itemprop="url" data-background-image="https:&#x2F;&#x2F;ptpimg.me&#x2F;u5r244.jpg" title="games104系列笔记（十四）"><span class="type">下一篇</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十四）</h3></a></div></div><div class="wrap" id="tcomments"></div><script type="text/javascript" data-pjax="data-pjax">setTimeout(function () {
+    twikoo.init({
+        envId: 'https://elonmask-blog-commit.hf.space',
+        el: '#tcomments',
+        region: ''
+    })
+}, 1000)</script></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#tool-chain"><span class="toc-number">1.</span> <span class="toc-text"> Tool Chain</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#complicated-tool"><span class="toc-number">2.</span> <span class="toc-text"> Complicated Tool</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gui"><span class="toc-number">2.1.</span> <span class="toc-text"> GUI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#design-pattern"><span class="toc-number">2.2.</span> <span class="toc-text"> Design Pattern</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#mvc"><span class="toc-number">2.2.1.</span> <span class="toc-text"> MVC</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mvp"><span class="toc-number">2.2.2.</span> <span class="toc-text"> MVP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mvvm"><span class="toc-number">2.2.3.</span> <span class="toc-text"> MVVM</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#load-and-save"><span class="toc-number">2.3.</span> <span class="toc-text"> Load and Save</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#asset-reference"><span class="toc-number">2.4.</span> <span class="toc-text"> Asset Reference</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#how-to-load-asset"><span class="toc-number">3.</span> <span class="toc-text"> How to Load Asset</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#parsing"><span class="toc-number">3.1.</span> <span class="toc-text"> Parsing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#endianness"><span class="toc-number">3.2.</span> <span class="toc-text"> Endianness</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#version-compatibility"><span class="toc-number">3.3.</span> <span class="toc-text"> Version Compatibility</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#how-to-make-robust-tools"><span class="toc-number">4.</span> <span class="toc-text"> How to Make Robust Tools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#how-to-make-a-tool-chain"><span class="toc-number">5.</span> <span class="toc-text"> How to Make a Tool Chain</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#schema"><span class="toc-number">5.1.</span> <span class="toc-text"> Schema</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#three-views-for-engine-data"><span class="toc-number">5.2.</span> <span class="toc-text"> Three Views for Engine Data</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#what-you-see-is-what-you-get"><span class="toc-number">6.</span> <span class="toc-text"> What You See is What You Get</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#play-in-editor"><span class="toc-number">6.1.</span> <span class="toc-text"> Play in Editor</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#plugin"><span class="toc-number">7.</span> <span class="toc-text"> Plugin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">8.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="系列文章"><ul><li ><a href="/2023/05/01/game-engine/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%EF%BC%88%E5%BC%80%E5%9D%91%EF%BC%89/" rel="bookmark" title="游戏引擎架构（开坑）">游戏引擎架构（开坑）</a></li><li ><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li  class="active"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="站点概览"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" itemprop="image" alt="Sakura" data-src="/assets/avatar.jpg"/><p class="name" itemprop="name">Sakura</p><div class="description" itemprop="description">一个专注于技术和思考分享的博客</div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">76</span><span class="name">文章</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">分类</span></a></div><div class="item tags"><a href="/tags/"><span class="count">25</span><span class="name">标签</span></a></div></nav><div class="social"><a href="mailto:mail@sakurame.eu.org" class="item email" rel="noopener" title="mailto:mail@sakurame.eu.org" target="_blank"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>首页</a></li><li class="item dropdown"><a href="javascript:void(0);"><i class="ic i-user"></i>关于</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>关于本站</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>赞赏博主</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>隐私政策</a></li></ul></li><li class="item dropdown"><a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>友链</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>随机文章</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/">games104系列笔记（十七）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="分类于思考随笔记录">思考随笔记录</a></div><span><a href="/2022/05/28/thinking/%E4%B8%89%E5%B9%B4%E4%B9%8B%E9%9A%8F%E7%AC%94/">三年之随笔</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/">games104系列笔记（十五）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/">games104系列笔记（六）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/07/11/basic-theory/Over-Two-Decades-of-Integration-Based-Geometric-Flow-Visualization/">Over_Two_Decades_of_Integration-Based_Geometric_Flow_Visualization</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E8%AE%A4%E8%AF%86%E7%91%95%E7%96%B5/">第四章认识瑕疵</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/computer-graphic/" title="分类于计算机图形学">计算机图形学</a></div><span><a href="/2023/06/04/computer-graphic/3D%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E5%AE%9D%E5%85%B8DirectX12%E9%BE%99%E4%B9%A6/">3D游戏开发宝典DirectX12龙书</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="分类于思考随笔记录">思考随笔记录</a></div><span><a href="/2024/06/03/thinking/%E8%87%B4%E6%95%AC%E6%9D%BF%E7%A0%96%E7%BE%8E%E5%AD%A6/">致敬板砖美学之长寿板砖蓝天P775DM2笔记本电脑评测(转载自Bob's Coding Lab)</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="分类于思考随笔记录">思考随笔记录</a></div><span><a href="/2023/06/06/thinking/%E5%AF%BC%E5%B8%88%E4%B8%8E%E5%AD%A6%E7%94%9F%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%88%E6%95%B4%E7%90%86%E8%87%AA%E9%80%BC%E4%B9%8E%EF%BC%89/">导师与学生的关系（整理自逼乎）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2024/05/12/basic-theory/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%8E%B0%E4%BB%A3%E6%96%B9%E6%B3%95%EF%BC%88%E7%AC%AC%E5%9B%9B%E7%89%88%EF%BC%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">人工智能现代方法（第四版）读书笔记</a></span></li></ul></div><div class="rpost pjax"><h2>最新评论</h2><ul class="leancloud-recent-comment" id="new-comment"><li class="item" v-for="com in coms"><a v-bind:href="root + com.href" data-pjax-state="data-pjax-state"><span class="breadcrumb">{{com.nick}} @ {{com.time}}</span><span>{{com.text}}<br/></span></a></li></ul></div></div><div class="status"><div class="copyright">&copy; 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">Sakura @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="站点总字数">1.6m 字</span><span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="站点阅读时长">24:11</span></div><div class="powered-by">基于 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & Theme.<a href="https://github.com/theme-shoka-x/hexo-theme-shokaX/" rel="noopener" target="_blank">ShokaX</a></div><br/><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"><a target="_blank" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号 </a><br/><a target="_blank" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=能躺在床上摸鱼摆烂是一天中最幸福的时刻"><img src="/assets/search.png" style="max-width: 2em;display:inline;" width="20" height="20"/>能躺在床上摸鱼摆烂是一天中最幸福的时刻</a></span><div style="width: 100%;text-align:center;"><span id="time"></span></div><script>function createtime() {
     const n = new Date("2023/04/23 00:00:00");
     now.setTime(now.getTime() + 250), days = (now - n) / 1e3 / 60 / 60 / 24, dnum = Math.floor(days), hours = (now - n) / 1e3 / 60 / 60 - 24 * dnum, hnum = Math.floor(hours), 1 == String(hnum).length && (hnum = "0" + hnum), minutes = (now - n) / 1e3 / 60 - 1440 * dnum - 60 * hnum, mnum = Math.floor(minutes), 1 == String(mnum).length && (mnum = "0" + mnum), seconds = (now - n) / 1e3 - 86400 * dnum - 3600 * hnum - 60 * mnum, snum = Math.round(seconds), 1 == String(snum).length && (snum = "0" + snum), document.getElementById("time").innerHTML = "小破站已经在风雨飘摇中苟活" + dnum + " 天 " + hnum + " 小时 " + mnum + " 分 " + snum + " 秒"
 }
 
 const now = new Date;
-setInterval("createtime()", 250)</script></div><div class="deng-box"><div class="deng"><div class="xian"></div><div class="deng-a"><div class="deng-b"><div class="deng-t">一</div></div></div><div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div></div></div><div class="deng-box1"><div class="deng"><div class="xian"></div><div class="deng-a"><div class="deng-b"><div class="deng-t">十</div></div></div><div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div></div></div></div></footer></div><script data-config type="text/javascript">var LOCAL = {
-    ispost: true,
+setInterval("createtime()", 250)</script></div><script src="https://unpkg.com/busuanzi@2.3.0/bsz.pure.mini.js"></script><div id="busuanzi-wrap"><span class="ic i-eye"></span><span id="busuanzi_container_site_pv">可爱的猫猫踩了本站 <span id="busuanzi_value_site_pv"></span> 只猫爪印</span> | <span class="ic i-user"></span><span id="busuanzi_container_site_uv">可爱的猫猫来了又走了 <span id="busuanzi_value_site_uv"></span> 只</span></div><div class="deng-box"><div class="deng"><div class="xian"></div><div class="deng-a"><div class="deng-b"><div class="deng-t">一</div></div></div><div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div></div></div><div class="deng-box1"><div class="deng"><div class="xian"></div><div class="deng-a"><div class="deng-b"><div class="deng-t">十</div></div></div><div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div></div></div></div></footer></div><script data-config type="text/javascript">var LOCAL = {
         path: `2023/06/28/game-engine/games104系列笔记（十三）/`,
         favicon: {
         show: `（●´3｀●）やれやれだぜ`,
@@ -251,6 +255,8 @@ setInterval("createtime()", 250)</script></div><div class="deng-box"><div class=
         empty: "关于 「 ${query} 」，什么也没搜到",
         stats: "${time} ms 内找到 ${hits} 条结果"
     },
+    valine: true,
+    chart: false,
     copy_tex: false,
     katex: false,
     mermaid: false,
@@ -273,4 +279,34 @@ setInterval("createtime()", 250)</script></div><div class="deng-box"><div class=
             []
     ]
 };
-</script><script src="https://s4.zstatic.net/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous" fetchpriority="high"></script><script src="https://s4.zstatic.net/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha384-ZvpUoO&#x2F;+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn&#x2F;6Z&#x2F;hRTt8+pR6L4N2" crossorigin="anonymous" fetchpriority="high"></script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&amp;features=default,fetch" defer></script><script src="/js/siteInit.js?v=0.4.11" type="module" fetchpriority="high" defer></script></body></html>
+</script><script src="https://polyfill.io/v3/polyfill.min.js?features=default,fetch"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/pace/1.0.2/pace.min.js"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/algoliasearch/4.12.1/algoliasearch-lite.umd.min.js"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/instantsearch.js/4.39.0/instantsearch.production.min.js"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/quicklink/2.2.0/quicklink.umd.min.js"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/??jquery/3.5.1/jquery.min.js,fancybox/3.5.7/jquery.fancybox.min.js,justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js" async></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/KaTeX/0.15.2/contrib/copy-tex.min.js" async></script><script src="/js/app.js?v=0.3.6"></script><script data-pjax type="module">
+            let comments = []
+           twikoo.getRecentComments({
+           envId: "https://elonmask-blog-commit.hf.space",
+           pageSize: 10
+           }).then(function (res) {
+                res.forEach(function (item) {
+                    let cText = item.commentText
+                    if (item.commentText.length > 50) {
+                        cText = item.commentText.substring(0,50)+'...'
+                    }
+                    const siteLink = item.url + "#" + item.id
+                    comments.push({
+                        href: siteLink,
+                        nick: item.nick,
+                        time: item.relativeTime,
+                        text: cText
+                    })
+                });
+                Vue.createApp({
+                  data() {
+                      return {
+                          coms: comments,
+                          root: ''
+                      }
+                  }
+                  }).mount('#new-comment')
+            }).catch(function (err) {
+                console.error(err)
+            })
+        </script></body></html>
