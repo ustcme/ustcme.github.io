@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://sakurame.eu.org</id>
+    <title>Sakura • Posts by &#34;深度学习&#34; tag</title>
+    <link href="https://sakurame.eu.org" />
+    <updated>2023-05-22T14:03:55.000Z</updated>
+    <category term="张量可视化" />
+    <category term="Hyperstreamline" />
+    <category term="Unix" />
+    <category term="连通性分析" />
+    <category term="油藏工程" />
+    <category term="人工智能" />
+    <category term="深度学习" />
+    <category term="雅思" />
+    <category term="翻译" />
+    <category term="建站" />
+    <category term="PMBOK" />
+    <category term="图形学" />
+    <category term="游戏引擎" />
+    <category term="PBRT" />
+    <category term="隐私" />
+    <category term="PGP" />
+    <category term="Secure Boot" />
+    <category term="随笔" />
+    <category term="感悟" />
+    <category term="总结" />
+    <category term="PT" />
+    <category term="思辨" />
+    <category term="板砖美学" />
+    <category term="压制技术" />
+    <category term="视频压制技术系列教程" />
+    <entry>
+        <id>https://sakurame.eu.org/2023/05/22/basic-theory/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E7%89%88%E7%AC%94%E8%AE%B0/</id>
+        <title>动手学深度学习第二版笔记</title>
+        <link rel="alternate" href="https://sakurame.eu.org/2023/05/22/basic-theory/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E7%89%88%E7%AC%94%E8%AE%B0/"/>
+        <content type="html">&lt;h1 id=&#34;1-引言&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1-引言&#34;&gt;#&lt;/a&gt; 1. 引言&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;机器学习&lt;/em&gt;（machine learning，ML）是一类强大的可以&lt;strong&gt;从经验中学习&lt;/strong&gt;的技术。 通常采用&lt;strong&gt;观测数据&lt;/strong&gt;或&lt;strong&gt;与环境交互&lt;/strong&gt;的形式，机器学习算法会&lt;strong&gt;积累更多&lt;/strong&gt;的&lt;strong&gt;经验&lt;/strong&gt;，其&lt;strong&gt;性能&lt;/strong&gt;也会&lt;strong&gt;逐步提高&lt;/strong&gt;。本书将带读者开启机器学习之旅，并特别关注&lt;em&gt;深度学习&lt;/em&gt;（deep learning，DL）的基础知识。 深度学习是一套强大的技术，它可以推动计算机视觉、自然语言处理、医疗保健和基因组学等不同领域的创新。&lt;/p&gt;
+&lt;h2 id=&#34;11-日常生活中的机器学习&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#11-日常生活中的机器学习&#34;&gt;#&lt;/a&gt; 1.1. 日常生活中的机器学习&lt;/h2&gt;
+&lt;p&gt;现在，假如需要我们编写程序来响应一个 “唤醒词”（比如 “Alexa”“小爱同学” 和 “Hey Siri”）。 我们试着用一台计算机和一个代码编辑器编写代码，如 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNmaWctd2FrZS13b3Jk&#34;&gt;图 1.1.1&lt;/span&gt; 中所示。 问题看似很难解决：麦克风每秒钟将收集大约 44000 个样本，每个样本都是声波振幅的测量值。而该测量值与唤醒词难以直接关联。那又该如何编写程序，令其输入麦克风采集到的原始音频片段，输出 {是，否}（表示该片段是否包含唤醒词）的可靠预测呢？我们对编写这个程序毫无头绪，这就是需要机器学习的原因。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://zh.d2l.ai/_images/wake-word.svg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;那么到底什么是参数呢？ &lt;strong&gt;参数&lt;/strong&gt;可以被看作&lt;strong&gt;旋钮&lt;/strong&gt;，旋钮的&lt;strong&gt;转动可以调整程序的行为&lt;/strong&gt;。 任一&lt;strong&gt;调整参数后的程序&lt;/strong&gt;被称为&lt;em&gt;&lt;strong&gt;模型&lt;/strong&gt;&lt;/em&gt;（model）。 通过操作参数而生成的&lt;strong&gt;所有不同程序&lt;/strong&gt;（输入 - 输出映射）的集合称为 “&lt;em&gt;&lt;strong&gt;模型族&lt;/strong&gt;&lt;/em&gt;”。 使用数据集来&lt;strong&gt;选择参数&lt;/strong&gt;的&lt;strong&gt;元程序&lt;/strong&gt;被称为&lt;em&gt;&lt;strong&gt;学习算法&lt;/strong&gt;&lt;/em&gt;（learning algorithm）。&lt;/p&gt;
+&lt;p&gt;在开始用机器学习算法解决问题之前，我们必须精确地定义问题，确定&lt;em&gt;输入&lt;/em&gt;（input）和&lt;em&gt;输出&lt;/em&gt;（output）的性质，并选择合适的模型族。&lt;/p&gt;
+&lt;p&gt;在机器学习中，&lt;em&gt;&lt;strong&gt;学习&lt;/strong&gt;&lt;/em&gt;（learning）是一个&lt;strong&gt;训练模型&lt;/strong&gt;的&lt;strong&gt;过程&lt;/strong&gt;。 通过这个过程，我们可以发现&lt;strong&gt;正确&lt;/strong&gt;的&lt;strong&gt;参数集&lt;/strong&gt;，从而使模型&lt;strong&gt;强制执行所需的行为&lt;/strong&gt;。 换句话说，我们用数据&lt;em&gt;训练&lt;/em&gt;（train）模型。 如 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNmaWctbWwtbG9vcA==&#34;&gt;图 1.1.2&lt;/span&gt; 所示，训练过程通常包含如下步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;从一个随机初始化参数的模型开始，这个模型基本没有 “智能”；&lt;/li&gt;
+&lt;li&gt;获取一些数据样本（例如，音频片段以及对应的是或否标签）；&lt;/li&gt;
+&lt;li&gt;调整参数，使模型在这些样本中表现得更好；&lt;/li&gt;
+&lt;li&gt;重复第（2）步和第（3）步，直到模型在任务中的表现令人满意。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://zh.d2l.ai/_images/ml-loop.svg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;​                                                            图 1.1.2 一个典型的训练过程&lt;/p&gt;
+&lt;p&gt;总而言之，我们没有编写唤醒词识别器，而是编写了一个 “学习” 程序。 如果我们用一个巨大的带标签的数据集，它很可能可以 “学习” 识别唤醒词。 这种 “通过用数据集来确定程序行为” 的方法可以被看作&lt;em&gt;用数据编程&lt;/em&gt;（programming with data）。&lt;/p&gt;
+&lt;h2 id=&#34;12-机器学习中的关键组件&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#12-机器学习中的关键组件&#34;&gt;#&lt;/a&gt; 1.2. 机器学习中的关键组件&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDM=&#34;&gt; ¶&lt;/span&gt;&lt;/h2&gt;
+&lt;p&gt;首先介绍一些核心组件。无论什么类型的机器学习问题，都会遇到这些组件：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;可以用来学习的&lt;em&gt;数据&lt;/em&gt;（data）；&lt;/li&gt;
+&lt;li&gt;如何转换数据的&lt;em&gt;模型&lt;/em&gt;（model）；&lt;/li&gt;
+&lt;li&gt;一个&lt;em&gt;目标函数&lt;/em&gt;（objective function），用来量化模型的有效性；&lt;/li&gt;
+&lt;li&gt;调整模型参数以优化目标函数的&lt;em&gt;算法&lt;/em&gt;（algorithm）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;121-数据&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#121-数据&#34;&gt;#&lt;/a&gt; 1.2.1. 数据&lt;/h3&gt;
+&lt;p&gt;毋庸置疑，如果没有数据，那么数据科学毫无用武之地。 每个数据集由一个个&lt;em&gt;&lt;strong&gt;样本&lt;/strong&gt;&lt;/em&gt;（example, sample）组成，大多时候，它们遵循&lt;em&gt;&lt;strong&gt;独立同分布&lt;/strong&gt;&lt;/em&gt; (independently and identically distributed, i.i.d.)。 样本有时也叫做&lt;em&gt;&lt;strong&gt;数据点&lt;/strong&gt;&lt;/em&gt;（data point）或者&lt;em&gt;&lt;strong&gt;数据实例&lt;/strong&gt;&lt;/em&gt;（data instance），通常每个样本由一组称为&lt;em&gt;&lt;strong&gt;特征&lt;/strong&gt;&lt;/em&gt;（features，或&lt;em&gt;&lt;strong&gt;协变量&lt;/strong&gt;&lt;/em&gt;（covariates））的&lt;strong&gt;属性&lt;/strong&gt;组成。 机器学习模型会根据这些属性进行预测。 在上面的监督学习问题中，要预测的是一个&lt;strong&gt;特殊的属性&lt;/strong&gt;，它被称为&lt;em&gt;&lt;strong&gt;标签&lt;/strong&gt;&lt;/em&gt;（label，或&lt;em&gt;&lt;strong&gt;目标&lt;/strong&gt;&lt;/em&gt;（target））。&lt;/p&gt;
+&lt;p&gt;每个样本的特征类别数量都是相同的时候，其特征向量是固定长度的，这个长度被称为数据的&lt;em&gt;&lt;strong&gt;维数&lt;/strong&gt;&lt;/em&gt;（dimensionality）。 固定长度的特征向量是一个方便的属性，它可以用来量化学习大量样本。&lt;/p&gt;
+&lt;p&gt;然而，并不是所有的数据都可以用 “固定长度” 的向量表示。与传统机器学习方法相比，深度学习的一个主要优势是可以处理不同长度的数据。&lt;/p&gt;
+&lt;p&gt;一般来说，拥有越多数据的时候，工作就越容易。 更多的数据可以被用来训练出更强大的模型，从而减少对预先设想假设的依赖。 数据集的由小变大为现代深度学习的成功奠定基础。 在没有大数据集的情况下，许多令人兴奋的深度学习模型黯然失色。 就算一些深度学习模型在小数据集上能够工作，但其效能并不比传统方法高。&lt;/p&gt;
+&lt;p&gt;请注意，仅仅拥有海量的数据是不够的，我们还需要正确的数据。 如果数据中充满了错误，或者如果数据的特征不能预测任务目标，那么模型很可能无效。此外，糟糕的预测性能甚至会加倍放大事态的严重性。我们必须特别警惕垃圾数据带来的后果。&lt;/p&gt;
+&lt;h3 id=&#34;122-模型&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#122-模型&#34;&gt;#&lt;/a&gt; 1.2.2. 模型&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDU=&#34;&gt; ¶&lt;/span&gt;&lt;/h3&gt;
+&lt;p&gt;深度学习与经典方法的区别主要在于：前者关注的功能强大的模型，这些模型由神经网络错综复杂的交织在一起，包含层层数据转换，因此被称为&lt;em&gt;深度学习&lt;/em&gt;（deep learning）。&lt;/p&gt;
+&lt;h3 id=&#34;123-目标函数&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#123-目标函数&#34;&gt;#&lt;/a&gt; 1.2.3. 目标函数&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDY=&#34;&gt; ¶&lt;/span&gt;&lt;/h3&gt;
+&lt;p&gt;前面的内容将机器学习介绍为 “&lt;strong&gt;从经验中学习&lt;/strong&gt;”。 这里所说的 “&lt;strong&gt;学习&lt;/strong&gt;”，是指&lt;strong&gt;自主提高模型完成某些任务的效能&lt;/strong&gt;。在机器学习中，我们需要定义&lt;strong&gt;模型的优劣程度的度量&lt;/strong&gt;，这个度量在大多数情况是 “&lt;strong&gt;可优化&lt;/strong&gt;” 的，这被称之为&lt;em&gt;&lt;strong&gt;目标函数&lt;/strong&gt;&lt;/em&gt;（objective function）。 我们通常定义一个目标函数，并希望优化它到&lt;strong&gt;最低点&lt;/strong&gt;。 因为&lt;strong&gt;越低越好&lt;/strong&gt;，所以这些函数有时被称为&lt;em&gt;&lt;strong&gt;损失函数&lt;/strong&gt;&lt;/em&gt;（loss function，或 cost function）。 但这只是一个惯例，我们也可以取一个新的函数，优化到它的最高点。 这两个函数本质上是相同的，只是翻转一下符号。&lt;/p&gt;
+&lt;p&gt;当任务在试图&lt;strong&gt;预测数值&lt;/strong&gt;时，最常见的损失函数是&lt;em&gt;&lt;strong&gt;平方误差&lt;/strong&gt;&lt;/em&gt;（squared error），即&lt;strong&gt;预测值与实际值之差的平方&lt;/strong&gt;。 当试图解决&lt;strong&gt;分类问题&lt;/strong&gt;时，最常见的目标函数是&lt;em&gt;&lt;strong&gt;最小化错误率&lt;/strong&gt;&lt;/em&gt;，即预测与实际情况不符的样本比例。 有些目标函数（如平方误差）很容易被优化，有些目标（如错误率）由于不可微性或其他复杂性难以直接优化。 在这些情况下，通常会优化&lt;em&gt;替代目标&lt;/em&gt;。&lt;/p&gt;
+&lt;p&gt;通常，损失函数是根据模型参数定义的，并取决于数据集。 在一个数据集上，我们可以通过&lt;strong&gt;最小化总损失&lt;/strong&gt;来学习模型参数的最佳值。 该数据集由一些&lt;strong&gt;为训练而收集的样本&lt;/strong&gt;组成，称为&lt;em&gt;&lt;strong&gt;训练数据集&lt;/strong&gt;&lt;/em&gt;（training dataset，或称为&lt;em&gt;&lt;strong&gt;训练集&lt;/strong&gt;&lt;/em&gt;（training set））。 然而，在训练数据上表现良好的模型，并不一定在 “新数据集” 上有同样的性能，这里的 “&lt;strong&gt;新数据集&lt;/strong&gt;” 通常称为&lt;em&gt;&lt;strong&gt;测试数据集&lt;/strong&gt;&lt;/em&gt;（test dataset，或称为&lt;em&gt;&lt;strong&gt;测试集&lt;/strong&gt;&lt;/em&gt;（test set））。&lt;/p&gt;
+&lt;p&gt;综上所述，可用数据集通常可以分成两部分：训练数据集用于拟合模型参数，测试数据集用于评估拟合的模型。 然后我们观察模型在这两部分数据集的性能。 “一个模型在训练数据集上的性能” 可以被想象成 “一个学生在模拟考试中的分数”。 这个分数用来为一些真正的期末考试做参考，即使成绩令人鼓舞，也不能保证期末考试成功。 换言之，测试性能可能会显著偏离训练性能。 当一个模型在训练集上表现良好，但不能推广到测试集时，这个模型被称为&lt;em&gt;过拟合&lt;/em&gt;（overfitting）的。 就像在现实生活中，尽管模拟考试考得很好，真正的考试不一定百发百中。&lt;/p&gt;
+&lt;h3 id=&#34;124-优化算法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#124-优化算法&#34;&gt;#&lt;/a&gt; 1.2.4. 优化算法&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDc=&#34;&gt; ¶&lt;/span&gt;&lt;/h3&gt;
+&lt;p&gt;深度学习中，大多流行的优化算法通常基于一种基本方法–&lt;em&gt;&lt;strong&gt;梯度下降&lt;/strong&gt;&lt;/em&gt;（gradient descent）。 &lt;strong&gt;简而言之，在每个步骤中，梯度下降法都会检查每个参数，看看如果仅对该参数进行少量变动，训练集损失会朝哪个方向移动。 然后，它在可以减少损失的方向上优化参数。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;13-各种机器学习问题&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#13-各种机器学习问题&#34;&gt;#&lt;/a&gt; 1.3. 各种机器学习问题&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDg=&#34;&gt; ¶&lt;/span&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;131-监督学习&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#131-监督学习&#34;&gt;#&lt;/a&gt; 1.3.1. 监督学习&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDk=&#34;&gt; ¶&lt;/span&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;监督学习&lt;/strong&gt;&lt;/em&gt;（supervised learning）擅长在 “给定输入特征” 的情况下预测标签。 每个 “特征 - 标签” 对都称为一个&lt;em&gt;样本&lt;/em&gt;（example）。 有时，即使标签是未知的，样本也可以指代输入特征。 我们的目标是生成一个模型，能够将任何输入特征映射到标签（即预测）。&lt;/p&gt;
+&lt;p&gt;监督学习之所以能发挥作用，是因为在训练参数时，我们为模型提供了一个数据集，其中每个样本都有真实的标签。 用概率论术语来说，我们希望预测 “&lt;strong&gt;估计给定输入特征的标签&lt;/strong&gt;” 的条件概率。 虽然监督学习只是几大类机器学习问题之一，&lt;strong&gt;但是在工业中，大部分机器学习的成功应用都使用了监督学习&lt;/strong&gt;。 这是因为在一定程度上，&lt;strong&gt;许多重要的任务可以清晰地描述为，在给定一组特定的可用数据的情况下，估计未知事物的概率&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;监督学习的学习过程一般可以分为三大步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;从已知大量数据样本中随机选取一个子集，为每个样本获取真实标签。有时，这些样本已有标签（例如，患者是否在下一年内康复？）；有时，这些样本可能需要被人工标记（例如，图像分类）。这些输入和相应的标签一起构成了训练数据集；&lt;/li&gt;
+&lt;li&gt;选择有监督的学习算法，它将训练数据集作为输入，并输出一个 “已完成学习的模型”；&lt;/li&gt;
+&lt;li&gt;将之前没有见过的样本特征放到这个 “已完成学习的模型” 中，使用模型的输出作为相应标签的预测。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;整个监督学习过程如 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNmaWctc3VwZXJ2aXNlZC1sZWFybmluZw==&#34;&gt;图 1.3.1&lt;/span&gt; 所示&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://zh.d2l.ai/_images/supervised-learning.svg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;​                                                                              图 1.3.1 监督学习&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDU0&#34;&gt; ¶&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;综上所述，即使使用简单的描述给定输入特征的预测标签，监督学习也可以采取多种形式的模型，并且需要大量不同的建模决策，这取决于输入和输出的类型、大小和数量&lt;/p&gt;
+&lt;h4 id=&#34;1311-回归&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1311-回归&#34;&gt;#&lt;/a&gt; 1.3.1.1. 回归&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDEw&#34;&gt; ¶&lt;/span&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;回归&lt;/strong&gt;&lt;/em&gt;（regression）是最简单的监督学习任务之一。生活中的许多问题都可归类为回归问题。 比如，预测用户对一部电影的评分可以被归类为一个回归问题。总而言之，判断回归问题的一个很好的经验法则是，任何有关 “有多少” 的问题很可能就是回归问题。比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这个手术需要多少小时；&lt;/li&gt;
+&lt;li&gt;在未来 6 小时，这个镇会有多少降雨量。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;然而，以上假设有时并不可取。 例如，一些差异是由于两个特征之外的几个因素造成的。 在这些情况下，我们将尝试学习最小化 “预测值和实际标签值的差异” 的模型。 本书大部分章节将关注平方误差损失函数的最小化。&lt;/p&gt;
+&lt;h4 id=&#34;1312-分类&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1312-分类&#34;&gt;#&lt;/a&gt; 1.3.1.2. 分类&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDEx&#34;&gt; ¶&lt;/span&gt;&lt;/h4&gt;
+&lt;p&gt;这种 “&lt;strong&gt;哪一个&lt;/strong&gt;” 的问题叫做&lt;em&gt;&lt;strong&gt;分类&lt;/strong&gt;&lt;/em&gt;（classification）问题。 &lt;em&gt;分类&lt;/em&gt;问题希望模型能够预测样本属于哪个&lt;em&gt;&lt;strong&gt;类别&lt;/strong&gt;&lt;/em&gt;（category，正式称为&lt;em&gt;&lt;strong&gt;类&lt;/strong&gt;&lt;/em&gt;（class））。最简单的分类问题是只有两类，这被称之为&lt;em&gt;&lt;strong&gt;二项分类&lt;/strong&gt;&lt;/em&gt;（binomial classification）。&lt;strong&gt;回归是训练一个回归函数来输出一个数值； 分类是训练一个分类器来输出预测的类别。&lt;strong&gt;当有&lt;/strong&gt;两个以上的类别&lt;/strong&gt;时，我们把这个问题称为&lt;em&gt;当有两个以上的类别时，我们把这个问题称为&lt;/em&gt;多项分类 *（multiclass classification）问题。 *（multiclass classification）问题。&lt;/p&gt;
+&lt;p&gt;预测类别的&lt;strong&gt;概率的大小&lt;/strong&gt;传达了一种&lt;strong&gt;模型的不确定性&lt;/strong&gt;，本书后面章节将讨论其他运用不确定性概念的算法。与解决回归问题不同，&lt;strong&gt;分类&lt;/strong&gt;问题的常见&lt;strong&gt;损失函数&lt;/strong&gt;被称为&lt;em&gt;&lt;strong&gt;交叉熵&lt;/strong&gt;&lt;/em&gt;（cross-entropy）。我们需要将 “预期风险” 作为损失函数，即需要将结果的概率乘以与之相关的收益（或伤害）。&lt;/p&gt;
+&lt;p&gt;分类可能变得比二项分类、多项分类复杂得多。例如，有一些分类任务的变体可以用于寻找层次结构，&lt;strong&gt;层次结构&lt;/strong&gt;假定在&lt;strong&gt;许多类之间存在某种关系&lt;/strong&gt;。 因此，并不是所有的错误都是均等的。人们宁愿错误地分入一个相关的类别，也不愿错误地分入一个遥远的类别，这通常被称为&lt;em&gt;&lt;strong&gt;层次分类&lt;/strong&gt;&lt;/em&gt; (hierarchical classification)。层次结构相关性可能取决于模型的使用者计划如何使用模型。&lt;/p&gt;
+&lt;h4 id=&#34;1313-标记问题&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1313-标记问题&#34;&gt;#&lt;/a&gt; 1.3.1.3. 标记问题&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDEy&#34;&gt; ¶&lt;/span&gt;&lt;/h4&gt;
+&lt;p&gt;学习预测&lt;strong&gt;不相互排斥&lt;/strong&gt;的&lt;strong&gt;类别&lt;/strong&gt;的问题称为&lt;em&gt;&lt;strong&gt;多标签分类&lt;/strong&gt;&lt;/em&gt;（multi-label classification）。举个例子，人们在技术博客上贴的标签，比如 “机器学习”“技术”“小工具”“编程语言”“Linux”“云计算”“AWS”。 一篇典型的文章可能会用 5～10 个标签，因为这些&lt;strong&gt;概念&lt;/strong&gt;是&lt;strong&gt;相互关联&lt;/strong&gt;的。此外，在处理生物医学文献时，我们也会遇到这类问题。 &lt;strong&gt;正确地标记文献很重要，有利于研究人员对文献进行详尽的审查&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://zh.d2l.ai/_images/stackedanimals.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;​                                                  图 1.3.3 一只猫、一只公鸡、一只狗、一头驴&lt;/p&gt;
+&lt;h4 id=&#34;1314-搜索&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1314-搜索&#34;&gt;#&lt;/a&gt; 1.3.1.4. 搜索&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDEz&#34;&gt; ¶&lt;/span&gt;&lt;/h4&gt;
+&lt;p&gt;有时，我们不仅仅希望输出一个类别或一个实值。 在信息检索领域，我们希望&lt;strong&gt;对一组项目进行排序&lt;/strong&gt;。搜索结果的排序也十分重要，学习算法需要输出有序的元素子集。 换句话说，&lt;strong&gt;即使结果集是相同的，集内的顺序有时却很重要&lt;/strong&gt;。该问题的一种可能的解决方案：首先为集合中的每个元素分配相应的相关性分数，然后检索评级最高的元素。如今，搜索引擎使用机器学习和用户行为模型来获取网页相关性得分，很多学术会议也致力于这一主题。&lt;/p&gt;
+&lt;h4 id=&#34;1315-推荐系统&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1315-推荐系统&#34;&gt;#&lt;/a&gt; 1.3.1.5. 推荐系统&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNpZDE0&#34;&gt; ¶&lt;/span&gt;&lt;/h4&gt;
+&lt;p&gt;另一类与搜索和排名相关的问题是&lt;em&gt;&lt;strong&gt;推荐系统&lt;/strong&gt;&lt;/em&gt;（recommender system），它的目标是向特定用户进行 “&lt;strong&gt;个性化&lt;/strong&gt;” 推荐。在某些应用中，客户会提供明确反馈，表达他们对特定产品的喜爱程度。在其他一些情况下，客户会提供隐性反馈。总的来说，推荐系统会为 “&lt;strong&gt;给定用户和物品&lt;/strong&gt;” 的&lt;strong&gt;匹配性打分&lt;/strong&gt;，这个 “分数” 可能是估计的评级或购买的概率。由此，对于任何给定的用户，推荐系统都可以检索&lt;strong&gt;得分最高&lt;/strong&gt;的&lt;strong&gt;对象集&lt;/strong&gt;，然后将其&lt;strong&gt;推荐给用户&lt;/strong&gt;。以上只是&lt;strong&gt;简单的算法&lt;/strong&gt;，而&lt;strong&gt;工业生产&lt;/strong&gt;的&lt;strong&gt;推荐系统&lt;/strong&gt;要先进得多，它会将详细的&lt;strong&gt;用户活动&lt;/strong&gt;和&lt;strong&gt;项目特征&lt;/strong&gt;考虑在内。 推荐系统算法经过调整，可以捕捉一个人的偏好。比如， &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly96aC5kMmwuYWkvY2hhcHRlcl9pbnRyb2R1Y3Rpb24vaW5kZXguaHRtbCNmaWctZGVlcGxlYXJuaW5nLWFtYXpvbg==&#34;&gt;图 1.3.4&lt;/span&gt; 是亚马逊基于个性化算法推荐的深度学习书籍，成功地捕捉了作者的喜好。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://zh.d2l.ai/_images/deeplearning-amazon.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;​                                                                 图 1.3.4 亚马逊推荐的深度学习书籍&lt;/p&gt;
+&lt;p&gt;尽管推荐系统具有巨大的应用价值，但单纯用它作为预测模型仍存在一些缺陷。&lt;/p&gt;
+</content>
+        <category term="深度学习" />
+        <updated>2023-05-22T14:03:55.000Z</updated>
+    </entry>
+</feed>

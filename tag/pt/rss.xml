@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>Sakura • Posts by &#34;pt&#34; tag</title>
+        <link>https://sakurame.eu.org</link>
+        <description>一个专注于技术和思考分享的博客</description>
+        <language>zh-CN</language>
+        <pubDate>Tue, 30 May 2023 13:29:27 +0800</pubDate>
+        <lastBuildDate>Tue, 30 May 2023 13:29:27 +0800</lastBuildDate>
+        <category>张量可视化</category>
+        <category>Hyperstreamline</category>
+        <category>Unix</category>
+        <category>连通性分析</category>
+        <category>油藏工程</category>
+        <category>人工智能</category>
+        <category>深度学习</category>
+        <category>雅思</category>
+        <category>翻译</category>
+        <category>建站</category>
+        <category>PMBOK</category>
+        <category>图形学</category>
+        <category>游戏引擎</category>
+        <category>PBRT</category>
+        <category>隐私</category>
+        <category>PGP</category>
+        <category>Secure Boot</category>
+        <category>随笔</category>
+        <category>感悟</category>
+        <category>总结</category>
+        <category>PT</category>
+        <category>思辨</category>
+        <category>板砖美学</category>
+        <category>压制技术</category>
+        <category>视频压制技术系列教程</category>
+        <item>
+            <guid isPermalink="true">https://sakurame.eu.org/2023/05/30/thinking/%E5%85%B3%E4%BA%8Ept%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83%EF%BC%88%E4%B8%BB%E8%A6%81%E6%9D%A5%E8%87%AA%E4%BA%8E%E4%BA%92%E8%81%94%E7%BD%91%E6%95%B4%E7%90%86%EF%BC%89/</guid>
+            <title>关于pt的一点思考（主要来自于互联网整理）</title>
+            <link>https://sakurame.eu.org/2023/05/30/thinking/%E5%85%B3%E4%BA%8Ept%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83%EF%BC%88%E4%B8%BB%E8%A6%81%E6%9D%A5%E8%87%AA%E4%BA%8E%E4%BA%92%E8%81%94%E7%BD%91%E6%95%B4%E7%90%86%EF%BC%89/</link>
+            <category>PT</category>
+            <pubDate>Tue, 30 May 2023 13:29:27 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;如何评价盗版音乐分享站点-whatcd-关站&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#如何评价盗版音乐分享站点-whatcd-关站&#34;&gt;#&lt;/a&gt; 如何评价盗版音乐分享站点 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 关站？&lt;/h1&gt;
+&lt;p&gt;记人类迄今为止规模最大的音乐图书馆 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 之毁灭&lt;/p&gt;
+&lt;p&gt;今天我想讲一个政治不太正确的故事，故事的主人公是一个叫做 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 的网站。当你看到这篇文章的时候，它已经消逝在了风中。可能大多数人都没有听说过这个名字，因为 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;  是一个封闭的邀请制社区，没有账号意味着你什么都看不到。&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;  足够小众，大约只有十几万用户。尽管如此，这个网站却是人类目前已知的、最大规模的数字音乐仓库。会员可以在网站里自由地检索和下载音乐，也可以上传自己拥有的音乐，这一切的分享都是免费的。&lt;/p&gt;
+&lt;p&gt;你一定猜到了，这是一个音乐盗版网站。没错，但是在继续之前，请容我再描述一下 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 究竟是一个怎样的盗版网站。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://ptpimg.me/h93j0s.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 的音乐分享是基于 BitTorrent 的，但由于这是一个封闭的社区，所以它其实是一个 Private Tracker，这一点有别于公开的  BT 下载网站。网站本身只提供音乐的索引和种子文件，所有的内容都是会员自己上传维护，实际的音频文件也都来自于会员自己的电脑。&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 拥有 260 多万个种子文件，超过 100 万个音乐作品发布，这里的发布可能是一首单曲，也可能是一张专辑。也就是说，&lt;strong&gt;歌曲的绝对数量&lt;/strong&gt; &lt;strong&gt;要远远超过这个数字&lt;/strong&gt;。所有商业的音乐平台，例如 iTunes、Spotify，歌曲存量都远远达不到这个数量，更不用说国内的 QQ 音乐、网易云音乐之类。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 的内容组织极其严谨规范&lt;/strong&gt;，说它「龟毛」一点也不过分。所有的音乐作品，从标题、艺术家、封面图片、歌曲列表，到音乐类型、厂商发行的不同版本（标准版、豪华版，CD  版、黑胶版、网络版…… 应有尽有），都具备结构化的信息，且非常易于检索。所有的音乐都能查到原始的发行渠道，也就是说，不存在歌迷自选专辑这些不伦不类的东西（网站提供了另外的功能让会员建立和分享自选集）。&lt;strong&gt;这些存档就像一个音乐界的维基百科&lt;/strong&gt;，&lt;strong&gt;所有人都能编辑和完善它。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://ptpimg.me/b7032t.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;这是一个艺术家作品集的页面，可以看到光一张专辑就汇集了 4 种版本 10 种格式。来源：&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cudGhldmVyZ2UuY29tLzIwMTYvMTEvMTcvMTM2Njk4MzIvd2hhdC1jZC1tdXNpYy10b3JyZW50LXdlYnNpdGUtc2h1dC1kb3du&#34;&gt;Music torrent site What.cd has been shut down&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;除了完成度极其之高的音乐作品元数据，每个发行版本都提供了不同音频格式的下载选项（均由用户上传），从无损的 FLAC，到体积稍小的 AAC 和 MP3，任君选择。** 为了保证每种格式都能在它所能及的范围提供内最好的音质，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 制定了一套非常严谨和详细的上传格式规范。** 在同一个音频格式下，用户上传的「更好的版本」会替换掉现有的不那么好的版本，直到达到该格式的最优情况。在 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;，你不可能遇到那些从 MP3 转换而来的虚假的无损格式，更不会遇到在音频中夹带私货的低质量内容，即便出现了这些内容，在社区无数双眼睛的盯梢下，它们也会被迅速净化，被「正确」的内容所替代。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://ptpimg.me/b989yc.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;这张图展现了 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 对用户上传音频格式的严格要求，最初来源于 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 的规则 Wiki。绿色表示该格式的「终极」形态，而下方则是其他可选格式。带有 100% 抓轨日志的 FLAC 无损格式是最完美的音频文件，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 上这样的「完美 FLAC」有将近 90 万部&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;这些数量庞大且结构化的音乐元数据，和追求极致与完美的音频文件，造就了 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 在音频工业界独一无二的地位。无论是在广度还是深度上，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 都把同类分享网站、以及所有的商业音乐网站远远地甩在身后，无出其右。而这一切，全部来自于那区区十几万志愿用户的勤奋积累和无私的分享，而网站的运营也完全依靠用户的捐款，没有任何的商业运作。也正是因为这些，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 事实上成为了绝大多数二手、三手音乐资源网站的内容来源。网易云音乐成立之初，就通过在 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;  上疯狂的下载，建立起了自己的音乐库，以至于网易云音乐的账户在 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 上长期占据活跃用户排行榜。后来，该账户被 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;  封禁，之后网易云音乐是否改枪换炮，就不得而知了。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;** 毫不夸张地说，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 就是当今世界上最大的数字音乐图书馆，凝聚了全人类的音乐文化。** 甚至有一些独立音乐人，会直接在 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 上发行自己的作品。&lt;strong&gt;然而，就是这样一个充满了理想主义的乌托邦，却逃不过始终压在头顶的一座大山，这座大山的名字叫做「盗版」。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;2016 年 11 月 17 日，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 位于法国境内的 13  台服务器被当局查封。据新闻报道，这是一次历时两年的调查的首次执法行动。法国作者、作曲者和音乐出版者协会（SACEM）支持并大量参与了这一行动。尽管没有人员在这次行动中被捕，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 还是谨慎地宣布了关站的消息，以保证网站管理人员和用户信息的安全。&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 在关站声明中说道：&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://ptpimg.me/3q9293.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;由于最近的一些事件，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 即将关站。我们不太可能在短期内以现有的形式回归。所有的站点和用户数据均已销毁。再会，感谢你们所有的鱼。&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 成立之初的 2007 年，正是另一个当时非常著名的音乐分享网站 Oink&#39;s Pink Palace 被权力部门查封关站的风口浪尖。OiNK 在关站声明中，引用了《银河系漫游指南》中的这句话，9 年后的今天，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 接过 OiNK 的衣钵，以同样的方式宣布了自己的寿终正寝&lt;/p&gt;
+&lt;p&gt;五年前，我打开了 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 世界的大门。作为那十几万用户的一员，我在看到 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;  关站新闻的时候，无不感到震惊和失望。我没有像很多狂热的音乐发烧友那样，购买喜欢的 CD、抓轨、编码、制作种子、上传 100%  的抓轨日志，但是也维护了不少内容。无论多冷门的东西，当我需要的时候，若是在 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;  上搜索不到，那基本上就无望能够在整个互联网的海洋中找到它了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;从法理上来说，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 确实是一个盗版网站没错，但是它早已超越了那些内容杂乱、充满了铜臭味的盗版网站，它更多意义上是一个仓库、一部百科全书、一座图书馆。随着  &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;  的关闭，一些小众的音乐便永远消失在了互联网上。但是它们不值得如此。尽管没有资金的支持、商业的运作，它们不像主流音乐那样有大量的听众和粉丝，但是作为音乐本身，作为无国界的语言，作为记录人类文化历史的载体，它们是有价值的，是值得被妥善保管的。在 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 上，它们和主流音乐一样，每首歌都被平等、细心地照料着。音乐作为工业商品，是具有知识产权的，它需要被保护，它需要用金钱来衡量，这些都没错。但是当资本决定了什么是主流，什么是小众，当权力高举正义的宝剑，摧毁了这样一座图书馆时，我不禁扪心自问，这真的是我们想要的结果吗？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;我不由想起了亚伦・斯沃茨（Aaron Swartz, 1986-2013）。他是一个出色的软件工程师和互联网活动家，参与创建了 RSS 标准、知识共享（Creative  Commons），致力于推动网络信息自由，参与《禁止网络盗版法案（SOPA）》的抗议活动。最终，SOPA 胎死腹中，而亚伦却因为大量下载  JSTOR 的学术文章，被联邦政府逮捕起诉，不堪其辱的他选择了自杀来了结这一切，给他辉煌而短暂的一生画上了句号。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;https://ptpimg.me/9w82h2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;亚伦・斯沃茨的传记电影《互联网之子》海报&lt;/p&gt;
+&lt;p&gt;诚然，&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; 提供音乐下载平台和 Aaron Swartz 所倡导的信息自由并不完全吻合，但是内在精神是相通的。&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;  的毁灭让人扼腕，但在当前的社会形态前，这一悲剧在它诞生之日起就已经写就。然而，生活仍在继续，历史总在发展，人们对正义与邪恶的判断也会逐渐变化，或许一些模糊的边界会变得清晰，而当下清晰的边界会变得模糊。那无数次地探索、迷途、失败和成功，一定会给予热情、客观、公正的评定。相信通天的巴别塔在未来终会以另一种形式筑成。&lt;/p&gt;
+&lt;p&gt;朋友，坚定地相信未来吧。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;事件简介：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;法国媒体 ZATAZ 于法国当地时间 11 月 16 日在其官方网站报道 [1]，法国国家宪兵 (Gendarmerie Nationale) 下属网络犯罪中心 C3N (Centre de lutte contre lescriminalités  numériques) 的执法人员已经对 WCD 托管在 OVH 和 FREE 服务商设立于法国北部里尔 (Lille)、鲁贝 (Roubaix) 和格拉沃利讷 (Gravelines) 等地的服务器进行了查封，这些服务器包括邮件服务器、IRC 服务器和 Tracker 服务器等，共计 13 台。[笔者注：被查封的均为反向代理服务器，但机器内部记录有真实数据库的信息本次行动是一项已经开展了两年有余的调查活动的首次执法，背后有法国音乐产业机构 SACEM (Society of Authors, Composers and Publishers of Music) 的支持与推动。&lt;/p&gt;
+&lt;p&gt;法国当地时间 11 月 18 日，SACEM 发表了官方评论，高度赞扬了警方的正义行动，机构发言人表示：“一个业已对音乐创作人造成了巨大经济损失的、有组织的、规模空前的国际性网络盗版现象终于得以了结，我们对此表示满意。SACEM 将继续为音乐创作人的权益做不懈斗争。” 法国警方亦作出了对此次行动的官方确认。目前官方收集的数据价值未知，但已知站点所有人位于英国境内。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;站方近期动态：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;北京时间 11 月 16 日，Tracker 服务器下线，站内博客通告表示：“服务器维护，功能恢复预计需要数天时间。”&lt;/li&gt;
+&lt;li&gt;北京时间 11 月 18 日凌晨 1~3 点左右，网站关闭对外访问，仅留主页告示：“正常维护，稍后上线！ (Regular maintenance, we&#39;ll be back soon!)”&lt;/li&gt;
+&lt;li&gt;北京时间 11 月 18 日凌晨 4 点左右，主页告示更改为：“鉴于近期发生的事件，站点逐步关闭。短期内不大可能再以现有形式回归。所有的数据均已销毁。再见，感谢您的馈赠。 (Due to some recent events, &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt; is shutting down. We are not likely to return any time soon in our current form&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;All site and user data has been destroyed. So long, and thanks for all the fish.)” 官方推特也在随后发布了同样了推文。随后不久，与站点相关的第三方支持服务 (面试预备站、用户数据统计站、图床)、IRC 服务器等均数下线。仅站方商店、Gazelle 在线源码托管页面和网站在线状态服务平台未受影响。北京时间 11 月 18 日上午 10 时 13 分，官方推特发文表示：“关于数据库被查封的报道失实。 (Reports of our database being seized are not factual.)”&lt;br /&gt;
+ 北京 11 月 19 日凌晨 1 时左右，网络媒体 TorrentFreak 发布新闻，表示：“根据站方内部人士透露，‘WCD 的用户数据均在安全状态。’ (While the above may worry the site’s former members, a &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL1doYXQuQ0Q=&#34;&gt;What.CD&lt;/span&gt;  representative informs TorrentFreak that all user data is safe. This likely means that the site’s database was stored elsewhere, not on the servers that were seized.)”&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;北京时间 11 月 19 日上午 7 时 07 分，官方推特发文做正式告别：WCD 的关站工作进行完毕，全体站内成员的司法安全已经保证 ——WCD 之行到此为止，未来交给你们。[9] [笔者注：人类互联网历史上自发组建的最大规模音乐交流平台寿终正寝，享年 9 岁零 1 个月。]&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;影响：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;成立于 2007 年 10 月 27 日 ——Oink.CD 关站 4 天后的 WCD，得益于 Gazelle+Ocelot 可扩展架构的非凡使用体验，近年来在一批批用户的悉心建设下，从零起步并迅速超越、甩开同类站点，稳步发展成为独一无二的全球第一音乐 PT (规模最大、用户最多、氛围最佳、技术最硬、活力最足)。截至关站时，WCD 有着来自全球各地约 14.5 万有效会员 (历史会员总数接近 50 万)，种子数约 270 万 (此数据八倍于规模第二的同类站点)，全站音乐类资源达到 PB 级 (主要为欧美音乐)，其中包括约数百 TB、90 万个符合站方 “完美无损” 定义的无损音乐资源，110 万个发行物收录记录和 90 万个艺人收录记录。&lt;/p&gt;
+&lt;p&gt;而在 9 年多的短暂历史中，WCD 也曾引起不小轰动，数次走进全球各大主流媒体的报道中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;2009 年 11 月上旬，微软公司开发的司法软件 “计算机在线法庭科学证据提取器 (COFEE, Computer Online Forensic Evidence Extractor)” 被站内成员首次对外公开发布了破解版，随后因为担心造成的影响过大，站方决定撤下资源，但程序本身已经被大范围传播；2013 年 11 月 28 日，《麦田里的守望者 (The Catcher in the Rye)》的作者杰罗姆・大卫・塞林格 (J.D. Salinger) 三部未发行作品经站内成员首发而遭到泄漏，该书内容包括 “满是保龄球的海洋 (The Ocean Full of  Bowling Balls)”、“宝拉 (Paula)” 和 “生日男孩 (Birthday Boy)”，以及塞林格写给约翰・古德曼 (John Woodman) 的一封信，这些作品此前于 1999 年限量结集为 25 本并存放于美国普林斯顿图书馆读者需经双重身份验证后方可在专人监视下于指定地点查阅该书馆藏，其中 “满是保龄球的海洋 (The Ocean Full of Bowling Balls)” 一文原计划在作者逝世 50 年后方才出版。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;综上简述，此次事件所造成的影响笔者简单总结如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;基于稳定性考虑，许多 PT 站&lt;/strong&gt; &lt;strong&gt;的服务器托管于 OVH，此次事件或将牵连更多 PT 站点&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;由于法国的 IDC 服务商 OVH 在 CDN 加速、负载均衡、抗 DDoS 攻击等方面有着较高的性价比和其他技术、硬件优势，不少站点纷纷选择了在 OVH 架设服务器。本次事件中 WCD 的 OVH 和 FREE 服务器被法国警方从各地查封，表明了上述服务商对这类站点的潜在风险，也意味着警方有取缔其他站点服务器的大概率可能。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;一个优秀高品质音乐交流平台成为历史名词&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在九年里，WCD 不断走在业界巅峰，创下了一个又一个辉煌纪录，如首个种子数突破一百万的站点、首个种子数突破两百万的站点等，堪称互联网的音乐类亚历山大图书馆。这些数据的背后，是六位数的用户基于兴趣爱好所共同缔造的成果。WCD 的斐然成绩已经超越了 PT 的范畴，演变成为一个优秀的高品质音乐交流平台，甚至自身就在某些方面走在正规音乐平台前面 (譬如发行物归类、发行版本区分、相似艺人关系图、CD 抓轨日志评分、资源品质筛选、厂牌筛选、标签筛选、悬赏系统、用户自定义界面和模块等等)，诠释着一个模范资源社区的定义，成为不少网友的生活重心、精神寄托。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先，站内有着琳琅满目的主流、小众、冷门、稀有、未发行音乐资源 (这些数以十万计的非主流内容在正规音乐平台的曲库里是几乎没有的)，包括每个发行物的不同版本如各专辑、EP、单曲、合集、精选的网络版、CD 版、DVD 版、蓝光版、磁带版、黑胶版、重制版、豪华 / 加歌版、现场版、非卖版、宣传版、限量版、地区版等等；&lt;/li&gt;
+&lt;li&gt;其次，由于有着严格的音频质量评价体系，如同一资源必须为相同编码、原则上仅允许无损转有损、高品质音源随时替换低品质音源、不允许歌迷自制合集、不允许现场观众 (风衣客) 录音等，站内的音源同样是在音频工程意义上保证了质量；&lt;/li&gt;
+&lt;li&gt;站内的集合 (Collages) 功能是一大亮点，它能够按照会员的意愿，以个人推荐资源集合、厂牌资源集合、相似风格资源集合、各种主题资源集合、官方活动资源集合的形式对站内资源进行组织，极大程度地方便了用户的整理、归纳工作，如个人年度专辑百佳集合、4AD 厂牌集合、科技舞曲类音乐集合、含特殊字符而无法正常搜索的专辑集合、WCD 站内艺人用户原创作品集合等等；&lt;/li&gt;
+&lt;li&gt;站内论坛则是另一个亮点，举例来说：有专门发布站方各式活动、统计数据等内部资料的版块，有测试站点新功能、讨论站点代码改进、交流优化使用体验的第三方用户扩展 / 网站的版块，有组织全球各主要城市站内会员聚会、观看音乐表演的版块，有专门讨论书籍漫画和音频工程技术、跟进 / 预告各音乐风格下的新发行作品、黑胶主题交流、站内音乐艺人交流的版块，还有各式技术教程、PT 圈动态交流版块，更有资源党互助、全球各大科技文献数据库资源互助、全球各地图书馆馆藏互助等等，这令站点在资源之外为会员提供了多维度的信息化互动功能；&lt;/li&gt;
+&lt;li&gt;此外，站内论坛中还有大量的用户自制软件、脚本、教程等交流活动，如音乐管理软件、批量音频转码软件、嗅探网页音频流媒体脚本、辨别真假无损和识别音频实际品质的教程、CD 完美抓轨教程、Foobar2000 播放器定制插件、修复带划痕光碟的操作指南、iTunes Plus AAC 文件元信息编辑器等等；&lt;/li&gt;
+&lt;li&gt;不少独立艺人还会自发在 WCD 发布个人音乐作品，不时还会有站内会员进行反馈、交流音乐制作上的心得、经验、技巧，于他们而言，WCD 高质的音乐用户、良好的交流氛围更是一个宣传自己作品的绝佳阵地。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些不可多得的高质内容和交流氛围基本是只此一家、别无分店，而随着 WCD 服务器的被查封、站点数据的被销毁，一切行将随风而去，无数个日日夜夜所积累起来的宝贵交流内容又重新分散于全球用户的硬盘中，甚至彻底烟消云散、化为数字尘埃 ——Rest in Pieces。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;大量资源博客、论坛音乐资源的一大渠道源头消失&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;国内外各大音乐资源论坛、博客如 Israbox、NewAlbumReleases、Bunalti 等，包括国内用户常用的音乐平台如虾米、网易云音乐、QQ 音乐上的音源，有相当比例来自于 WCD 的用户首发 (在实际操作上，只要取得了官方正版授权，音源获取方式并不严控)。WCD 的关站势必在一定程度上造成 “资源荒”，延缓部分新资源的传播，大家需要一定的时间来重新发掘、构建、完善新的、稳定的资源传播链。近年来已经日渐式微的 Scene/ED2K/DC++/Usenet 等分享模式或许又会迎来新的一春。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;网民们失去了又一大型音乐教学视频、脱口秀、电子书、有声书、软件应用交流平台&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;WCD 也支持音乐教学视频、脱口秀、电子书、有声书、软件应用等类型的资源交流，由于具有一定数量的用户规模和活跃的悬赏系统，该站在这些方面的资源也有很多亮点，譬如通过悬赏机制激励其他用户上传发布自购、自扫、自破的独家资源等。关站后，这个平台将不得不转移至更为小众和隐蔽的专业站点。可以预见的是，缺少了较大用户基数所带来的集聚效应、规模效应，小众类别的资源交流无形中会受到一定程度和相当范围的打击。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;作为业内人气、技术、规模首屈一指的站点，此次关站将对其他站点的后续运营发展产生影响&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;作为开发出 Gazelle 源码、种子量级最大的老牌大站和不少用户心中的高级站 “跳板”，WCD 在一定程度上是业内站点的风向标之一 (即站点运营的各种探索实践)。目前已有数个站点在 WCD 宣布关站后临时下线或取消随后的各式开放活动。这次法国警方查封服务器的事件，势必会促使更多站点反思自身的安全措施、加倍小心运营，而音乐类 PT 站点则将面临彻底洗牌。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;个人总结：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;WCD 在喝彩和唏嘘中的戛然落幕，标志着一个 PT 时代的终结，但其毫无疑问是冷色调的互联网以太中一颗极具争议的小小启明星，在二进制的串流里发出过炽热的光焰，照亮了成千上万网民的冲浪之旅。&lt;/p&gt;
+&lt;p&gt;在很大概率上，WCD 的命运是注定的，关站下线无外乎只是时间和形式的问题。然而，它仍旧在人们发自真心的热情参与中、在无数自发的捐款支持中、在大量无偿的人力物力投入中演绎成为一览众山宵小的业内巨头。倘若站点数据真如通告所言被彻底销毁，那么几年之内人们将很难再复制一个同等规模的社区，维基百科上甚至已有网友将其视为一场数字形式的 “文明倒退” 而将其与人类历史上化为过去式的图书馆相提并论 [10]。对不少用户而言，游弋于灰色地带的 WCD 已经远超一个资源站点的概念，而不啻于一场持续数年的乌托邦式虚拟狂欢，并已然衍变为一段难以割舍和忘怀的美好生活回忆。笔者认为，在某些程度上，WCD 就好比 DC 宇宙中的蝙蝠侠：有罪，但错误得不彻底；有益，但正义得不正当。当然，WCD 的存在，在法律意义上是弊大于利，因此也有了这次关站事件的发生。&lt;/p&gt;
+&lt;p&gt;在 Facebook、Reddit 和 Twitter 等社交平台上，不少国外网友也怀着复杂的感情看待 WCD 的死亡。同样很多人也相信事物是螺旋上升式持续发展的：站没了，人还在，只要永葆激情和热爱、给予耐心和谨慎，下一个 “图书馆” 终会从广漠而浩瀚的数码灰烬中重建起来 —— 兴许还会是完全合法的形式。&lt;/p&gt;
+&lt;p&gt;最后，笔者借用网友 &amp;quot;KJ 天线&amp;quot; 所引用的一句诗，向那些素未谋面的陌生网友们致以诚挚的感谢：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;仅你消逝的一面&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;足以让我荣耀一生&lt;/strong&gt; ——&lt;strong&gt; 万夏&lt;/strong&gt;&lt;br /&gt;
+&lt;em&gt;出处：贾樟柯《二十四城记》 (2008)&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;那一天，它的存在化为历史，它的余热仍旧传递；&lt;/p&gt;
+&lt;p&gt;这一刻，它的祭奠还在继续，新的征程已然开始。&lt;/p&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>
