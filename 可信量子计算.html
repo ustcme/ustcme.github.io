@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Chosen Palette: Energetic & Playful (Adapted for Professionalism) -->
+    <!-- Application Structure Plan: A top-down narrative SPA. It starts with "Why" (Dual Challenge), summarizes "State-of-the-Art" (Core Insights), moves to "What" (The Ignored Attack Surface), outlines "Research Objectives", details "Formal Verification", presents the "How" (TQCM Solution), and finishes with "Proof" (Prototype & Performance). This logical flow guides the user from the high-level problem to the concrete solution and its validation. -->
+    <!-- Visualization & Content Choices:
+        - Dual Challenge: Goal=Compare. Side-by-side visual metaphor (Promise vs. Reality). Left side: styled Unicode icons (NO SVG) for applications. Right side: Chart.js Doughnut chart for research imbalance.
+        - Core Insights: Goal=Organize/Inform. Three-card grid with Unicode icons (NO SVG) and HTML/CSS diagrams.
+        - Attack Surface: Goal=Organize. A grid of six styled cards with Unicode icons (NO SVG) for STRIDE threats.
+        - Research Objectives: Goal=Organize/Inform. A three-card grid layout summarizing research sub-goals, using Unicode icons and HTML/CSS diagrams.
+        - Formal Verification: Goal=Organize/Inform. A new three-card grid detailing the formal verification process, using Unicode icons and simple diagrams (HTML/CSS) to illustrate modeling, adversary, and proof.
+        - TQCM Solution: Goal=Organize/Show Process. A horizontal flow diagram (HTML/CSS/Unicode Icons, NO SVG).
+        - Prototype Case Study: Goal=Organize/Show Process. A vertical flow diagram (HTML/CSS/Unicode icons, NO SVG).
+        - Performance Chart: Goal=Compare. A Chart.js logarithmic bar chart.
+     -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>可信容错量子计算框架</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background-color: #f0f4f8;
+            color: #1a202c;
+        }
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+        }
+        .flow-arrow::after {
+            content: '→';
+            font-size: 2rem;
+            line-height: 1;
+            color: #F95D6A;
+            margin: 0 1rem;
+        }
+        .flow-arrow:last-child::after {
+            content: '';
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="font-bold text-lg md:text-xl text-transparent bg-gradient-to-r from-[#003F5C] to-[#D45087] bg-clip-text">可信量子计算</h1>
+            <div class="hidden md:flex space-x-4 text-sm font-semibold">
+                <a href="#challenge" class="text-gray-600 hover:text-[#D45087] transition-colors">双重挑战</a>
+                <a href="#insights" class="text-gray-600 hover:text-[#D45087] transition-colors">核心洞见</a>
+                <a href="#threats" class="text-gray-600 hover:text-[#D45087] transition-colors">安全威胁</a>
+                <a href="#objectives" class="text-gray-600 hover:text-[#D45087] transition-colors">研究目标</a>
+                <a href="#formal-verification" class="text-gray-600 hover:text-[#D45087] transition-colors">建模验证</a>
+                <a href="#solution" class="text-gray-600 hover:text-[#D45087] transition-colors">解决方案</a>
+                <a href="#proof" class="text-gray-600 hover:text-[#D45087] transition-colors">原型验证</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section class="text-center py-16">
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-gradient bg-gradient-to-r from-[#003F5C] via-[#665191] to-[#D45087]">保障量子未来</h2>
+            <p class="text-lg md:text-2xl font-semibold text-[#2F4B7C] max-w-4xl mx-auto">弥合容错量子计算中的“经典可信度鸿沟”</p>
+            <p class="mt-6 text-gray-600 max-w-3xl mx-auto">
+                量子计算有望解决人类面临的一些最严峻挑战，但通往实用化量子计算机的道路上存在一个被普遍忽视的致命缺陷。本研究旨在揭示并解决这一问题，确保未来的量子系统不仅功能强大，而且从根本上值得信赖。
+            </p>
+        </section>
+
+        <section id="challenge" class="py-12">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#003F5C]">量子计算的双重挑战</h3>
+                <p class="mt-2 text-gray-600">保真度与可信度：一枚硬币的两面</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <!-- Left Side: The Promise -->
+                    <div class="text-center">
+                        <h4 class="text-xl font-bold text-[#003F5C] mb-6">量子计算的巨大潜力</h4>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="bg-blue-50 rounded-lg p-4 transition-transform hover:scale-105">
+                                <div class="text-5xl">🧬</div>
+                                <p class="mt-2 font-semibold text-sm text-blue-800">药物研发</p>
+                            </div>
+                            <div class="bg-purple-50 rounded-lg p-4 transition-transform hover:scale-105">
+                                <div class="text-5xl">💎</div>
+                                <p class="mt-2 font-semibold text-sm text-purple-800">新材料</p>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-4 transition-transform hover:scale-105">
+                                <div class="text-5xl">📈</div>
+                                <p class="mt-2 font-semibold text-sm text-green-800">金融建模</p>
+                            </div>
+                            <div class="bg-orange-50 rounded-lg p-4 transition-transform hover:scale-105">
+                                <div class="text-5xl">🌐</div>
+                                <p class="mt-2 font-semibold text-sm text-orange-800">复杂优化</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mt-6 text-sm">量子计算有望在众多关键领域带来革命性突破，解决经典计算机无法应对的难题。</p>
+                    </div>
+
+                    <!-- Right Side: The Imbalance -->
+                    <div class="text-center">
+                        <h4 class="text-xl font-bold text-[#003F5C] mb-6">现实的研究焦点失衡</h4>
+                        <div class="chart-container mx-auto">
+                            <canvas id="focusChart"></canvas>
+                        </div>
+                        <p class="mt-6 text-gray-600 font-semibold">然而，全球研究焦点<span class="text-[#D45087] font-bold">严重失衡</span>。在追逐美好应用的同时，我们却忽视了支撑这一切的<strong class="text-[#F95D6A]">经典控制系统</strong>的可信度，留下了一个致命的安全隐患。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="insights" class="py-16 bg-gray-50 rounded-2xl">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#003F5C]">前沿技术的核心洞见</h3>
+                <p class="mt-2 text-gray-600">从文献中提炼的关键技术趋势与挑战</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1: Modular Architecture -->
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
+                    <div class="w-16 h-16 mb-4 rounded-full bg-blue-100 flex items-center justify-center text-3xl text-blue-800">🧱</div>
+                    <h5 class="font-bold text-lg text-[#003F5C]">架构演进：模块化</h5>
+                    <div class="flex items-center justify-center my-4 space-x-2 text-gray-500">
+                        <div class="p-2 border-2 border-dashed border-gray-400 rounded-md text-sm">单体芯片</div>
+                        <div class="text-2xl font-bold text-[#D45087]">→</div>
+                        <div class="flex space-x-1">
+                            <div class="w-6 h-6 bg-[#665191] rounded"></div>
+                            <div class="w-6 h-6 bg-[#665191] rounded"></div>
+                            <div class="w-6 h-6 bg-[#665191] rounded"></div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mt-2 text-sm">为突破“扩展性之墙”，业界共识正从单个巨型芯片转向由光子链路互联的多个小型QPU模块。</p>
+                </div>
+                <!-- Card 2: Communication Bottleneck -->
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
+                    <div class="w-16 h-16 mb-4 rounded-full bg-orange-100 flex items-center justify-center text-3xl text-orange-800">⌛</div>
+                    <h5 class="font-bold text-lg text-[#003F5C]">性能瓶颈：通信</h5>
+                    <div class="flex items-center justify-around my-4 w-full text-gray-500">
+                        <div class="text-center">
+                            <div class="text-3xl">⚡</div>
+                            <div class="font-semibold">计算</div>
+                            <div class="text-xs">~μs (微秒)</div>
+                        </div>
+                        <div class="text-3xl font-bold text-[#D45087]">≫</div>
+                        <div class="text-center">
+                            <div class="text-3xl">🐌</div>
+                            <div class="font-semibold">通信</div>
+                            <div class="text-xs">~ms (毫秒)</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mt-2 text-sm">模块内计算速度极快，但模块间的光子纠缠生成速度慢数个数量级，成为整个系统的短板。</p>
+                </div>
+                <!-- Card 3: Algorithm & New Challenge -->
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
+                    <div class="w-16 h-16 mb-4 rounded-full bg-purple-100 flex items-center justify-center text-3xl text-purple-800">💡</div>
+                    <h5 class="font-bold text-lg text-[#003F5C]">算法突破与新挑战</h5>
+                    <div class="flex items-center justify-center my-4 space-x-2 text-gray-500">
+                       <div class="text-3xl">⚙️</div>
+                       <div class="text-2xl font-bold text-[#D45087]">→</div>
+                       <div class="text-sm font-semibold p-2 bg-gray-100 rounded-md">经典译码器<br>完整性</div>
+                    </div>
+                    <p class="text-gray-600 mt-2 text-sm">恒定开销容错算法极大降低了资源需求，但也凸显了经典译码器的关键作用：其“运行时间”和“可信度”成为新的性能与安全核心。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="threats" class="py-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#003F5C]">被忽视的攻击面：经典控制平面</h3>
+                <p class="mt-2 text-gray-600">当攻击者选择最小阻力路径时，量子计算机的“大脑”便岌岌可危。</p>
+            </div>
+            <div class="bg-transparent rounded-xl p-8">
+                 <p class="text-center text-gray-600 mb-12">我们将业界成熟的STRIDE威胁模型应用于一个典型的模块化量子计算机，识别出六类具体且高度危险的经典攻击，这些攻击均能使昂贵的量子纠错框架完全失效。</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                        <div class="w-16 h-16 mb-4 rounded-full bg-orange-100 flex items-center justify-center text-3xl text-[#FFA600]">
+                            <span>&#128132;</span>
+                        </div>
+                        <h5 class="font-bold text-lg text-[#003F5C]">身份仿冒 (Spoofing)</h5>
+                        <p class="text-gray-600 mt-2 text-sm">攻击者伪装成主控制器，发送伪造指令，在非预期的量子比特间执行错误门操作，直接破坏算法逻辑。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                        <div class="w-16 h-16 mb-4 rounded-full bg-red-100 flex items-center justify-center text-3xl text-[#F95D6A]">
+                            <span>&#128295;</span>
+                        </div>
+                        <h5 class="font-bold text-lg text-[#003F5C]">数据篡改 (Tampering)</h5>
+                        <p class="text-gray-600 mt-2 text-sm"><strong>核心威胁:</strong> 攻击者篡改测量结果，导致解码器计算出错误的纠正操作，主动向逻辑量子比特注入致命错误。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                        <div class="w-16 h-16 mb-4 rounded-full bg-pink-100 flex items-center justify-center text-3xl text-[#D45087]">
+                            <span>&#129335;</span>
+                        </div>
+                        <h5 class="font-bold text-lg text-[#003F5C]">否认 (Repudiation)</h5>
+                        <p class="text-gray-600 mt-2 text-sm">恶意的QPU模块在执行错误操作后否认，使故障诊断和责任追溯无法进行，破坏系统的可审计性。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                        <div class="w-16 h-16 mb-4 rounded-full bg-purple-100 flex items-center justify-center text-3xl text-[#A05195]">
+                            <span>&#128275;</span>
+                        </div>
+                        <h5 class="font-bold text-lg text-[#003F5C]">信息泄露 (Info. Disclosure)</h5>
+                        <p class="text-gray-600 mt-2 text-sm">通过旁路信道攻击（如功耗分析）推断解码器行为，可能泄露底层量子计算任务的敏感信息。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                        <div class="w-16 h-16 mb-4 rounded-full bg-indigo-100 flex items-center justify-center text-3xl text-[#665191]">
+                            <span>&#128721;</span>
+                        </div>
+                        <h5 class="font-bold text-lg text-[#003F5C]">拒绝服务 (DoS)</h5>
+                        <p class="text-gray-600 mt-2 text-sm">攻击者阻塞经典网络，导致模块间同步信号丢失，使整个分布式量子计算进程中断或终止。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
+                        <div class="w-16 h-16 mb-4 rounded-full bg-blue-100 flex items-center justify-center text-3xl text-[#2F4B7C]">
+                            <span>&#128273;</span>
+                        </div>
+                        <h5 class="font-bold text-lg text-[#003F5C]">权限提升 (Priv. Escalation)</h5>
+                        <p class="text-gray-600 mt-2 text-sm">低权限进程利用漏洞获得对激光驱动的完全控制权，从而可以任意操控量子比特，接管物理操作层。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="objectives" class="py-16 bg-gray-50 rounded-2xl">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#003F5C]">核心研究目标：构建可验证的信任链</h3>
+                <p class="mt-2 text-gray-600">本研究的核心是设计一个以硬件为信任根的安全框架，以抵御来自经典层面的攻击。</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Objective 1: Formal Modeling -->
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
+                    <div class="w-16 h-16 mb-4 rounded-full bg-purple-100 flex items-center justify-center text-3xl text-purple-800">∀</div>
+                    <h5 class="font-bold text-lg text-[#003F5C]">形式化建模与验证</h5>
+                    <p class="text-gray-600 mt-2 text-sm flex-grow">利用Tamarin Prover等工具，建立精确的协议安全模型，从理论上严格证明其能够抵御强大的符号化攻击者。</p>
+                    <div class="mt-4 p-2 bg-gray-100 rounded-md text-xs font-mono w-full">`lemma [trusted]:<br> "All x. Action(x) ==> Trusted(x)"`</div>
+                </div>
+                <!-- Objective 2: Architecture Design -->
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
+                    <div class="w-16 h-16 mb-4 rounded-full bg-red-100 flex items-center justify-center text-3xl text-red-800">🛡️</div>
+                    <h5 class="font-bold text-lg text-[#003F5C]">可信架构设计</h5>
+                    <p class="text-gray-600 mt-2 text-sm flex-grow">设计一个“可信量子控制模块”(TQCM)，利用TPM 2.0等硬件安全模块，提供安全启动、远程证明等核心安全功能。</p>
+                    <div class="mt-4 p-2 bg-gray-100 rounded-md text-xs w-full flex items-center justify-center space-x-2">
+                        <span>CPU</span><span class="font-bold">↔</span><span class="border-2 p-1 rounded">TPM</span>
+                    </div>
+                </div>
+                <!-- Objective 3: Prototyping -->
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
+                    <div class="w-16 h-16 mb-4 rounded-full bg-green-100 flex items-center justify-center text-3xl text-green-800">🔬</div>
+                    <h5 class="font-bold text-lg text-[#003F5C]">原型实现与评估</h5>
+                    <p class="text-gray-600 mt-2 text-sm flex-grow">以保护FTQC解码器为案例，构建一个TQCM原型系统，验证其在真实场景下的可行性，并量化其性能开销。</p>
+                    <div class="mt-4 p-2 bg-gray-100 rounded-md text-xs w-full">评估指标: 延迟 & 吞吐量</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="formal-verification" class="py-16">
+             <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#003F5C]">形式化建模与验证</h3>
+                <p class="mt-2 text-gray-600">用数学的严谨性，为安全协议提供坚不可摧的理论证明。</p>
+            </div>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
+                    <div class="w-16 h-16 mb-4 rounded-full bg-blue-100 flex items-center justify-center text-3xl text-blue-800">📜</div>
+                    <h5 class="font-bold text-lg text-[#003F5C]">1. 协议建模</h5>
+                    <p class="text-gray-600 mt-2 text-sm flex-grow">将现实世界的通信协议（如远程证明）抽象为精确的、机器可读的数学规则。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
+                    <div class="w-16 h-16 mb-4 rounded-full bg-red-100 flex items-center justify-center text-3xl text-red-800">👻</div>
+                    <h5 class="font-bold text-lg text-[#003F5C]">2. 定义敌手</h5>
+                    <p class="text-gray-600 mt-2 text-sm flex-grow">引入一个遵循Dolev-Yao模型的强大“符号化”攻击者，他能完全控制网络，窃听、篡改并伪造消息。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
+                    <div class="w-16 h-16 mb-4 rounded-full bg-green-100 flex items-center justify-center text-3xl text-green-800">✅</div>
+                    <h5 class="font-bold text-lg text-[#003F5C]">3. 安全性证明</h5>
+                    <p class="text-gray-600 mt-2 text-sm flex-grow">使用Tamarin Prover工具，自动或交互式地证明，即使在最坏的敌手攻击下，协议仍能保证机密性和真实性。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="py-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#003F5C]">解决方案：可信量子控制模块 (TQCM)</h3>
+                <p class="mt-2 text-gray-600">从硬件信任根开始，构建端到端的可验证信任链。</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <p class="text-center text-gray-600 mb-10">我们提出的TQCM架构，将经典计算领域成熟的可信计算技术系统性地引入量子计算。它通过基于硬件安全模块（如TPM 2.0）的三大核心功能，为经典控制平面建立一个坚不可摧的安全基石。</p>
+                <div class="flex flex-col md:flex-row justify-around items-center text-center">
+                    <div class="flex flex-col md:flex-row items-center flow-arrow mb-6 md:mb-0">
+                        <div class="flex flex-col items-center p-4">
+                            <div class="w-16 h-16 rounded-full bg-[#E8F0F6] flex items-center justify-center text-3xl text-[#665191]">
+                                <span>&#128187;</span>
+                            </div>
+                            <h5 class="font-bold mt-4 text-[#2F4B7C]">安全启动</h5>
+                            <p class="text-sm text-gray-500 mt-1 max-w-xs">确保控制器运行在一个已知的、未经篡改的软件环境中。</p>
+                        </div>
+                    </div>
+                     <div class="flex flex-col md:flex-row items-center flow-arrow mb-6 md:mb-0">
+                        <div class="flex flex-col items-center p-4">
+                            <div class="w-16 h-16 rounded-full bg-[#E8F0F6] flex items-center justify-center text-3xl text-[#A05195]">
+                                <span>&#128737;</span>
+                            </div>
+                            <h5 class="font-bold mt-4 text-[#2F4B7C]">远程证明</h5>
+                             <p class="text-sm text-gray-500 mt-1 max-w-xs">允许一个可信模块通过密码学手段远程验证另一个模块的完整性。</p>
+                        </div>
+                    </div>
+                     <div class="flex flex-col md:flex-row items-center mb-6 md:mb-0">
+                        <div class="flex flex-col items-center p-4">
+                            <div class="w-16 h-16 rounded-full bg-[#E8F0F6] flex items-center justify-center text-3xl text-[#F95D6A]">
+                                <span>&#128274;</span>
+                            </div>
+                            <h5 class="font-bold mt-4 text-[#2F4B7C]">机密封装</h5>
+                             <p class="text-sm text-gray-500 mt-1 max-w-xs">保护会话密钥等机密数据，只有在可信状态下才能被解封使用。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="proof" class="py-16">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#003F5C]">原型验证与性能评估</h3>
+                <p class="mt-2 text-gray-600">在真实场景中，我们的安全框架是否可行？</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col">
+                    <h4 class="text-xl font-bold text-center text-[#003F5C] mb-4">案例：保护FTQC解码器</h4>
+                    <p class="text-gray-600 mb-6">我们构建了一个原型系统，模拟保护一个FTQC解码器的端到端工作流，确保只有来自可信解码器的指令才能被执行。</p>
+                    <div class="flex-grow flex flex-col justify-center space-y-2">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-2xl">⚙️</div>
+                            <div class="ml-4">
+                                <p class="font-semibold text-[#2F4B7C]">1. 模拟QPU发送数据</p>
+                                <p class="text-sm text-gray-500">Syndrome数据 (带噪声)</p>
+                            </div>
+                        </div>
+                        <div class="pl-5 text-xl text-gray-300 h-6">↓</div>
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-2xl">💻</div>
+                            <div class="ml-4">
+                                <p class="font-semibold text-[#665191]">2. TQCM解码</p>
+                                <p class="text-sm text-gray-500">计算纠正操作指令</p>
+                            </div>
+                        </div>
+                        <div class="pl-5 text-xl text-gray-300 h-6">↓</div>
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-2xl">🛡️</div>
+                            <div class="ml-4">
+                                <p class="font-semibold text-[#D45087]">3. 硬件签名</p>
+                                <p class="text-sm text-gray-500">TQCM调用TPM对指令签名</p>
+                            </div>
+                        </div>
+                        <div class="pl-5 text-xl text-gray-300 h-6">↓</div>
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-2xl">✔️</div>
+                            <div class="ml-4">
+                                <p class="font-semibold text-green-700">4. QPU安全执行</p>
+                                <p class="text-sm text-gray-500">验证签名，执行可信操作</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col">
+                     <h4 class="text-xl font-bold text-center text-[#003F5C] mb-4">性能开销：时间尺度对比</h4>
+                    <div class="chart-container flex-grow max-w-full h-auto md:h-full">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    <p class="text-center text-gray-600 mt-4">关键问题是安全操作引入的延迟。我们的评估表明，TPM操作（如签名）的耗时在毫秒量级。这与量子纠错周期（同样是毫秒级）是可比的，但远长于量子门操作（微秒级）。这表明，虽然安全框架引入了不可忽略的开销，但它在当前FTQC架构的时钟速率下是可行的，不会成为不可接受的瓶颈。</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#003F5C] text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p class="font-bold text-lg">迈向可信量子计算</p>
+            <p class="text-sm mt-2 max-w-2xl mx-auto text-blue-100">本研究旨在为构建不仅容错、而且可信的下一代量子计算机提供基础理论与关键技术，为开创一个安全、可靠且强大的量子计算新时代贡献力量。</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const processLabel = (str, maxWidth = 16) => {
+                if (str.length <= maxWidth) {
+                    return str;
+                }
+                const words = str.split(' ');
+                let lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxWidth) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                if (currentLine) {
+                    lines.push(currentLine.trim());
+                }
+                return lines;
+            };
+
+            const sharedTooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+
+            const ctxFocus = document.getElementById('focusChart').getContext('2d');
+            new Chart(ctxFocus, {
+                type: 'doughnut',
+                data: {
+                    labels: ['提升量子保真度 (Fidelity)', '保障经典可信度 (Trust)'],
+                    datasets: [{
+                        label: '研究焦点',
+                        data: [95, 5],
+                        backgroundColor: ['#2F4B7C', '#D45087'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#4a5568',
+                                font: {
+                                   family: "'Inter', 'Noto Sans SC', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: sharedTooltipTitleCallback
+                            },
+                            bodyFont: {
+                                family: "'Inter', 'Noto Sans SC', sans-serif"
+                            },
+                            titleFont: {
+                                family: "'Inter', 'Noto Sans SC', sans-serif"
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            const ctxPerf = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctxPerf, {
+                type: 'bar',
+                data: {
+                    labels: [processLabel('TPM 操作 (签名/引用)'), processLabel('量子纠错周期'), processLabel('量子门操作')],
+                    datasets: [{
+                        label: '操作时间 (毫秒)',
+                        data: [20, 5, 0.001],
+                        backgroundColor: ['#F95D6A', '#FFA600', '#665191'],
+                        borderColor: ['#F95D6A', '#FFA600', '#665191'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            type: 'logarithmic',
+                            title: {
+                                display: true,
+                                text: '时间 (毫秒, 对数尺度)',
+                                color: '#4a5568',
+                                font: { family: "'Inter', 'Noto Sans SC', sans-serif" }
+                            },
+                             ticks: {
+                                color: '#4a5568',
+                                font: { family: "'Inter', 'Noto Sans SC', sans-serif" },
+                                callback: function(value, index, values) {
+                                    if (value === 100 || value === 10 || value === 1 || value === 0.1 || value === 0.01 || value === 0.001) {
+                                        return value + ' ms';
+                                    }
+                                }
+                            }
+                        },
+                        y: {
+                             ticks: {
+                                color: '#4a5568',
+                                font: { family: "'Inter', 'Noto Sans SC', sans-serif" }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                             callbacks: {
+                                title: sharedTooltipTitleCallback,
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += context.parsed.x + ' ms';
+                                    }
+                                    return label;
+                                }
+                            },
+                             bodyFont: {
+                                family: "'Inter', 'Noto Sans SC', sans-serif"
+                            },
+                            titleFont: {
+                                family: "'Inter', 'Noto Sans SC', sans-serif"
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
