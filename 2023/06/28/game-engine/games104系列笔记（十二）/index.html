@@ -1,303 +1,293 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"/><meta name="theme-color" content="#222"/><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/><meta name="renderer" content="webkit"/><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"/><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"/><link rel="alternate" href="/rss.xml" title="Sakura" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="Sakura" type="application/atom+xml"><link rel="alternate" type="application/json" title="Sakura" href="https://sakurame.eu.org/feed.json"/><link rel="preconnect" href="https://lf9-cdn-tos.bytecdntp.com"/><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"/><link rel="dns-prefetch" href="https://unpkg.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext"><link rel="stylesheet" href="/css/app.css?v=0.3.6"><script src="https://cdn.staticfile.org/vue/3.2.45/vue.global.prod.js"></script><link rel="stylesheet" href="/css/twikoo.css?v=0.3.6"><script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.40/dist/twikoo.all.min.js"></script><meta name="keywords" content="游戏引擎"/><link rel="canonical" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/"><title>games104系列笔记（十二）</title><meta name="generator" content="Hexo 6.3.0"></head><body itemscope itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="container"><header id="header" itemscope itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（十二）</h1><div class="meta"><span class="item" title="创建时间：2023-06-28 23:00:35"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">发表于</span><time itemprop="dateCreated datePublished" datetime="2023-06-28T23:00:35+08:00">2023-06-28</time></span><span class="item" title="本文字数"><span class="icon"><i class="ic i-pen"></i></span><span class="text">本文字数</span><span>13k</span><span class="text">字</span></span><span class="item" title="阅读时长"><span class="icon"><i class="ic i-clock"></i></span><span class="text">阅读时长</span><span>12 分钟</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="切换导航栏"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme" @click="changeThemeByBtn"><i class="ic" :class="{'i-sun': !themeStatus,'i-moon': themeStatus}"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" data-background-image="https://ptpimg.me/13lwuc.jpg"></li><li class="item" data-background-image="https://ptpimg.me/1736wk.jpg"></li><li class="item" data-background-image="https://ptpimg.me/5n0t71.jpg"></li><li class="item" data-background-image="https://ptpimg.me/q8lgy3.jpg"></li><li class="item" data-background-image="https://ptpimg.me/0j50c8.jpg"></li><li class="item" data-background-image="https://ptpimg.me/0198zm.jpg"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemListElement itemscope itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">首页</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="分类于游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"/></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/"/><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"/><meta itemprop="name" content="Sakura"/><meta itemprop="description" content=", 一个专注于技术和思考分享的博客"/></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="Sakura"/></span><div class="body md" itemprop="articleBody"><blockquote>
-<p>这个系列是 GAMES104 - 现代游戏引擎：从入门到实践 (<span class="exturl" data-url="aHR0cHM6Ly9nYW1lczEwNC5ib29taW5ndGVjaC5jb20vZW4v">GAMES 104: Modern Game Engine-Theory and Practice</span>) 的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏引擎中的粒子和声效系统。</p>
-<span id="more"></span>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="Sakura" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="Sakura" type="application/atom+xml"><link rel="alternate" type="application/json" title="Sakura" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-D4XW5YGM.js"><link rel="modulepreload" href="/js/copy-tex-FNUH3BHN.js"><link rel="modulepreload" href="/js/post-XNYTJ3DF.js"><link rel="modulepreload" href="/js/chunk-47WMQ3OW.js"><link rel="modulepreload" href="/js/tcomments-EMIGMNV5.js"><link rel="modulepreload" href="/js/chunk-HBYXA5U5.js"><link rel="modulepreload" href="/js/index.esm-4MKEQDJB.js"><link rel="modulepreload" href="/js/chunk-JZTZ6WT3.js"><link rel="modulepreload" href="/js/chunk-PBBKQNAG.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><link rel="preload" href="https://ptpimg.me/ysg110.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/l012k5.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/1rb722.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/7a00lf.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/3387gx.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/v5k41w.jpg" as="image" fetchpriority="high"><meta name="keywords" content="游戏引擎"><meta name="description" content="<blockquote>
+<p>这个系列是 GAMES104 - 现代游戏引擎：从入门到实践 (<a href=&quot;https://games104.boomingtech.com/en/&quot;>GAMES 104: Modern Game Engine-Theory and Practice</a>) 的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏引擎中的粒子和声效系统。<br />"><link rel="canonical" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/"><link rel="stylesheet" href="/css/post.css?v=0.5.0"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.0"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>games104系列笔记（十二）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（十二）</h1><div class="meta"><span class="item" title="创建时间：2023-06-28 23:00:35"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">发表于</span><time itemprop="dateCreated datePublished" datetime="2023-06-28T23:00:35+08:00">2023-06-28</time></span><span class="item" title="本文字数"><span class="icon"><i class="ic i-pen"></i></span><span class="text">本文字数</span><span>13k</span><span class="text">字</span></span><span class="item" title="阅读时长"><span class="icon"><i class="ic i-clock"></i></span><span class="text">阅读时长</span><span>12 分钟</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="切换导航栏"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">testName</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/ysg110.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/l012k5.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/1rb722.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/7a00lf.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/3387gx.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/v5k41w.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">首页</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="分类于游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="Sakura"><meta itemprop="description" content=", 一个专注于技术和思考分享的博客"></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="Sakura"></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>这个系列是 GAMES104 - 现代游戏引擎：从入门到实践 (<a target="_blank" rel="noopener" href="https://games104.boomingtech.com/en/">GAMES 104: Modern Game Engine-Theory and Practice</a>) 的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏引擎中的粒子和声效系统。<br>
+<span id="more"></span></p>
 </blockquote>
 <h2 id="particle-system"><a class="anchor" href="#particle-system">#</a> Particle System</h2>
 <p>** 粒子系统 (particle system)** 是现代游戏中非常重要的组成部分，游戏中大量的特效都是基于粒子系统来实现的。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/1nYY0vx.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/1nYY0vx.png">https://search.pstatic.net/common?src=https://i.imgur.com/1nYY0vx.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h3 id="fundamentals"><a class="anchor" href="#fundamentals">#</a> Fundamentals</h3>
 <p>实际上粒子系统来自于电影行业对于视觉特效的追求，它最早可以追溯到 1982 年的电影《星际迷航 2：可汗之怒》。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/B22YoaE.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/B22YoaE.png">https://search.pstatic.net/common?src=https://i.imgur.com/B22YoaE.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>所谓的粒子是指具有一些物理信息的物体，常见的物理量包括位置、速度、大小、颜色等。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/l1P5LWt.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/l1P5LWt.png">https://search.pstatic.net/common?src=https://i.imgur.com/l1P5LWt.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>同时粒子还需要考虑自身的<strong>生命周期 (life cycle)</strong>，当粒子的生命周期结束后需要被系统回收。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/YX6cKLu.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/YX6cKLu.png">https://search.pstatic.net/common?src=https://i.imgur.com/YX6cKLu.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="particle-emitter"><a class="anchor" href="#particle-emitter">#</a> Particle Emitter</h4>
 <p>每一种不同的粒子都是由相应的 ** 粒子发射器 (particle emitter)** 生成的。每一种粒子发射器需要指定自身的生成规则同时为粒子赋予相应的仿真逻辑。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/k2Fxw6q.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/k2Fxw6q.png">https://search.pstatic.net/common?src=https://i.imgur.com/k2Fxw6q.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>在一个粒子系统中往往会同时具有多个不同的例子发射器进行工作，它们之间相互配合就实现了丰富的粒子效果。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/yf6Zs78.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/yf6Zs78.png">https://search.pstatic.net/common?src=https://i.imgur.com/yf6Zs78.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="particle-spawn"><a class="anchor" href="#particle-spawn">#</a> Particle Spawn</h4>
 <p>粒子系统在生成粒子时可以根据需求使用不同的生成策略。比较简单的生成方式是从单点生成粒子，而在现代粒子生成器中则可以从某个区域甚至从物体的网格来生成粒子。同时粒子生成器也可以根据需求只产生一次性的粒子，或是源源不断地生成新的粒子。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/211dGFE.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/RoX5ZrB.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/211dGFE.png">https://search.pstatic.net/common?src=https://i.imgur.com/211dGFE.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/RoX5ZrB.png">https://search.pstatic.net/common?src=https://i.imgur.com/RoX5ZrB.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="simulation"><a class="anchor" href="#simulation">#</a> Simulation</h4>
 <p>完成粒子的生成后就可以利用质点运动学的相关方法对粒子进行仿真。由于粒子系统一般不需要严格地遵守物理规律，在实践中往往只会使用最简单的前向积分来实现对粒子状态进行更新。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/MCd3qzl.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/QxLwHUq.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/MCd3qzl.png">https://search.pstatic.net/common?src=https://i.imgur.com/MCd3qzl.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/QxLwHUq.png">https://search.pstatic.net/common?src=https://i.imgur.com/QxLwHUq.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="particle-type"><a class="anchor" href="#particle-type">#</a> Particle Type</h4>
 <p>早期的粒子系统会假定粒子都位于某个平面上进行运动，这种方法称为 billboard particle。当观察者的视角发生变化时，billboard 会随着观察者的视角一起变化从而保证它一直位于观察者的正前方。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/823PbYe.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/823PbYe.png">https://search.pstatic.net/common?src=https://i.imgur.com/823PbYe.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>随着游戏技术的进步，后来还出现了 mesh particle 这种带有几何信息的粒子。这种形式的粒子可以用来模拟岩石、碎屑等带有明显几何信息的颗粒。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/NBFTU4J.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/NBFTU4J.png">https://search.pstatic.net/common?src=https://i.imgur.com/NBFTU4J.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>在很多游戏中还使用了 ribbon particle 这种带状的粒子用来模拟各种拖动的效果，比如说游戏中各种武器的特效一般都是使用这种技术来制作的。在使用 ribbon particle 时一般还会结合 Catmull 曲线来形成光滑连贯的特效。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/LBPodD5.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/csbLONb.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/uKexVfU.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/FE5St2A.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/LBPodD5.png">https://search.pstatic.net/common?src=https://i.imgur.com/LBPodD5.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/csbLONb.png">https://search.pstatic.net/common?src=https://i.imgur.com/csbLONb.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/uKexVfU.png">https://search.pstatic.net/common?src=https://i.imgur.com/uKexVfU.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FE5St2A.png">https://search.pstatic.net/common?src=https://i.imgur.com/FE5St2A.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h3 id="particle-system-rendering"><a class="anchor" href="#particle-system-rendering">#</a> Particle System Rendering</h3>
 <h4 id="particle-sort"><a class="anchor" href="#particle-sort">#</a> Particle Sort</h4>
 <p>粒子在进行渲染时的一大难点在于如何进行排序。按照 alpha 混合的理论，我们需要从最远端开始由远及近地对场景中的物体进行绘制。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/XGjKchv.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/XGjKchv.png">https://search.pstatic.net/common?src=https://i.imgur.com/XGjKchv.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>由于场景中往往同时存在巨量的粒子，对这些粒子进行排序往往会耗费大量的计算资源。目前对于粒子进行排序主要有两种做法：其一是全局排序即无考虑发射器的信息单纯对所有的粒子进行排序，这种做法可以获得正确的结果但需要非常多的计算资源；另一种做法是按照发射器进行排序，这种方法可以极大地减少计算资源但可能会出现错误的排序结果。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/iGRGY5D.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/iGRGY5D.png">https://search.pstatic.net/common?src=https://i.imgur.com/iGRGY5D.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="resolution"><a class="anchor" href="#resolution">#</a> Resolution</h4>
 <p>当粒子充满场景时非透明的粒子会导致我们必须在同一像素上进行反复的绘制，这往往会导致帧数极大的下降。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/y2D8BOw.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/y2D8BOw.png">https://search.pstatic.net/common?src=https://i.imgur.com/y2D8BOw.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>因此在对粒子进行渲染时还会结合降采样的技术来减少需要进行绘制的像素数。把降采样后的图像和非透明的粒子按照透明度混合后在通过上采样来恢复原始分辨率。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/uR9sKNP.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/uR9sKNP.png">https://search.pstatic.net/common?src=https://i.imgur.com/uR9sKNP.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h3 id="gpu-particle"><a class="anchor" href="#gpu-particle">#</a> GPU Particle</h3>
 <p>显然粒子系统这种天然并行的系统非常适合使用 GPU 进行计算，在现代游戏中也确实是使用 GPU 来实现对粒子系统的仿真。稍后我们会看到使用 GPU 来对粒子系统进行计算不仅可以节约 CPU 的计算资源，更可以加速整个渲染的流程。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/QbAkj9p.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/RlmoVbN.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/QbAkj9p.png">https://search.pstatic.net/common?src=https://i.imgur.com/QbAkj9p.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/RlmoVbN.png">https://search.pstatic.net/common?src=https://i.imgur.com/RlmoVbN.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="particle-lists"><a class="anchor" href="#particle-lists">#</a> Particle Lists</h4>
 <p>我们可以通过维护若干个列表来实现对粒子系统的仿真。首先我们把系统中所有可能的粒子及其携带的信息放入 particle pool 中，并且在 deal list 中初始化所有的粒子编号。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/kRKwyMM.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/kRKwyMM.png">https://search.pstatic.net/common?src=https://i.imgur.com/kRKwyMM.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>当 emitter 生成新的粒子时只需要将 dead list 中的粒子推入当前帧的 alive list 即可。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/GXE4vrw.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/GXE4vrw.png">https://search.pstatic.net/common?src=https://i.imgur.com/GXE4vrw.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>对粒子进行仿真时只需要考虑 alive list 中的粒子。如果某个粒子的生命周期结束了，则需要把该粒子编号重新放入 dead list 中，然后在写入下一帧的 alive list 时跳过该编号。当需要切换到下一帧时只需交换两个 alive list 即可。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/wnxD34D.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/wnxD34D.png">https://search.pstatic.net/common?src=https://i.imgur.com/wnxD34D.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>由于所有的数据都在 GPU 上，我们还可以方便地对粒子进行 frustum culling 以及排序。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/hnuZytT.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/hnuZytT.png">https://search.pstatic.net/common?src=https://i.imgur.com/hnuZytT.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="parallel-mergesort"><a class="anchor" href="#parallel-mergesort">#</a> Parallel Mergesort</h4>
 <p>在 GPU 上进行排序时需要使用并行的排序算法，其中比较经典的算法是<strong> parallel mergesort</strong>。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/fbtqORb.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fbtqORb.png">https://search.pstatic.net/common?src=https://i.imgur.com/fbtqORb.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>在合并两个有序数组时还可以使用从目标队列出发寻找源队列的方式进一步提升性能。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/Wi90uL8.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Wi90uL8.png">https://search.pstatic.net/common?src=https://i.imgur.com/Wi90uL8.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="depth-buffer-collision"><a class="anchor" href="#depth-buffer-collision">#</a> Depth Buffer Collision</h4>
 <p>除此之外还可以在 GPU 中进行粒子和场景的碰撞检测。出于计算效率方面的考虑，在对粒子进行碰撞检测时一般只会使用屏幕空间和深度图来简化计算。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/VTDR8mO.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/VTDR8mO.png">https://search.pstatic.net/common?src=https://i.imgur.com/VTDR8mO.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h3 id="advanced-particles"><a class="anchor" href="#advanced-particles">#</a> Advanced Particles</h3>
 <h4 id="crowd-simulation"><a class="anchor" href="#crowd-simulation">#</a> Crowd Simulation</h4>
 <p>现代游戏的粒子系统已经远不局限于实现不同的视觉特效，实际上我们可以基于粒子系统来实现更加丰富的功能。比如说游戏中大量 NPC 的运动行为就可以利用粒子系统进行实现。此时每个粒子不仅仅具有常见的物理属性，还会携带顶点等几何信息。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/9hECtLf.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9hECtLf.png">https://search.pstatic.net/common?src=https://i.imgur.com/9hECtLf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>基于粒子的几何信息还可以让 NPC 动起来，甚至可以利用状态机的理论制作简单的动画。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/pvYnmyw.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/pvYnmyw.png">https://search.pstatic.net/common?src=https://i.imgur.com/pvYnmyw.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>基于 SDF 的相关技术还可以控制群体的运动行为。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/lGuEqAR.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/Sk8EH0Z.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lGuEqAR.png">https://search.pstatic.net/common?src=https://i.imgur.com/lGuEqAR.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Sk8EH0Z.png">https://search.pstatic.net/common?src=https://i.imgur.com/Sk8EH0Z.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>在虚幻 5 引擎中就实现了非常强大的粒子系统，从而方便开发者设计各种复杂的玩法和场景。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/01g4eH8.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/IzX3uLr.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/01g4eH8.png">https://search.pstatic.net/common?src=https://i.imgur.com/01g4eH8.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/IzX3uLr.png">https://search.pstatic.net/common?src=https://i.imgur.com/IzX3uLr.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="utilizing-particle-system-in-games"><a class="anchor" href="#utilizing-particle-system-in-games">#</a> Utilizing Particle System in Games</h4>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/NXBoRfH.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/vh1aQww.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/KtOp3xD.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/NXBoRfH.png">https://search.pstatic.net/common?src=https://i.imgur.com/NXBoRfH.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/vh1aQww.png">https://search.pstatic.net/common?src=https://i.imgur.com/vh1aQww.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/KtOp3xD.png">https://search.pstatic.net/common?src=https://i.imgur.com/KtOp3xD.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h2 id="sound-system"><a class="anchor" href="#sound-system">#</a> Sound System</h2>
 <p>音效是影响游戏氛围和玩家体验的重要一环，很多游戏都需要使用大量的音效来调动玩家的情绪。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/9bNxo6a.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9bNxo6a.png">https://search.pstatic.net/common?src=https://i.imgur.com/9bNxo6a.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>声音的大小称为<strong>音量 (volume)</strong>，它表示声波的振幅。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/9HUyQPn.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9HUyQPn.png">https://search.pstatic.net/common?src=https://i.imgur.com/9HUyQPn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>从物理的角度上讲，声音的本质是空气的振动。当空气发生振动时会产生相应的压强，这个压强的大小就对应人感知到的音量。音量的单位是分贝 (dB)，它是基于人对于声音的感知来定义的。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/7psbvc7.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/Yheun7X.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7psbvc7.png">https://search.pstatic.net/common?src=https://i.imgur.com/7psbvc7.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Yheun7X.png">https://search.pstatic.net/common?src=https://i.imgur.com/Yheun7X.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>** 音高 (pitch)** 是描述人耳对声音调子感受的物理量，它取决于声音振动的频率。音高越高，声音就越尖锐。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/EanjB77.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EanjB77.png">https://search.pstatic.net/common?src=https://i.imgur.com/EanjB77.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>** 音色 (timbre)** 是描述声波形状的量。不同的乐器在演奏时会产生不同形式的基波，因此即使声波的频率相同也会产生不同的音色。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/myroGQ2.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/myroGQ2.png">https://search.pstatic.net/common?src=https://i.imgur.com/myroGQ2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>由于声音的本质是空气振动，我们可以在接收端叠加一个与当前振动相反的振动从而产生静音的效果。这就是现代降噪耳机的基本原理。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/tbQL6zV.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tbQL6zV.png">https://search.pstatic.net/common?src=https://i.imgur.com/tbQL6zV.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>人耳对不同频率声音的感受范围可参考下图：</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/oHJRdkZ.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/oHJRdkZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/oHJRdkZ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h3 id="digital-sound"><a class="anchor" href="#digital-sound">#</a> Digital Sound</h3>
 <p>自然界中的声音是连续的信号，因此要使用计算机存储或者表达声音就需要对连续的信号进行离散。最常用的声音采样设备是<strong> PCM (pulse-code modulation)</strong>，它可以把连续的信号量化为离散的数字信号。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/lTiRyK6.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lTiRyK6.png">https://search.pstatic.net/common?src=https://i.imgur.com/lTiRyK6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>根据 Nyquist 采样定理，我们只需要 2 倍于人耳接收频率的采样频率就可以完美的重建原始信号。不过在实际采样时往往会使用更高一些的采样频率来获得更好的音质。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/k6YqIxR.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/k6YqIxR.png">https://search.pstatic.net/common?src=https://i.imgur.com/k6YqIxR.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>采样后的信号需要通过量化的过程编码为数字。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/oTgd7Fe.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/oTgd7Fe.png">https://search.pstatic.net/common?src=https://i.imgur.com/oTgd7Fe.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>基于上面介绍的过程就可以把声音使用计算机可以识别和保存的数据。目前常用的声音格式如下：</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/fFDaAw8.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fFDaAw8.png">https://search.pstatic.net/common?src=https://i.imgur.com/fFDaAw8.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h3 id="3d-audio-rendering"><a class="anchor" href="#3d-audio-rendering">#</a> 3D Audio Rendering</h3>
 <p>在游戏设计中我们需要在三维的环境里设置音效从而让玩家有身临其境的感受，因此我们需要设置一个虚拟的麦克风来采集场景中的声音。通常情况下这个虚拟麦克风需要包含位置、速度以及朝向等物理信息。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/xIwlPfr.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/G3Dz2eZ.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/xIwlPfr.png">https://search.pstatic.net/common?src=https://i.imgur.com/xIwlPfr.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/G3Dz2eZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/G3Dz2eZ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>对于人耳而言，我们可以利用双耳之间接收声音细微的变化来判断声源的大致位置。因此在游戏音效系统中可以利用人耳的这种效应来制造空间感。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/koA1TIX.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/koA1TIX.png">https://search.pstatic.net/common?src=https://i.imgur.com/koA1TIX.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="panning"><a class="anchor" href="#panning">#</a> Panning</h4>
 <p>当音响有多个通道时我们可以调整不同音响的参数来产生空间感，这种方法称为<strong> panning</strong>。最简单的 panning 是进行线性插值，假设有某个声源从前方经过，我们可以对左右两通道的声音进行线性插值来模拟这种效果。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/d0oBcsX.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/not5fZg.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/d0oBcsX.png">https://search.pstatic.net/common?src=https://i.imgur.com/d0oBcsX.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/not5fZg.png">https://search.pstatic.net/common?src=https://i.imgur.com/not5fZg.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>实际上人耳对于声音的感知是一个非线性函数，因此我们可以使用平方函数来改进线性插值的效果。此时会出现当声源经过正前方时接收到的声音会小一点。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/wOjO7g6.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/M88fAo1.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/wOjO7g6.png">https://search.pstatic.net/common?src=https://i.imgur.com/wOjO7g6.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/M88fAo1.png">https://search.pstatic.net/common?src=https://i.imgur.com/M88fAo1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>更进一步还可以使用三角函数来描述声音的变化，这样可以得到更逼真的效果。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/jLrz81m.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/jLrz81m.png">https://search.pstatic.net/common?src=https://i.imgur.com/jLrz81m.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>当然实际游戏中的 panning 算法会比上面介绍的要复杂得多，也可以表达更加复杂的空间位置变化。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/MTG38C2.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/MTG38C2.png">https://search.pstatic.net/common?src=https://i.imgur.com/MTG38C2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="attenuation"><a class="anchor" href="#attenuation">#</a> Attenuation</h4>
 <p>当声源远离麦克风时会出现 ** 衰减 (attenuation)** 的现象，随着距离的增加虚拟麦克风能接受到的声音会不断减少。实际上不仅是接收到的音量会发生变化，距离也会对接收到声音的频率产生一定的影响。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/bkYGlNk.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bkYGlNk.png">https://search.pstatic.net/common?src=https://i.imgur.com/bkYGlNk.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>最简单的衰减模型是球形衰减，此时声音的变化只与声源和麦克风之间的距离有关。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/z0Y5jGU.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/z0Y5jGU.png">https://search.pstatic.net/common?src=https://i.imgur.com/z0Y5jGU.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>更复杂的模型是胶囊形的衰减模型，它主要与麦克风到中心轴的距离相关。当接收端沿轴方向运动时声音的衰减基本保持不变。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/4Xg3Q7q.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4Xg3Q7q.png">https://search.pstatic.net/common?src=https://i.imgur.com/4Xg3Q7q.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>对于室内场景可以考虑盒子形的衰减模型。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/MxJ8ZXj.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/MxJ8ZXj.png">https://search.pstatic.net/common?src=https://i.imgur.com/MxJ8ZXj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>对于高音喇叭这种声源则可以使用锥形的衰减模型描述声源的朝向。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/cwJcfuY.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/cwJcfuY.png">https://search.pstatic.net/common?src=https://i.imgur.com/cwJcfuY.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="obstruction-and-occlusion"><a class="anchor" href="#obstruction-and-occlusion">#</a> Obstruction and Occlusion</h4>
 <p>由于声音的本质是波，在封闭环境中还需要考虑声波与环境的互动。当声音被场景中的障碍物阻挡时可以通过衍射的方式继续传播，而如果声音的传播被完全阻挡它也可以通过阻挡物自身的振动继续向外传播。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/q55bgZV.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/q55bgZV.png">https://search.pstatic.net/common?src=https://i.imgur.com/q55bgZV.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>因此在复杂的场景中往往需要使用一些采样的方法来模拟声音传播的效果。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/BZCJn3S.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BZCJn3S.png">https://search.pstatic.net/common?src=https://i.imgur.com/BZCJn3S.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="reverb"><a class="anchor" href="#reverb">#</a> Reverb</h4>
 <p>除此之外声音在室内场景中还会出现 ** 混响 (reverb)** 的现象，这是由于声波在场景中不断反射所导致的。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/AUq95ka.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/AUq95ka.png">https://search.pstatic.net/common?src=https://i.imgur.com/AUq95ka.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>混响的效果很大程度上取决于材质的吸声特性，不同材质往往在不同的频率上有着巨大的性能差异。另一方面混响也取决于场景的几何特征。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/habH87x.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/72JL3Iy.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/habH87x.png">https://search.pstatic.net/common?src=https://i.imgur.com/habH87x.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/72JL3Iy.png">https://search.pstatic.net/common?src=https://i.imgur.com/72JL3Iy.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>通过调整不同的混响组合比例可以实现丰富的声学效果。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/VCBHqaG.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/VCBHqaG.png">https://search.pstatic.net/common?src=https://i.imgur.com/VCBHqaG.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="sound-in-motion"><a class="anchor" href="#sound-in-motion">#</a> Sound in Motion</h4>
 <p>当声源发生运动时由于 Doppler 效应会导致接收端接收到的频率发生变化。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/p8J2WFm.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/pbqTEs5.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/p8J2WFm.png">https://search.pstatic.net/common?src=https://i.imgur.com/p8J2WFm.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/pbqTEs5.png">https://search.pstatic.net/common?src=https://i.imgur.com/pbqTEs5.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h4 id="sound-field"><a class="anchor" href="#sound-field">#</a> Sound Field</h4>
 <p>很多时候还可以对整个声场进行采集。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/PjCoFP5.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/PjCoFP5.png">https://search.pstatic.net/common?src=https://i.imgur.com/PjCoFP5.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>目前市面上常用的专业级声学引擎包括 fmod 或 wwise 等，这些引擎可以更好地辅助专业的声学设计。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/UbUmsiD.png" width="80%">
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/KMR5ny1.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/UbUmsiD.png">https://search.pstatic.net/common?src=https://i.imgur.com/UbUmsiD.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/KMR5ny1.png">https://search.pstatic.net/common?src=https://i.imgur.com/KMR5ny1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <p>目前想要表现大规模场景的声学特性仍是非常复杂的。</p>
-<div align=center>
-<img data-src="https://search.pstatic.net/common?src=https://i.imgur.com/7GRrfmB.png" width="80%">
-</div>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7GRrfmB.png">https://search.pstatic.net/common?src=https://i.imgur.com/7GRrfmB.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
 <h2 id="reference"><a class="anchor" href="#reference">#</a> Reference</h2>
 <ul>
-<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYmlsaWJpbGkuY29tL3ZpZGVvL0JWMWJVNHkxUjd4NS8/c3BtX2lkX2Zyb209MzMzLjc4OCZhbXA7dmRfc291cmNlPTdhMjU0MmM2YzkwOWIzZWUxZmFiNTUxMjc3MzYwODI2">Lecture 12：Effects</span></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1bU4y1R7x5/?spm_id_from=333.788&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 12：Effects</a></li>
 </ul>
-<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="icon"><i class="ic i-eye"></i></span><span>此文章已被阅读次数:</span><span class="waline-pageview-count" id="twikoo_visitors" data-path="2023/06/28/game-engine/games104系列笔记（十二）/">正在加载...</span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">更新于</span><time title="修改时间：2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>赞赏</button><p>请我喝[茶]~(￣▽￣)~*</p><div id="qr"><div><img data-src="/assets/bitcoin.png" alt="Sakura 比特币"/><p>比特币</p></div><div><img data-src="/assets/monero.png" alt="Sakura monero"/><p>monero</p></div></div></div><div id="copyright"><ul><li class="author"><strong>本文作者：</strong>Sakura<i class="ic i-at"><em>@</em></i>Sakura</li><li class="link"><strong>本文链接：</strong><a href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" title="games104系列笔记（十二）">https://sakurame.eu.org/2023/06/28/game-engine/games104系列笔记（十二）/</a></li><li class="license"><strong>版权声明：</strong>本站所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https:&#x2F;&#x2F;ptpimg.me&#x2F;7a00lf.jpg" title="games104系列笔记（十一）"><span class="type">上一篇</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十一）</h3></a></div><div class="item right"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="next" itemprop="url" data-background-image="https:&#x2F;&#x2F;ptpimg.me&#x2F;6452um.jpg" title="games104系列笔记（十三）"><span class="type">下一篇</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十三）</h3></a></div></div><div class="wrap" id="tcomments"></div><script type="text/javascript" data-pjax="data-pjax">setTimeout(function () {
-    twikoo.init({
-        envId: 'https://elonmask-blog-commit.hf.space',
-        el: '#tcomments',
-        region: ''
-    })
-}, 1000)</script></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#particle-system"><span class="toc-number">1.</span> <span class="toc-text"> Particle System</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fundamentals"><span class="toc-number">1.1.</span> <span class="toc-text"> Fundamentals</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-emitter"><span class="toc-number">1.1.1.</span> <span class="toc-text"> Particle Emitter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-spawn"><span class="toc-number">1.1.2.</span> <span class="toc-text"> Particle Spawn</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#simulation"><span class="toc-number">1.1.3.</span> <span class="toc-text"> Simulation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-type"><span class="toc-number">1.1.4.</span> <span class="toc-text"> Particle Type</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#particle-system-rendering"><span class="toc-number">1.2.</span> <span class="toc-text"> Particle System Rendering</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-sort"><span class="toc-number">1.2.1.</span> <span class="toc-text"> Particle Sort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#resolution"><span class="toc-number">1.2.2.</span> <span class="toc-text"> Resolution</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gpu-particle"><span class="toc-number">1.3.</span> <span class="toc-text"> GPU Particle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-lists"><span class="toc-number">1.3.1.</span> <span class="toc-text"> Particle Lists</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#parallel-mergesort"><span class="toc-number">1.3.2.</span> <span class="toc-text"> Parallel Mergesort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#depth-buffer-collision"><span class="toc-number">1.3.3.</span> <span class="toc-text"> Depth Buffer Collision</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#advanced-particles"><span class="toc-number">1.4.</span> <span class="toc-text"> Advanced Particles</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#crowd-simulation"><span class="toc-number">1.4.1.</span> <span class="toc-text"> Crowd Simulation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#utilizing-particle-system-in-games"><span class="toc-number">1.4.2.</span> <span class="toc-text"> Utilizing Particle System in Games</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sound-system"><span class="toc-number">2.</span> <span class="toc-text"> Sound System</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#digital-sound"><span class="toc-number">2.1.</span> <span class="toc-text"> Digital Sound</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3d-audio-rendering"><span class="toc-number">2.2.</span> <span class="toc-text"> 3D Audio Rendering</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#panning"><span class="toc-number">2.2.1.</span> <span class="toc-text"> Panning</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#attenuation"><span class="toc-number">2.2.2.</span> <span class="toc-text"> Attenuation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#obstruction-and-occlusion"><span class="toc-number">2.2.3.</span> <span class="toc-text"> Obstruction and Occlusion</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#reverb"><span class="toc-number">2.2.4.</span> <span class="toc-text"> Reverb</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sound-in-motion"><span class="toc-number">2.2.5.</span> <span class="toc-text"> Sound in Motion</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sound-field"><span class="toc-number">2.2.6.</span> <span class="toc-text"> Sound Field</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">3.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="系列文章"><ul><li ><a href="/2023/05/01/game-engine/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%EF%BC%88%E5%BC%80%E5%9D%91%EF%BC%89/" rel="bookmark" title="游戏引擎架构（开坑）">游戏引擎架构（开坑）</a></li><li ><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li ><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li ><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li  class="active"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li ><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="站点概览"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" itemprop="image" alt="Sakura" data-src="/assets/avatar.jpg"/><p class="name" itemprop="name">Sakura</p><div class="description" itemprop="description">一个专注于技术和思考分享的博客</div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">76</span><span class="name">文章</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">分类</span></a></div><div class="item tags"><a href="/tags/"><span class="count">25</span><span class="name">标签</span></a></div></nav><div class="social"><a href="mailto:mail@sakurame.eu.org" class="item email" rel="noopener" title="mailto:mail@sakurame.eu.org" target="_blank"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>首页</a></li><li class="item dropdown"><a href="javascript:void(0);"><i class="ic i-user"></i>关于</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>关于本站</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>赞赏博主</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>隐私政策</a></li></ul></li><li class="item dropdown"><a href="javascript:void(0);"><i class="ic i-feather"></i>文章</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>友链</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>随机文章</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/">games104笔记</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%B8%89%E7%AB%A0%E7%A5%9E%E4%B8%80%E6%A0%B7%E7%9A%84%E5%B7%A5%E5%85%B7%E4%BB%AC/">第三章神一样的工具们</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/">games104系列笔记（二一）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/">games104系列笔记（十九）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2023/05/17/vcbstudio/%E5%BC%80%E6%BA%90%E4%B8%80%E4%B8%8B%E5%BD%93%E5%88%9D%E5%8E%8B%E5%88%B6%E7%BB%84%E5%85%A5%E7%BB%84%E8%80%83%E8%AF%95%E7%9A%84%E7%AD%94%E5%8D%B7/">开源一下当初压制组入组考试的答卷</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/">games104系列笔记（十）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/privacy/" title="分类于隐私保护指北">隐私保护指北</a></div><span><a href="/2024/03/21/privacy/%E6%9F%90%E7%A7%91%E5%AD%A6%E7%9A%84PGP%E7%AE%97%E5%8F%B7%E6%8C%87%E5%8D%97/">某科学的PGP算号指南</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/05/29/basic-theory/fundamentals-of-reservoir-engineering/">fundamentals_of_reservoir_engineering</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2024/03/19/basic-theory/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E6%8C%87%E5%8D%97PMBOK%E6%8C%87%E5%8D%97%E7%AC%AC%E4%B8%83%E7%89%88%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E6%A0%87%E5%87%86/">项目管理知识体系指南PMBOK指南第七版项目管理标准(长期持续更新中)</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/privacy/" title="分类于隐私保护指北">隐私保护指北</a></div><span><a href="/2023/04/24/privacy/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84UEFI%E4%BF%A1%E4%BB%BB%E9%93%BE/">从零开始构建自己的UEFI信任链</a></span></li></ul></div><div class="rpost pjax"><h2>最新评论</h2><ul class="leancloud-recent-comment" id="new-comment"><li class="item" v-for="com in coms"><a v-bind:href="root + com.href" data-pjax-state="data-pjax-state"><span class="breadcrumb">{{com.nick}} @ {{com.time}}</span><span>{{com.text}}<br/></span></a></li></ul></div></div><div class="status"><div class="copyright">&copy; 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">Sakura @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="站点总字数">1.6m 字</span><span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="站点阅读时长">24:11</span></div><div class="powered-by">基于 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & Theme.<a href="https://github.com/theme-shoka-x/hexo-theme-shokaX/" rel="noopener" target="_blank">ShokaX</a></div><br/><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"><a target="_blank" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号 </a><br/><a target="_blank" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=能躺在床上摸鱼摆烂是一天中最幸福的时刻"><img src="/assets/search.png" style="max-width: 2em;display:inline;" width="20" height="20"/>能躺在床上摸鱼摆烂是一天中最幸福的时刻</a></span><div style="width: 100%;text-align:center;"><span id="time"></span></div><script>function createtime() {
-    const n = new Date("2023/04/23 00:00:00");
-    now.setTime(now.getTime() + 250), days = (now - n) / 1e3 / 60 / 60 / 24, dnum = Math.floor(days), hours = (now - n) / 1e3 / 60 / 60 - 24 * dnum, hnum = Math.floor(hours), 1 == String(hnum).length && (hnum = "0" + hnum), minutes = (now - n) / 1e3 / 60 - 1440 * dnum - 60 * hnum, mnum = Math.floor(minutes), 1 == String(mnum).length && (mnum = "0" + mnum), seconds = (now - n) / 1e3 - 86400 * dnum - 3600 * hnum - 60 * mnum, snum = Math.round(seconds), 1 == String(snum).length && (snum = "0" + snum), document.getElementById("time").innerHTML = "小破站已经在风雨飘摇中苟活" + dnum + " 天 " + hnum + " 小时 " + mnum + " 分 " + snum + " 秒"
-}
-
-const now = new Date;
-setInterval("createtime()", 250)</script></div><script src="https://unpkg.com/busuanzi@2.3.0/bsz.pure.mini.js"></script><div id="busuanzi-wrap"><span class="ic i-eye"></span><span id="busuanzi_container_site_pv">可爱的猫猫踩了本站 <span id="busuanzi_value_site_pv"></span> 只猫爪印</span> | <span class="ic i-user"></span><span id="busuanzi_container_site_uv">可爱的猫猫来了又走了 <span id="busuanzi_value_site_uv"></span> 只</span></div><div class="deng-box"><div class="deng"><div class="xian"></div><div class="deng-a"><div class="deng-b"><div class="deng-t">一</div></div></div><div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div></div></div><div class="deng-box1"><div class="deng"><div class="xian"></div><div class="deng-a"><div class="deng-b"><div class="deng-t">十</div></div></div><div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div></div></div></div></footer></div><script data-config type="text/javascript">var LOCAL = {
-        path: `2023/06/28/game-engine/games104系列笔记（十二）/`,
-        favicon: {
+<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">总访问量：</span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/28/game-engine/games104系列笔记（十二）/">ローディング...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">更新于 </span><time title="修改时间：2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>赞赏</button><p>请我喝[茶]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/bitcoin.avif" alt="Sakura 比特币"><p>比特币</p></div><div><img loading="lazy" src="/assets/monero.avif" alt="Sakura monero"><p>monero</p></div></div></div><div id="copyright"><ul><li class="author"><strong>本文作者：</strong>Sakura<i class="ic i-at"><em>@</em></i>Sakura</li><li class="link"><strong>本文链接：</strong><a href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" title="games104系列笔记（十二）">https://sakurame.eu.org/2023/06/28/game-engine/games104系列笔记（十二）/</a></li><li class="license"><strong>版权声明：</strong>本站所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/5344ez.jpg" title="games104系列笔记（十一）"><span class="type">上一篇</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十一）</h3></a></div><div class="item right"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="next" itemprop="url" data-background-image="https://ptpimg.me/2gyluh.jpg" title="games104系列笔记（十三）"><span class="type">下一篇</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十三）</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#particle-system"><span class="toc-number">1.</span> <span class="toc-text"> Particle System</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fundamentals"><span class="toc-number">1.1.</span> <span class="toc-text"> Fundamentals</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-emitter"><span class="toc-number">1.1.1.</span> <span class="toc-text"> Particle Emitter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-spawn"><span class="toc-number">1.1.2.</span> <span class="toc-text"> Particle Spawn</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#simulation"><span class="toc-number">1.1.3.</span> <span class="toc-text"> Simulation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-type"><span class="toc-number">1.1.4.</span> <span class="toc-text"> Particle Type</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#particle-system-rendering"><span class="toc-number">1.2.</span> <span class="toc-text"> Particle System Rendering</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-sort"><span class="toc-number">1.2.1.</span> <span class="toc-text"> Particle Sort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#resolution"><span class="toc-number">1.2.2.</span> <span class="toc-text"> Resolution</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gpu-particle"><span class="toc-number">1.3.</span> <span class="toc-text"> GPU Particle</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#particle-lists"><span class="toc-number">1.3.1.</span> <span class="toc-text"> Particle Lists</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#parallel-mergesort"><span class="toc-number">1.3.2.</span> <span class="toc-text"> Parallel Mergesort</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#depth-buffer-collision"><span class="toc-number">1.3.3.</span> <span class="toc-text"> Depth Buffer Collision</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#advanced-particles"><span class="toc-number">1.4.</span> <span class="toc-text"> Advanced Particles</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#crowd-simulation"><span class="toc-number">1.4.1.</span> <span class="toc-text"> Crowd Simulation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#utilizing-particle-system-in-games"><span class="toc-number">1.4.2.</span> <span class="toc-text"> Utilizing Particle System in Games</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sound-system"><span class="toc-number">2.</span> <span class="toc-text"> Sound System</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#digital-sound"><span class="toc-number">2.1.</span> <span class="toc-text"> Digital Sound</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3d-audio-rendering"><span class="toc-number">2.2.</span> <span class="toc-text"> 3D Audio Rendering</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#panning"><span class="toc-number">2.2.1.</span> <span class="toc-text"> Panning</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#attenuation"><span class="toc-number">2.2.2.</span> <span class="toc-text"> Attenuation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#obstruction-and-occlusion"><span class="toc-number">2.2.3.</span> <span class="toc-text"> Obstruction and Occlusion</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#reverb"><span class="toc-number">2.2.4.</span> <span class="toc-text"> Reverb</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sound-in-motion"><span class="toc-number">2.2.5.</span> <span class="toc-text"> Sound in Motion</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sound-field"><span class="toc-number">2.2.6.</span> <span class="toc-text"> Sound Field</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">3.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="系列文章"><ul><li><a href="/2023/05/01/game-engine/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%EF%BC%88%E5%BC%80%E5%9D%91%EF%BC%89/" rel="bookmark" title="游戏引擎架构（开坑）">游戏引擎架构（开坑）</a></li><li><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li class="active"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="站点概览"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="Sakura" src="/assets/avatar.avif"><p class="name" itemprop="name">Sakura</p><div class="description" itemprop="description">一个专注于技术和思考分享的博客</div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">77</span><span class="name">文章</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">分类</span></a></div><div class="item tags"><a href="/tags/"><span class="count">25</span><span class="name">标签</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>首页</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>关于</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>关于本站</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>赞赏博主</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>隐私政策</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>文章</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>友链</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="prev" title="上一篇"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>随机文章</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/05/01/game-engine/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84%EF%BC%88%E5%BC%80%E5%9D%91%EF%BC%89/">游戏引擎架构（开坑）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/">games104系列笔记（二十）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2023/06/11/vcbstudio/%E8%AE%A4%E8%AF%86%E7%91%95%E7%96%B5/">认识瑕疵</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="分类于思考随笔记录">思考随笔记录</a></div><span><a href="/2022/05/28/thinking/%E4%B8%89%E5%B9%B4%E4%B9%8B%E9%9A%8F%E7%AC%94/">三年之随笔</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/07/09/basic-theory/%E9%9B%85%E6%80%9D%E5%A4%87%E8%80%83%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86%E5%BD%92%E7%BA%B3%E9%95%BF%E6%9C%9F%E6%9B%B4%E6%96%B0%E7%89%88/">雅思备考笔记整理归纳长期更新版</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/05/29/basic-theory/fundamentals-of-reservoir-engineering/">fundamentals_of_reservoir_engineering</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%BA%94%E7%AB%A0VapourSynth%E5%9F%BA%E7%A1%80/">第五章VapourSynth基础</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/computer-graphic/" title="分类于计算机图形学">计算机图形学</a></div><span><a href="/2023/06/04/computer-graphic/3D%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E5%AE%9D%E5%85%B8DirectX12%E9%BE%99%E4%B9%A6/">3D游戏开发宝典DirectX12龙书</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/08/09/basic-theory/Creating-Evenly-Spaced-Streamlines-of-Arbitrary-Density/">Creating_Evenly-Spaced_Streamlines_of_Arbitrary_Density</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2023/05/18/vcbstudio/%E5%BC%80%E6%BA%90%E4%B8%80%E4%B8%8B%E5%8E%8B%E5%88%B6%E7%BB%84%E8%80%83%E8%AF%95%E7%9A%84%E8%AF%95%E9%A2%98/">开源一下压制组考试的试题</a></span></li></ul></div><div class="rpost pjax"><h2>最新评论</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><!--!= partial('_partials/header.pug', {}, {cache: true})--></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2023/06/28/game-engine/games104系列笔记（十二）/`,
+    favicon: {
         show: `（●´3｀●）やれやれだぜ`,
         hide: `(´Д｀)大変だ！`
     },
@@ -306,13 +296,12 @@ setInterval("createtime()", 250)</script></div><script src="https://unpkg.com/bu
         empty: "关于 「 ${query} 」，什么也没搜到",
         stats: "${time} ms 内找到 ${hits} 条结果"
     },
-    valine: true,
-    chart: false,
+    nocopy: "false",
+    copyright: `复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。`,
     copy_tex: false,
     katex: false,
     mermaid: false,
     audio: undefined,
-    fancybox: true,
     nocopy: false,
     outime: true,
     template: `<div class="note warning"><p><span class="label warning">文章时效性提示</span><br>这是一篇发布于 {{publish}} 天前，最后一次更新在 {{updated}} 天前的文章，部分信息可能已经发生改变，请注意甄别。</p></div>`,
@@ -323,41 +312,6 @@ setInterval("createtime()", 250)</script></div><script src="https://unpkg.com/bu
         essay: `问答题`,
         gap_fill: `填空题`,
         mistake: `错题备注`
-    },
-    ignores: [
-        (uri) => uri.includes('#'),
-        (uri) => new RegExp(LOCAL.path + '$').test(uri),
-            []
-    ]
+    }
 };
-</script><script src="https://polyfill.io/v3/polyfill.min.js?features=default,fetch"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/pace/1.0.2/pace.min.js"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/algoliasearch/4.12.1/algoliasearch-lite.umd.min.js"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/instantsearch.js/4.39.0/instantsearch.production.min.js"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/quicklink/2.2.0/quicklink.umd.min.js"></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/??jquery/3.5.1/jquery.min.js,fancybox/3.5.7/jquery.fancybox.min.js,justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js" async></script><script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-6-M/KaTeX/0.15.2/contrib/copy-tex.min.js" async></script><script src="/js/app.js?v=0.3.6"></script><script data-pjax type="module">
-            let comments = []
-           twikoo.getRecentComments({
-           envId: "https://elonmask-blog-commit.hf.space",
-           pageSize: 10
-           }).then(function (res) {
-                res.forEach(function (item) {
-                    let cText = item.commentText
-                    if (item.commentText.length > 50) {
-                        cText = item.commentText.substring(0,50)+'...'
-                    }
-                    const siteLink = item.url + "#" + item.id
-                    comments.push({
-                        href: siteLink,
-                        nick: item.nick,
-                        time: item.relativeTime,
-                        text: cText
-                    })
-                });
-                Vue.createApp({
-                  data() {
-                      return {
-                          coms: comments,
-                          root: ''
-                      }
-                  }
-                  }).mount('#new-comment')
-            }).catch(function (err) {
-                console.error(err)
-            })
-        </script></body></html>
+</script><script src="/js/siteInit.js?v=0.5.0" type="module" fetchpriority="high" defer=""></script></body></html>
