@@ -1,0 +1,307 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="Sakura" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="Sakura" type="application/atom+xml"><link rel="alternate" type="application/json" title="Sakura" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-D4XW5YGM.js"><link rel="modulepreload" href="/js/copy-tex-FNUH3BHN.js"><link rel="modulepreload" href="/js/post-XNYTJ3DF.js"><link rel="modulepreload" href="/js/chunk-47WMQ3OW.js"><link rel="modulepreload" href="/js/tcomments-EMIGMNV5.js"><link rel="modulepreload" href="/js/chunk-HBYXA5U5.js"><link rel="modulepreload" href="/js/index.esm-4MKEQDJB.js"><link rel="modulepreload" href="/js/chunk-JZTZ6WT3.js"><link rel="modulepreload" href="/js/chunk-PBBKQNAG.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><link rel="preload" href="https://ptpimg.me/56p569.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/1rb722.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/3oyvmv.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/sb71ea.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/996d4a.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/1bpj1i.jpg" as="image" fetchpriority="high"><meta name="keywords" content="Linux Kernel"><meta name="description" content="一个专注于技术和思考分享的博客"><link rel="canonical" href="https://sakurame.eu.org/2025/08/07/privacy/%E4%B8%80%E4%B8%AA%E5%BC%80%E6%BA%90%E7%9A%84Linux%E5%86%85%E6%A0%B8%E5%AE%89%E5%85%A8%E5%BC%BA%E5%8C%96%E9%A1%B9%E7%9B%AE/"><link rel="stylesheet" href="/css/post.css?v=0.5.0"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.0"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>一个开源的Linux内核安全强化项目</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">一个开源的Linux内核安全强化项目</h1><div class="meta"><span class="item" title="创建时间：2025-08-07 11:31:41"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">发表于</span><time itemprop="dateCreated datePublished" datetime="2025-08-07T11:31:41+08:00">2025-08-07</time></span><span class="item" title="本文字数"><span class="icon"><i class="ic i-pen"></i></span><span class="text">本文字数</span><span>34k</span><span class="text">字</span></span><span class="item" title="阅读时长"><span class="icon"><i class="ic i-clock"></i></span><span class="text">阅读时长</span><span>31 分钟</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="切换导航栏"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">testName</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/56p569.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/1rb722.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/3oyvmv.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/sb71ea.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/996d4a.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/1bpj1i.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">首页</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/privacy/" itemprop="item" rel="index" title="分类于隐私保护指北"><span itemprop="name">隐私保护指北<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2025/08/07/privacy/%E4%B8%80%E4%B8%AA%E5%BC%80%E6%BA%90%E7%9A%84Linux%E5%86%85%E6%A0%B8%E5%AE%89%E5%85%A8%E5%BC%BA%E5%8C%96%E9%A1%B9%E7%9B%AE/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="Sakura"><meta itemprop="description" content=", 一个专注于技术和思考分享的博客"></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="Sakura"></span><div class="body md" itemprop="articleBody"><p>&lt;style&gt;html { scroll-behavior: smooth; }&lt;/style&gt;<br>
+&lt;div style="background-color: #0F1A13; color: #E5E7EB; font-family: 'Noto Sans SC', sans-serif; padding: 20px; line-height: 1.6;"&gt;</p>
+<p>&lt;div style="max-width: 1100px; margin: 0 auto 3rem auto; background: linear-gradient(to bottom, #1b2d24, #0f1a13); border: 1px solid #005A34; border-radius: 12px; padding: 8px;"&gt;<br>
+&lt;div style="display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center;"&gt;<br>
+&lt;a href="#part1" style="color: #E5E7EB; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background-color 0.3s, color 0.3s;" onmouseover="this.style.backgroundColor='#00A859'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#E5E7EB';"&gt; 缺口分析 &lt;/a&gt;<br>
+&lt;a href="#part2" style="color: #E5E7EB; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background-color 0.3s, color 0.3s;" onmouseover="this.style.backgroundColor='#00A859'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#E5E7EB';"&gt; 架构蓝图 &lt;/a&gt;<br>
+&lt;a href="#part3" style="color: #E5E7EB; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background-color 0.3s, color 0.3s;" onmouseover="this.style.backgroundColor='#00A859'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#E5E7EB';"&gt; 实施研究 &lt;/a&gt;<br>
+&lt;a href="#part4" style="color: #E5E7EB; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background-color 0.3s, color 0.3s;" onmouseover="this.style.backgroundColor='#00A859'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#E5E7EB';"&gt; 实证验证 &lt;/a&gt;<br>
+&lt;a href="#part5" style="color: #E5E7EB; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background-color 0.3s, color 0.3s;" onmouseover="this.style.backgroundColor='#00A859'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#E5E7EB';"&gt; 战略价值 &lt;/a&gt;<br>
+&lt;a href="#part6" style="color: #E5E7EB; text-decoration: none; padding: 8px 12px; border-radius: 8px; transition: background-color 0.3s, color 0.3s;" onmouseover="this.style.backgroundColor='#00A859'; this.style.color='white';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#E5E7EB';"&gt; 结论展望 &lt;/a&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div style="text-align: center; margin-bottom: 2rem;"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://upload.wikimedia.org/wikipedia/commons/7/7b/Nils_Asplund_-_Heimdal.jpg">https://upload.wikimedia.org/wikipedia/commons/7/7b/Nils_Asplund_-_Heimdal.jpg</a>"alt=" 北欧神话中的守护神海姆达尔的艺术图 "style="max-width: 800px; width: 100%; border-radius: 8px; border: 2px solid #005A34; box-shadow: 0 8px 24px rgba (0,0,0,0.4);"&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div style="max-width: 48rem; margin: 0 auto 3rem auto; text-align: center;"&gt;<br>
+&lt;h3 style="font-size: 1.25rem; font-weight: bold; color: #6BDBAD;"&gt; 项目命名缘由：神话与技术的交汇 &lt;/h3&gt;<br>
+&lt;p style="font-size: 0.875rem; margin-top: 0.5rem; color: #9CA3AF;"&gt; 在北欧神话中，守护神海姆达尔以其超凡的感知力和警惕性著称。本项目借其之名，旨在强调其核心使命：为 Linux 内核构建一个不知疲倦、洞察秋毫、且反应迅速的终极守护者。&lt;/p&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;h1 style="font-size: 3.75rem; font-weight: bold; text-align: center; color: white; text-shadow: 0 0 8px rgba (0, 168, 89, 0.8), 0 0 10px rgba (0, 168, 89, 0.6);"&gt; 海姆达尔计划 &lt;/h1&gt;<br>
+&lt;h2 style="font-size: 2.25rem; font-weight: bold; text-align: center; color: white; margin-top: 0.5rem;"&gt;Linux Heimdall&lt;/h2&gt;</p>
+<p>&lt;div style="text-align: center; padding: 2rem; border-top: 1px solid #005A34; border-bottom: 1px solid #005A34; margin: 3rem auto; max-width: 1100px;"&gt;<br>
+&lt;p style="font-weight: bold; font-size: 1.25rem; color: white;"&gt;Linux Heimdall&lt;/p&gt;<br>
+&lt;p style="color: #6BDBAD;"&gt; 一个开源的 Linux 内核安全强化项目 &lt;/p&gt;<br>
+&lt;a href="<a target="_blank" rel="noopener" href="https://github.com/auveggry/Linux-Heimdall">https://github.com/auveggry/Linux-Heimdall</a>"target="_blank"style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1.5rem; background-color: #00A859; color: white; font-weight: bold; border-radius: 8px; text-decoration: none; transition: background-color 0.3s;"onmouseover="this.style.backgroundColor='#00C266'"onmouseout="this.style.backgroundColor='#00A859'"&gt; 在 GitHub 上查看 &lt;/a&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div id="part1" style="padding-top: 4rem; margin-top: -4rem;"&gt;<br>
+&lt;h3 style="font-size: 1.875rem; font-weight: bold; text-align: center; margin-bottom: 2.5rem; color: white; text-shadow: 0 0 8px rgba (0, 168, 89, 0.8), 0 0 10px rgba (0, 168, 89, 0.6);"&gt; 第一部分：完整性缺口分析 &lt;/h3&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1.5rem;"&gt;1.1 安全启动的幻象：信任链的断裂点 &lt;/h4&gt;<br>
+&lt;div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;"&gt;<br>
+&lt;div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center;"&gt;<br>
+&lt;div style="padding: 0.75rem; background-color: #166534; border-radius: 8px; width: 14rem; text-align: center; font-weight: bold;"&gt;UEFI Firmware&lt;/div&gt;<br>
+&lt;div style="width: 2px; height: 2rem; background-color: #007A42;"&gt;&lt;/div&gt;<br>
+&lt;div style="padding: 0.75rem; background-color: #166534; border-radius: 8px; width: 14rem; text-align: center; font-weight: bold;"&gt;Bootloader&lt;/div&gt;<br>
+&lt;div style="width: 2px; height: 2rem; background-color: #007A42;"&gt;&lt;/div&gt;<br>
+&lt;div style="padding: 0.75rem; background-color: #166534; border-radius: 8px; width: 14rem; text-align: center; font-weight: bold;"&gt;Kernel Loaded&lt;/div&gt;<br>
+&lt;div style="width: 100%; max-width: 14rem; height: 0.5rem; margin-top: 0.75rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center;"&gt;<br>
+&lt;div style="flex-grow: 1; height: 1px; background-color: #DC2626;"&gt;&lt;/div&gt;<br>
+&lt;span style="font-size: 1.875rem; color: #DC2626; background-color: #1B2D24; padding-left: 0.5rem; padding-right: 0.5rem;"&gt;⚡️&lt;/span&gt;<br>
+&lt;div style="flex-grow: 1; height: 1px; background-color: #DC2626;"&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="padding: 0.75rem; background-color: #991B1B; border-radius: 8px; width: 14rem; text-align: center; font-weight: bold;"&gt;Runtime Vulnerable&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="flex: 1; min-width: 300px;"&gt;<br>
+&lt;ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1.5rem;"&gt;<br>
+&lt;li style="display: flex; align-items: flex-start;"&gt;&lt;span style="font-size: 1.875rem; margin-right: 1rem; line-height: 1;"&gt;🛡️&lt;/span&gt;&lt;div&gt;&lt;h5 style="font-weight: bold; color: #4ADE80; margin:0;"&gt; 阶段一：启动时验证 &lt;/h5&gt;&lt;p style="font-size: 0.875rem; color: #9CA3AF; margin:0;"&gt;UEFI 固件验证引导加载器和内核的签名，确保启动过程的初始纯洁性。&lt;/p&gt;&lt;/div&gt;&lt;/li&gt;<br>
+&lt;li style="display: flex; align-items: flex-start;"&gt;&lt;span style="font-size: 1.875rem; margin-right: 1rem; line-height: 1;"&gt;🏁&lt;/span&gt;&lt;div&gt;&lt;h5 style="font-weight: bold; color: #FBBF24; margin:0;"&gt; 阶段二：信任交接 &lt;/h5&gt;&lt;p style="font-size: 0.875rem; color: #9CA3AF; margin:0;"&gt; 内核成功加载后，安全启动的使命完成。信任链在此刻交接，但传统上并未延续。&lt;/p&gt;&lt;/div&gt;&lt;/li&gt;<br>
+&lt;li style="display: flex; align-items: flex-start;"&gt;&lt;span style="font-size: 1.875rem; margin-right: 1rem; line-height: 1;"&gt;🚨&lt;/span&gt;&lt;div&gt;&lt;h5 style="font-weight: bold; color: #F87171; margin:0;"&gt; 阶段三：运行时风险暴露 &lt;/h5&gt;&lt;p style="font-size: 0.875rem; color: #9CA3AF; margin:0;"&gt; 所有用户空间的应用、库和配置文件都处于无监控状态，为攻击者留下了广阔的攻击面。&lt;/p&gt;&lt;/div&gt;&lt;/li&gt;<br>
+&lt;/ul&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;"&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;1.2 运行时威胁：系统内部的背叛 &lt;/h4&gt;<br>
+&lt;div style="margin-top: 1.5rem;"&gt;<br>
+&lt;div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; text-align: center; gap: 0.5rem;"&gt;<br>
+&lt;div&gt;&lt;h5 style="font-weight: bold; color: #4ADE80;"&gt; 事前：合法执行 &lt;/h5&gt;&lt;p style="font-size: 2.25rem; margin: 0.5rem 0;"&gt;💻&lt;/p&gt;&lt;p style="font-family: monospace; font-size: 0.75rem; background-color: #374151; padding: 0.25rem; border-radius: 4px; display: inline-block;"&gt;/bin/sudo&lt;/p&gt;&lt;p style="font-size: 0.75rem; margin-top: 0.25rem;"&gt; 内核验证路径和权限 &lt;/p&gt;&lt;p style="font-size: 1.5rem; margin-top: 0.5rem; color: #4ADE80;"&gt;✅&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="text-align: center;"&gt;<br>
+&lt;div style="position: relative; display: inline-block; line-height: 1;"&gt;<br>
+&lt;div style="font-size: 2.25rem; color: #F87171;"&gt;→&lt;/div&gt;<br>
+&lt;div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #1B2D24; padding: 0 0.25rem;"&gt;<br>
+&lt;p style="font-size: 2.25rem; margin:0;"&gt;🦠&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;p style="font-size: 1.5rem; margin: 0.5rem 0; color: #F87171;"&gt;🔓&lt;/p&gt;<br>
+&lt;p style="font-size: 0.75rem; color: #F87171;"&gt; 恶意软件注入 &lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;div&gt;&lt;h5 style="font-weight: bold; color: #F87171;"&gt; 事后：恶意行为 &lt;/h5&gt;&lt;p style="font-size: 2.25rem; margin: 0.5rem 0;"&gt;💀&lt;/p&gt;&lt;p style="font-family: monospace; font-size: 0.75rem; background-color: rgba (153, 27, 27, 0.8); padding: 0.25rem; border-radius: 4px; display: inline-block;"&gt;/bin/sudo&lt;/p&gt;&lt;p style="font-size: 0.75rem; margin-top: 0.25rem;"&gt; 内容已被篡改 &lt;/p&gt;&lt;p style="height: 1.5rem; margin-top: 0.5rem;"&gt;&lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="width: 100%; text-align: center; font-size: 1.5rem; margin: 0.75rem 0; color: #F87171;"&gt;↓&lt;/div&gt;<br>
+&lt;h5 style="font-weight: bold; color: #F87171; text-align: center; margin-bottom: 0.5rem;"&gt; 关键漏洞：内核的盲点 &lt;/h5&gt;<br>
+&lt;div style="background-color: rgba (0,0,0,0.5); padding: 1rem; border-radius: 8px; border: 1px solid #F87171; text-align: center;"&gt;&lt;p style="font-size: 0.875rem; margin:0;"&gt; 传统内核在执行文件时，信任的是文件的<strong>路径</strong>而非<strong>内容</strong>。它检查用户是否有权限执行 &lt;code style="font-family: monospace; font-size: 0.75rem;"&gt;/bin/sudo&lt;/code&gt;，但它无法感知到该路径指向的文件内容已被恶意替换。这是运行时完整性保护的核心动机。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;1.3 离线威胁：“邪恶女仆” 攻击 &lt;/h4&gt;<br>
+&lt;div style="margin-top: 1.5rem;"&gt;<br>
+&lt;h5 style="font-weight: bold; color: #FBBF24; text-align: center; margin-bottom: 0.5rem;"&gt; 攻击者路径 &lt;/h5&gt;<br>
+&lt;div style="display: flex; justify-content: space-around; align-items: center; text-align: center; font-size: 0.875rem;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;👻&lt;/p&gt;&lt;p style="margin:0;"&gt; 物理接触 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="font-size: 1.5rem; color: #6B7280;"&gt;→&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;💾&lt;/p&gt;&lt;p style="margin:0;"&gt; 离线挂载 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="font-size: 1.5rem; color: #6B7280;"&gt;→&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;📝&lt;/p&gt;&lt;p style="margin:0;"&gt; 篡改文件 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="width: 100%; text-align: center; font-size: 1.5rem; margin: 0.75rem 0; color: #F87171;"&gt;↓&lt;/div&gt;<br>
+&lt;h5 style="font-weight: bold; color: #F87171; text-align: center; margin-bottom: 0.5rem;"&gt; 关键漏洞：仅有 IMA 的系统为何会失效？&lt;/h5&gt;<br>
+&lt;div style="background-color: rgba(0,0,0,0.5); padding: 1rem; border-radius: 8px; border: 1px solid #F87171;"&gt;<br>
+&lt;p style="font-size: 0.875rem; margin-bottom: 0.5rem;"&gt; 攻击者不仅修改了文件内容，还利用离线权限，重新计算并覆盖了文件的 “合法” 哈希值。&lt;/p&gt;<br>
+&lt;div style="font-family: monospace; font-size: 0.75rem; color: #F87171; background: #111; padding: 10px; border-radius: 5px;"&gt;<br>
+&lt;p style="margin:0;"&gt;1. # echo 'malware' &gt; /bin/sudo&lt;/p&gt;<br>
+&lt;p style="margin:0;"&gt;2. # new_hash=$(sha256sum /bin/sudo)&lt;/p&gt;<br>
+&lt;p style="margin:0;"&gt;3. # setfattr -n security.ima -v $new_hash /bin/sudo&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;p style="font-size: 0.875rem; margin-top: 0.5rem; text-align: center; color: #FCD34D;"&gt; 当系统重启后，IMA 会发现哈希匹配，从而错误地信任了被篡改的文件！&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div id="part2" style="padding-top: 4rem; margin-top: -4rem;"&gt;<br>
+&lt;h3 style="font-size: 1.875rem; font-weight: bold; text-align: center; margin-bottom: 3rem; color: white; text-shadow: 0 0 8px rgba (0, 168, 89, 0.8), 0 0 10px rgba (0, 168, 89, 0.6);"&gt; 第二部分：零信任内核架构蓝图 &lt;/h3&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;2.1 信任链原则：建立不可动摇的基石 &lt;/h4&gt;<br>
+&lt;div style="text-align: center;"&gt;<br>
+&lt;div style="display: inline-block; padding: 1rem; background-color: #0F1A13; border-radius: 8px;"&gt;<br>
+&lt;p style="font-size: 3rem; margin: 0;"&gt;⚓&lt;/p&gt;<br>
+&lt;p style="font-weight: bold; font-size: 1.125rem; margin-top: 0.5rem;"&gt; 硬件信任根 (TPM 2.0)&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="font-size: 2.25rem; color: #6B7280; font-weight: 200; margin: 0.5rem 0;"&gt;↓&lt;/div&gt;<br>
+&lt;div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; text-align: center;"&gt;<br>
+&lt;div style="padding: 0.75rem; background-color: #166534; border-radius: 8px; width: 12rem;"&gt; 安全启动 (UKI)&lt;/div&gt;<br>
+&lt;div style="font-size: 1.5rem; color: #6B7280; margin: 0 0.5rem;"&gt;→&lt;/div&gt;<br>
+&lt;div style="padding: 0.75rem; background-color: #15803D; border-radius: 8px; width: 12rem;"&gt; 内核空间 &lt;/div&gt;<br>
+&lt;div style="font-size: 1.5rem; color: #6B7280; margin: 0 0.5rem;"&gt;→&lt;/div&gt;<br>
+&lt;div style="padding: 0.75rem; background-color: #16A34A; border-radius: 8px; width: 12rem;"&gt; 运行时软件 &lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;p style="text-align: center; margin-top: 1.5rem; color: #D1D5DB;"&gt; 一个安全的系统必须建立在一条信任链之上，其起点是物理上不可更改的硬件信任根。海姆达尔计划的核心就是将这条链延伸至系统的每一个角落。&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1.5rem;"&gt;2.2 可验证完整性的四大支柱 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;"&gt;<br>
+&lt;div style="text-align: center; padding: 1rem; background-color: #0F1A13; border-radius: 8px;"&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;🕵️&lt;/p&gt;&lt;h5 style="font-weight: bold; margin-top: 0.5rem;"&gt;IMA&lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF; margin-bottom: 0.5rem;"&gt; 运行时哨兵 &lt;/p&gt;&lt;p style="font-size: 0.875rem;"&gt; 评估文件 &lt; strong style="color: #4ADE80;"&gt; 内容 &lt;/strong &gt; 是否被篡改。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="text-align: center; padding: 1rem; background-color: #0F1A13; border-radius: 8px;"&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;🔗&lt;/p&gt;&lt;h5 style="font-weight: bold; margin-top: 0.5rem;"&gt;EVM&lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF; margin-bottom: 0.5rem;"&gt; 离线防御者 &lt;/p&gt;&lt;p style="font-size: 0.875rem;"&gt; 保护文件 &lt; strong style="color: #FBBF24;"&gt; 元数据 &lt;/strong&gt;（包括 IMA 哈希）不被伪造。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="text-align: center; padding: 1rem; background-color: #0F1A13; border-radius: 8px;"&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;🛡️&lt;/p&gt;&lt;h5 style="font-weight: bold; margin-top: 0.5rem;"&gt;TPM 2.0&lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF; margin-bottom: 0.5rem;"&gt; 硬件锚点 &lt;/p&gt;&lt;p style="font-size: 0.875rem;"&gt; 提供防篡改的 &lt; strong style="color: #60A5FA;"&gt; 密钥存储 &lt;/strong &gt; 与 &lt; strong style="color: #60A5FA;"&gt; 测量日志 &lt;/strong&gt;。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="text-align: center; padding: 1rem; background-color: #0F1A13; border-radius: 8px;"&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;📦&lt;/p&gt;&lt;h5 style="font-weight: bold; margin-top: 0.5rem;"&gt;UKI&lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF; margin-bottom: 0.5rem;"&gt; 原子化启动 &lt;/p&gt;&lt;p style="font-size: 0.875rem;"&gt; 将 &lt; strong style="color: #A78BFA;"&gt; 安全策略 &lt;/strong &gt; 与内核一同签名，防止绕过。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 2rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1.5rem;"&gt;2.3 协同作战：一个统一的防御体系 &lt;/h4&gt;<br>
+&lt;div style="border: 2px dashed #005A34; padding: 1.5rem; border-radius: 8px; max-width: 80%; margin: 0 auto;"&gt;<br>
+&lt;div style="text-align: center; margin-bottom: 1.5rem;"&gt;&lt;p style="font-weight: bold; font-size: 1.125rem;"&gt; 场景：用户执行 &lt;code style="background-color: rgba (0,0,0,0.5); padding: 0.25rem 0.5rem; border-radius: 4px;"&gt;sudo ls&lt;/code&gt;&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;"&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1rem; border-radius: 8px; width: 100%;"&gt;&lt;h5 style="font-weight: bold; font-size: 1.125rem; color: #6BDBAD;"&gt;🚀 启动时：信任锚定 &lt;/h5&gt;&lt;p style="font-size: 0.75rem;"&gt;TPM 检查 &lt; strong style="color: #60A5FA;"&gt;PCR7&lt;/strong &gt; 值，确认安全启动状态后，解封 EVM 密钥。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="width: 2px; height: 1rem; background-color: #005A34;"&gt;&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1rem; border-radius: 8px; width: 100%;"&gt;&lt;h5 style="font-weight: bold; font-size: 1.125rem; color: #6BDBAD;"&gt;🔑 第 1 步: EVM 验证元数据 &lt;/h5&gt;&lt;p style="font-size: 0.75rem;"&gt; 内核使用解封的密钥，验证 &lt; strong style="color: #FBBF24;"&gt;EVM 签名 &lt;/strong&gt;。此举确保文件的 IMA 哈希值本身是可信的。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="width: 2px; height: 1rem; background-color: #005A34;"&gt;&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1rem; border-radius: 8px; width: 100%;"&gt;&lt;h5 style="font-weight: bold; font-size: 1.125rem; color: #6BDBAD;"&gt;🕵️ 第 2 步: IMA 评估文件内容 &lt;/h5&gt;&lt;p style="font-size: 0.75rem;"&gt; 内核计算文件实时哈希，并与可信的 &lt; strong style="color: #4ADE80;"&gt;IMA 哈希 &lt;/strong &gt; 对比。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="width: 2px; height: 1rem; background-color: #005A34;"&gt;&lt;/div&gt;<br>
+&lt;div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; width: 100%;"&gt;<br>
+&lt;div style="padding: 1rem; border-radius: 8px; text-align: center; background-color: rgba (22, 101, 52, 0.5); border: 1px solid #22C55E; flex: 1; min-width: 150px;"&gt;&lt;p style="font-size: 1.25rem; font-weight: bold; color: #4ADE80;"&gt;✅ 全部通过 &lt;/p&gt;&lt;p style="font-size: 0.875rem;"&gt; 允许执行 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="padding: 1rem; border-radius: 8px; text-align: center; background-color: rgba (153, 27, 27, 0.5); border: 1px solid #EF4444; flex: 1; min-width: 150px;"&gt;&lt;p style="font-size: 1.25rem; font-weight: bold; color: #F87171;"&gt;❌ 任何一步失败 &lt;/p&gt;&lt;p style="font-size: 0.875rem;"&gt; 拒绝访问 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div id="part3" style="padding-top: 4rem; margin-top: -4rem;"&gt;<br>
+&lt;h3 style="font-size: 1.875rem; font-weight: bold; text-align: center; margin-bottom: 3rem; color: white; text-shadow: 0 0 8px rgba (0, 168, 89, 0.8), 0 0 10px rgba (0, 168, 89, 0.6);"&gt; 第三部分：实施案例研究 &lt;/h3&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;"&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px; display: flex; flex-direction: column;"&gt;<br>
+&lt;h4 style="font-size: 1.25rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;3.1 定制核心：铸造安全基石 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; align-items: start; gap: 1rem; margin-top: 1rem; flex-grow: 1;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;⚙️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt; 起点：通用内核 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 功能丰富但攻击面大 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🛡️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt; 加固 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 移除非必需模块 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🚦&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt; 开启 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 激活 IMA/EVM/TPM&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;💎&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt; 终点：强化核心 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 精简、坚固、安全 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;p style="font-size: 0.75rem; margin-top: 1rem; text-align: center;"&gt; 此流程遵循 “最小权限” 原则，通过加固和开启安全模块，将通用内核重塑为一个专为安全而生的、最小化的可信计算基。&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px; display: flex; flex-direction: column;"&gt;<br>
+&lt;h4 style="font-size: 1.25rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;3.2 分层密钥管理策略 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; align-items: start; gap: 1rem; margin-top: 1rem; flex-grow: 1;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🏛️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;1. 创建根信任 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 建立离线 IMA 根 CA&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;✍️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;2. 签发工作密钥 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 用于日常文件签名 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🧠&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;3. 嵌入内核 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 将根 CA 公钥编译进去 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🛡️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;4. 硬件密封 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 用 TPM 密封 EVM 密钥 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;p style="font-size: 0.75rem; margin-top: 1rem; text-align: center;"&gt; 此策略将软件层面的信任（IMA CA）与硬件锚定的信任（EVM 密钥）分离又结合，构建了一个既灵活又坚固的加密骨干。&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px; display: flex; flex-direction: column;"&gt;<br>
+&lt;h4 style="font-size: 1.25rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;3.3 分阶段部署策略 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; align-items: start; gap: 1rem; margin-top: 1rem; flex-grow: 1;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🧐&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;1. 审计模式 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt;ima_appraise=log&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🏷️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;2. 修复与标记 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt;ima_appraise=fix&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;✅&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;3. 验证基线 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 检查日志确保无误 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🚦&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;4. 强制执行 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt;ima_appraise=enforce&lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;p style="font-size: 0.75rem; margin-top: 1rem; text-align: center;"&gt; 这种渐进式方法确保了从宽松到严格的安全策略过渡是平滑且可控的，最大限度地减少了对生产环境的冲击。&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px; display: flex; flex-direction: column;"&gt;<br>
+&lt;h4 style="font-size: 1.25rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;3.4 不可变启动：固化安全策略 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; align-items: start; gap: 1rem; margin-top: 1rem; flex-grow: 1;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.5rem; margin:0;"&gt;📦&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;1. 打包 &lt;/p&gt;&lt;p style="font-size: 0.75rem; margin-top: 0.25rem; color: #9CA3AF;"&gt; 内核 + 安全策略 + Initrd&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.5rem; margin:0;"&gt;✍️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;2. 签名 &lt;/p&gt;&lt;p style="font-size: 0.75rem; margin-top: 0.25rem; color: #9CA3AF;"&gt; 使用安全启动密钥 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.5rem; margin:0;"&gt;🚀&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;3. 加载 &lt;/p&gt;&lt;p style="font-size: 0.75rem; margin-top: 0.25rem; color: #9CA3AF;"&gt; 引导加载程序加载 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.5rem; margin:0;"&gt;🛡️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;4. 验证 &lt;/p&gt;&lt;p style="font-size: 0.75rem; margin-top: 0.25rem; color: #9CA3AF;"&gt;UEFI 固件验证签名 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;p style="font-size: 0.75rem; margin-top: 1rem; text-align: center;"&gt; 此流程将安全策略本身变成一个受硬件保护的加密对象，彻底关闭了通过修改引导参数来绕过安全机制的后门。&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div id="part4" style="padding-top: 4rem; margin-top: -4rem;"&gt;<br>
+&lt;h3 style="font-size: 1.875rem; font-weight: bold; text-align: center; margin-bottom: 3rem; color: white; text-shadow: 0 0 8px rgba (0, 168, 89, 0.8), 0 0 10px rgba (0, 168, 89, 0.6);"&gt; 第四部分：实证验证与安全分析 &lt;/h3&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;"&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;4.1 场景一：运行时攻击 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; align-items: start; gap: 1rem; margin-top: 1rem;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;✅&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;1. 初始状态 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt;/usr/bin/ls 文件受 IMA 保护 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;✍️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;2. 攻击行为 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 攻击者篡改文件内容 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🚫&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;3. 执行尝试 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 用户或系统尝试运行 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🛡️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;4. IMA 拦截 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 哈希不匹配，访问被拒绝 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;p style="font-size: 0.75rem; margin-top: 1rem; text-align: center;"&gt; 此演示证明 IMA 评估机制能有效阻止对受保护文件的任何运行时篡改，确保了可执行文件的完整性。&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;4.2 场景二：离线攻击 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; align-items: start; gap: 1rem; margin-top: 1rem;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;👻&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;1. 离线篡改 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 攻击者修改 /bin/sudo&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;📝&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;2. 伪造哈希 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 攻击者更新 security.ima&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🔑&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;3. 攻击失败点 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 无法伪造 EVM 签名 (密钥被 TPM 密封)&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;🛡️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;4. EVM 防御 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 开机后 EVM 检测到签名无效 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;p style="font-size: 0.75rem; margin-top: 1rem; text-align: center;"&gt; 此分析证明了 EVM 与 TPM 的协同作用是防御离线攻击的关键，它保护了信任链中最脆弱的一环 —— 元数据。&lt;/p&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div id="part5" style="padding-top: 4rem; margin-top: -4rem;"&gt;<br>
+&lt;h3 style="font-size: 1.875rem; font-weight: bold; text-align: center; margin-bottom: 3rem; color: white; text-shadow: 0 0 8px rgba (0, 168, 89, 0.8), 0 0 10px rgba (0, 168, 89, 0.6);"&gt; 第五部分：战略价值与应用前景 &lt;/h3&gt;<br>
+&lt;div style="display: flex; flex-direction: column; gap: 2rem;"&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;5.1 内核级零信任架构 &lt;/h4&gt;<br>
+&lt;div style="max-width: 80%; margin: 0 auto;"&gt;<br>
+&lt;div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem; margin-top: 1rem;"&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1rem; border-radius: 8px; width: 100%;"&gt;&lt;h5 style="font-weight: bold; font-size: 1.125rem; color: #6BDBAD;"&gt;🤔 原则一：从不信任，永远验证 &lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 系统不再假定内部文件可信，每次访问都需实时验证。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1rem; border-radius: 8px; width: 100%;"&gt;&lt;h5 style="font-weight: bold; font-size: 1.125rem; color: #6BDBAD;"&gt;🏰 原则二：假设泄露 &lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 防御内置于系统底层，而非依赖脆弱的边界。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1rem; border-radius: 8px; width: 100%;"&gt;&lt;h5 style="font-weight: bold; font-size: 1.125rem; color: #6BDBAD;"&gt;👮 原则三：最小权限 &lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 即便是 root 也无法执行被篡改的代码，限制破坏范围。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;5.2 赋能远程证明 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); text-align: center; align-items: start; gap: 1rem; margin-top: 1rem;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;❓&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;1. 挑战 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 验证者发送随机数 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;✍️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;2. 引用 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt;TPM 对 PCR 和随机数签名 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;📨&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;3. 响应 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 发送引用和 IMA 日志 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 1.875rem; margin:0;"&gt;✅&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem;"&gt;4. 验证 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 验证者重放日志并比对 &lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;5.3 在高风险环境中的应用 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); text-align: center; align-items: start; gap: 1.5rem; margin-top: 1rem;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;☁️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem; margin-top: 0.5rem;"&gt; 云计算 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 确保 VM 镜像完整性，为客户提供可信证明。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;🏭&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem; margin-top: 0.5rem;"&gt; 关键基础设施 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 锁定工控系统软件，防止未经授权的变更。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;🛰️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem; margin-top: 0.5rem;"&gt; 物联网 (IoT)&lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 保证海量设备固件安全，实现可信远程管理。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;💳&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem; margin-top: 0.5rem;"&gt; 金融服务 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 保护交易软件，提供不可变的审计追踪。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div id="part6" style="padding-top: 4rem; margin-top: -4rem;"&gt;<br>
+&lt;h3 style="font-size: 1.875rem; font-weight: bold; text-align: center; margin-bottom: 3rem; color: white; text-shadow: 0 0 8px rgba (0, 168, 89, 0.8), 0 0 10px rgba (0, 168, 89, 0.6);"&gt; 第六部分：结论与展望 &lt;/h3&gt;<br>
+&lt;div style="display: flex; flex-direction: column; gap: 2rem;"&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;6.1 成果总结 &lt;/h4&gt;<br>
+&lt;div style="max-width: 80%; margin: 0 auto;"&gt;<br>
+&lt;div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem; margin-top: 1rem;"&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1rem; border-radius: 8px; width: 100%;"&gt;&lt;h5 style="font-weight: bold; font-size: 1.125rem; color: #6BDBAD;"&gt;🔗 端到端信任链 &lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 成功构建了从硬件加电到应用程序运行的、完整且可验证的信任链。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1rem; border-radius: 8px; width: 100%;"&gt;&lt;h5 style="font-weight: bold; font-size: 1.125rem; color: #6BDBAD;"&gt;🛡️ 深度防御 &lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 有效抵御了包括运行时代码注入和离线物理篡改在内的多种高级威胁。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1rem; border-radius: 8px; width: 100%;"&gt;&lt;h5 style="font-weight: bold; font-size: 1.125rem; color: #6BDBAD;"&gt;🎯 零信任落地 &lt;/h5&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 将零信任安全理念在操作系统核心层面进行了切实的工程化落地。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;div style="background-color: #1B2D24; border: 1px solid #005A34; padding: 1.5rem; border-radius: 8px;"&gt;<br>
+&lt;h4 style="font-size: 1.5rem; font-weight: bold; text-align: center; color: #00A859; margin-bottom: 1rem;"&gt;6.2 未来展望 &lt;/h4&gt;<br>
+&lt;div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); text-align: center; align-items: start; gap: 1.5rem; margin-top: 1rem;"&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;📡&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem; margin-top: 0.5rem;"&gt; 集成远程证明 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 与 Keylime 等验证器集成，实现自动化信任监控。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;🔬&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem; margin-top: 0.5rem;"&gt; 细粒度策略 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 为特定应用（如数据库）定制更精确的保护策略。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;p style="font-size: 2.25rem; margin:0;"&gt;⏱️&lt;/p&gt;&lt;p style="font-weight: bold; font-size: 0.875rem; margin-top: 0.5rem;"&gt; 性能基准测试 &lt;/p&gt;&lt;p style="font-size: 0.75rem; color: #9CA3AF;"&gt; 量化不同策略对系统性能的影响，指导部署。&lt;/p&gt;&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;<br>
+&lt;/div&gt;</p>
+<div class="tags"><a href="/tags/Linux-Kernel/" rel="tag"><i class="ic i-tag"></i>Linux Kernel</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">总访问量：</span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2025/08/07/privacy/一个开源的Linux内核安全强化项目/">ローディング...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">更新于 </span><time title="修改时间：2025-08-07 11:32:55" itemprop="dateModified" datetime="2025-08-07T11:32:55+08:00">2025-08-07</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>赞赏</button><p>请我喝[茶]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/bitcoin.avif" alt="Sakura 比特币"><p>比特币</p></div><div><img loading="lazy" src="/assets/monero.avif" alt="Sakura monero"><p>monero</p></div></div></div><div id="copyright"><ul><li class="author"><strong>本文作者：</strong>Sakura<i class="ic i-at"><em>@</em></i>Sakura</li><li class="link"><strong>本文链接：</strong><a href="https://sakurame.eu.org/2025/08/07/privacy/%E4%B8%80%E4%B8%AA%E5%BC%80%E6%BA%90%E7%9A%84Linux%E5%86%85%E6%A0%B8%E5%AE%89%E5%85%A8%E5%BC%BA%E5%8C%96%E9%A1%B9%E7%9B%AE/" title="一个开源的Linux内核安全强化项目">https://sakurame.eu.org/2025/08/07/privacy/一个开源的Linux内核安全强化项目/</a></li><li class="license"><strong>版权声明：</strong>本站所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2024/06/03/thinking/%E8%87%B4%E6%95%AC%E6%9D%BF%E7%A0%96%E7%BE%8E%E5%AD%A6/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/oh0zkj.jpg" title="致敬板砖美学之长寿板砖蓝天P775DM2笔记本电脑评测(转载自Bob's Coding Lab)"><span class="type">上一篇</span><span class="category"><i class="ic i-flag"></i>思考随笔记录</span><h3>致敬板砖美学之长寿板砖蓝天P775DM2笔记本电脑评测(转载自Bob's Coding Lab)</h3></a></div><div class="item right"></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="文章目录"></div><div class="related panel pjax" data-title="系列文章"><ul><li><a href="/2023/04/24/privacy/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84UEFI%E4%BF%A1%E4%BB%BB%E9%93%BE/" rel="bookmark" title="从零开始构建自己的UEFI信任链">从零开始构建自己的UEFI信任链</a></li><li><a href="/2023/05/25/privacy/%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E6%8C%87%E5%8D%97%EF%BC%88%E9%95%BF%E6%9C%9F%E7%BF%BB%E8%AF%91%E9%A1%B9%E7%9B%AE%EF%BC%89/" rel="bookmark" title="隐私保护指南（长期翻译项目）">隐私保护指南（长期翻译项目）</a></li><li><a href="/2023/06/09/privacy/PGP%E7%9A%84%E9%97%AE%E9%A2%98/" rel="bookmark" title="PGP的问题">PGP的问题</a></li><li><a href="/2023/06/09/privacy/the-pgp-problem/" rel="bookmark" title="the-pgp-problem">the-pgp-problem</a></li><li><a href="/2024/03/14/privacy/Canokey%E4%B8%8D%E5%AE%8C%E5%85%A8%E9%A3%9F%E7%94%A8%E6%8C%87%E5%8D%97-%E6%8C%81%E7%BB%AD%E8%B8%A9%E5%9D%91%E4%B8%AD/" rel="bookmark" title="Canokey不完全食用指南--持续踩坑中">Canokey不完全食用指南--持续踩坑中</a></li><li><a href="/2024/03/21/privacy/%E6%9F%90%E7%A7%91%E5%AD%A6%E7%9A%84PGP%E7%AE%97%E5%8F%B7%E6%8C%87%E5%8D%97/" rel="bookmark" title="某科学的PGP算号指南">某科学的PGP算号指南</a></li><li class="active"><a href="/2025/08/07/privacy/%E4%B8%80%E4%B8%AA%E5%BC%80%E6%BA%90%E7%9A%84Linux%E5%86%85%E6%A0%B8%E5%AE%89%E5%85%A8%E5%BC%BA%E5%8C%96%E9%A1%B9%E7%9B%AE/" rel="bookmark" title="一个开源的Linux内核安全强化项目">一个开源的Linux内核安全强化项目</a></li></ul></div><div class="overview panel" data-title="站点概览"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="Sakura" src="/assets/avatar.avif"><p class="name" itemprop="name">Sakura</p><div class="description" itemprop="description">一个专注于技术和思考分享的博客</div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">77</span><span class="name">文章</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">分类</span></a></div><div class="item tags"><a href="/tags/"><span class="count">26</span><span class="name">标签</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>首页</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>关于</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>关于本站</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>赞赏博主</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>隐私政策</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>文章</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>归档</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>分类</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>标签</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>友链</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2024/06/03/thinking/%E8%87%B4%E6%95%AC%E6%9D%BF%E7%A0%96%E7%BE%8E%E5%AD%A6/" rel="next" title="下一篇"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>随机文章</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="分类于思考随笔记录">思考随笔记录</a></div><span><a href="/2024/06/03/thinking/%E8%87%B4%E6%95%AC%E6%9D%BF%E7%A0%96%E7%BE%8E%E5%AD%A6/">致敬板砖美学之长寿板砖蓝天P775DM2笔记本电脑评测(转载自Bob's Coding Lab)</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%B8%89%E7%AB%A0%E7%A5%9E%E4%B8%80%E6%A0%B7%E7%9A%84%E5%B7%A5%E5%85%B7%E4%BB%AC/">第三章神一样的工具们</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/05/22/basic-theory/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E7%89%88%E7%AC%94%E8%AE%B0/">动手学深度学习第二版笔记</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/">games104系列笔记（十八）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2023/06/11/vcbstudio/%E7%A5%9E%E4%B8%80%E6%A0%B7%E7%9A%84%E5%B7%A5%E5%85%B7%E4%BB%AC/">神一样的工具们</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2023/06/11/vcbstudio/%E8%AE%A4%E8%AF%86%E7%91%95%E7%96%B5/">认识瑕疵</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="分类于计算机基础理论">计算机基础理论</a></div><span><a href="/2023/04/30/basic-theory/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA%E7%AC%AC%E5%9B%9B%E7%89%88%EF%BC%88%E6%8C%81%E7%BB%AD%EF%BC%89/">算法导论第四版（持续）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="分类于游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/">games104系列笔记（四）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2023/05/18/vcbstudio/%E5%BC%80%E6%BA%90%E4%B8%80%E4%B8%8B%E5%8E%8B%E5%88%B6%E7%BB%84%E8%80%83%E8%AF%95%E7%9A%84%E8%AF%95%E9%A2%98/">开源一下压制组考试的试题</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="分类于视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%B8%80%E5%88%87%E7%9A%84%E8%B5%B7%E7%82%B9%E2%80%94%E2%80%94%E8%AE%A4%E8%AF%86BD/">第二章一切的起点——认识BD</a></span></li></ul></div><div class="rpost pjax"><h2>最新评论</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><!--!= partial('_partials/header.pug', {}, {cache: true})--></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2025/08/07/privacy/一个开源的Linux内核安全强化项目/`,
+    favicon: {
+        show: `（●´3｀●）やれやれだぜ`,
+        hide: `(´Д｀)大変だ！`
+    },
+    search: {
+        placeholder: "文章搜索",
+        empty: "关于 「 ${query} 」，什么也没搜到",
+        stats: "${time} ms 内找到 ${hits} 条结果"
+    },
+    nocopy: "false",
+    copyright: `复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">文章时效性提示</span><br>这是一篇发布于 {{publish}} 天前，最后一次更新在 {{updated}} 天前的文章，部分信息可能已经发生改变，请注意甄别。</p></div>`,
+    quiz: {
+        choice: `单选题`,
+        multiple: `多选题`,
+        true_false: `判断题`,
+        essay: `问答题`,
+        gap_fill: `填空题`,
+        mistake: `错题备注`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.0" type="module" fetchpriority="high" defer=""></script></body></html>
