@@ -1,0 +1,454 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="sakura" s="" blog""="" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="sakura" s="" blog""="" type="application/atom+xml"><link rel="alternate" type="application/json" title="sakura&quot;s blog&quot;" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://unpkg.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-CEOMSI5S.js"><link rel="modulepreload" href="/js/copy-tex-VNMZZ56J.js"><link rel="modulepreload" href="/js/post-DBDT2P4X.js"><link rel="modulepreload" href="/js/chunk-3NVTWMK7.js"><link rel="modulepreload" href="/js/tcomments-MCLWTQDC.js"><link rel="modulepreload" href="/js/chunk-ERE5SKT5.js"><link rel="modulepreload" href="/js/index.esm-RIWV4EDG.js"><link rel="modulepreload" href="/js/chunk-KXPDGESI.js"><link rel="modulepreload" href="/js/chunk-I5LMONQL.js"><link rel="modulepreload" href="/js/cf-patch.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><script src="/js/cf-patch.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script><link rel="preload" href="https://ptpimg.me/13lwuc.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/6c200j.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/58864f.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/6gf16r.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/04al5n.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/ai0u42.jpg" as="image" fetchpriority="high"><meta name="keywords" content="游戏引擎"><meta name="description" content="<blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a href=&quot;https://games104.boomingtech.com/en/&quot;>GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍网络游戏的架构基础。<br />"><link rel="canonical" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/"><link rel="stylesheet" href="/css/post.css?v=0.5.4"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.4"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>games104系列笔记（十八）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="pagefind_mount"></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（十八）</h1><div class="meta"><span class="item" title="Created: 2023-06-28 23:01:21"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">Posted on</span><time itemprop="dateCreated datePublished" datetime="2023-06-28T23:01:21+08:00">2023-06-28</time></span><span class="item" title="Symbols count in article"><span class="icon"><i class="ic i-pen"></i></span><span class="text">Symbols count in article</span><span>22k</span><span class="text">words</span></span><span class="item" title="Reading time"><span class="icon"><i class="ic i-clock"></i></span><span class="text">Reading time</span><span>20 mins.</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="Toggle navigation bar"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/13lwuc.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/6c200j.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/58864f.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/6gf16r.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/04al5n.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/ai0u42.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">Home</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="In游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" data-pagefind-body="data-pagefind-body" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="AUVeggry"><meta itemprop="description" content=", The spirit of independence and the freedom of thought "></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="sakura&quot;s blog&quot;"></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a target="_blank" rel="noopener" href="https://games104.boomingtech.com/en/">GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍网络游戏的架构基础。<br>
+<span id="more"></span></p>
+</blockquote>
+<p>网络游戏的出现是游戏发展历程中的重要里程碑，基于互联网玩家可以同时和全球的其它玩家一起进行游玩。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fRaTd2O.png">https://search.pstatic.net/common?src=https://i.imgur.com/fRaTd2O.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>网络游戏和单机游戏相比有很多难点，比如说如何保证每个玩家的游戏状态是一致的、如何进行网络同步、如何处理延迟和丢包、如何检测玩家的作弊行为、如何处理不同的设备和系统、如何设计高性能的服务器系统等等。这些网络游戏专有的问题都为游戏引擎的开发提出了更大的挑战。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9mpPBvg.png">https://search.pstatic.net/common?src=https://i.imgur.com/9mpPBvg.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZvzYf3O.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZvzYf3O.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gJCpl60.png">https://search.pstatic.net/common?src=https://i.imgur.com/gJCpl60.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/RPGWfhI.png">https://search.pstatic.net/common?src=https://i.imgur.com/RPGWfhI.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/SSEhBIn.png">https://search.pstatic.net/common?src=https://i.imgur.com/SSEhBIn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>所以网络游戏是一个非常复杂庞大的系统，在这一部分我们同样分为两节来介绍相关的技术。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2e033aT.png">https://search.pstatic.net/common?src=https://i.imgur.com/2e033aT.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="network-protocols"><a class="anchor" href="#network-protocols">#</a> Network Protocols</h2>
+<p>在介绍网络游戏相关的内容前我们先来介绍一下<strong>网络协议(network protocols)</strong>。实际上互联网的概念最早是由Vint和Robert提出的，他们设计了TCP/IP协议从而实现了不同设备基于电话线和卫星的通信。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/pVNWu3A.png">https://search.pstatic.net/common?src=https://i.imgur.com/pVNWu3A.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="the-problem-of-communication"><a class="anchor" href="#the-problem-of-communication">#</a> The Problem of Communication</h3>
+<p>网络协议要解决的核心问题是如何实现两台计算机之间的数据通信，当软件应用和硬件连接不断地变得复杂时直接进行通信是非常困难的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/B9dcFn4.png">https://search.pstatic.net/common?src=https://i.imgur.com/B9dcFn4.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/iSaKg2z.png">https://search.pstatic.net/common?src=https://i.imgur.com/iSaKg2z.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>因此人们提出了**中间层(intermediate layer)**的概念来隔绝掉应用和硬件，使得开发者可以专注于程序本身而不是具体的通信过程。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/QPRK1uy.png">https://search.pstatic.net/common?src=https://i.imgur.com/QPRK1uy.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在现代计算机网络中人们设计了**OSI模型(OSI model)**来对通信过程进行封装和抽象。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fCIbDEe.png">https://search.pstatic.net/common?src=https://i.imgur.com/fCIbDEe.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="socket"><a class="anchor" href="#socket">#</a> Socket</h3>
+<p>对于网络游戏开发来说一般不需要接触到很底层的通信协议，在大多数情况下只需要知道如何使用<strong>socket</strong>建立连接即可。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6WSvYyY.png">https://search.pstatic.net/common?src=https://i.imgur.com/6WSvYyY.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>socket是一个非常简单的结构体，我们只需要知道对方的IP地址和端口号就可以使用socket建立连接来发送和接收数据。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/c6tG9Jf.png">https://search.pstatic.net/common?src=https://i.imgur.com/c6tG9Jf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>建立连接时需要额外注意到底是使用IPv4还是IPv6，使用TCP还是UDP协议等问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/mbJexOn.png">https://search.pstatic.net/common?src=https://i.imgur.com/mbJexOn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="tcp"><a class="anchor" href="#tcp">#</a> TCP</h3>
+<p>TCP是最经典也是著名的网络协议，它可以确保发送端发送的数据包都按照顺序被接收端接收。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/v60kukQ.png">https://search.pstatic.net/common?src=https://i.imgur.com/v60kukQ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>TCP的核心是<strong>retransmission mechanism</strong>，这个机制要求接收端收到消息后会向发送端发送一个ACK，而发送端只有接收到这个ACK之后才会继续发包。当然TCP实际使用的机制要比上述的过程复杂得多。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FgMnkfF.png">https://search.pstatic.net/common?src=https://i.imgur.com/FgMnkfF.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当TCP出现网络拥堵时会主动调节单次发包的数量。如果发包都能顺利地接收到则会提高发包数量以提升效率，反之则会减少发包数量以提升稳定性。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/l02709r.png">https://search.pstatic.net/common?src=https://i.imgur.com/l02709r.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="udp"><a class="anchor" href="#udp">#</a> UDP</h3>
+<p>除了TCP之外人们还开发出了UDP这样的轻量级网络协议。UDP的本质是一个端到端的网络协议，它不需要建立长时间的连接，也不要求发送数据的顺序，因此UDP要比TCP简单得多。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lkhvMOA.png">https://search.pstatic.net/common?src=https://i.imgur.com/lkhvMOA.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ogqTASz.png">https://search.pstatic.net/common?src=https://i.imgur.com/ogqTASz.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在现代网络游戏中根据游戏类型的不同使用合适的网络协议，比如说对于实时性要求比较高的游戏会优先选择UDP，而策略类的游戏则会考虑使用TCP。在大型网络游戏中还可能会使用复合类型的协议来支持游戏中不同系统的通信需求。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/nRMrubO.png">https://search.pstatic.net/common?src=https://i.imgur.com/nRMrubO.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="reliable-udp"><a class="anchor" href="#reliable-udp">#</a> Reliable UDP</h3>
+<p>同时现代网络游戏中往往还会对网络协议进行定制。以TCP为例，虽然TCP协议比较稳定但是效率过于低了，而且网络游戏中出现一定的丢包是可以接受的；而对于UDP来说它虽然非常高效但是却不够稳定。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lU06LWU.png">https://search.pstatic.net/common?src=https://i.imgur.com/lU06LWU.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rYmTEsj.png">https://search.pstatic.net/common?src=https://i.imgur.com/rYmTEsj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>因此现代网络游戏中往往会基于UDP来定制一个网络协议，这样既可以利用UDP的高效性又可以保证数据通信的有序性。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/MJVPK9K.png">https://search.pstatic.net/common?src=https://i.imgur.com/MJVPK9K.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>ACK及其相关技术是保证数据可靠通信的基本方法。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/397uLf2.png">https://search.pstatic.net/common?src=https://i.imgur.com/397uLf2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="automatic-repeat-request"><a class="anchor" href="#automatic-repeat-request">#</a> Automatic Repeat Request</h4>
+<p>**ARQ(automatic repeat request)**是基于ACK的错误控制方法，所有的通信算法都要事项ARQ的功能。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qDJYLpA.png">https://search.pstatic.net/common?src=https://i.imgur.com/qDJYLpA.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h5 id="sliding-window-protocol"><a class="anchor" href="#sliding-window-protocol">#</a> Sliding Window Protocol</h5>
+<p>**滑窗协议(sliding window protocol)**是经典的ARQ实现方法，它在发送数据时每次发送窗口大小的包然后检验回复的ACK来判断是否出现丢包的情况。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/jZFWWil.png">https://search.pstatic.net/common?src=https://i.imgur.com/jZFWWil.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tLF4fgq.png">https://search.pstatic.net/common?src=https://i.imgur.com/tLF4fgq.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>滑窗协议的一个缺陷在于它需要等待接收端的ACK才能继续发送数据，因此在很多情况下它无法完全利用带宽。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FxLGXbt.png">https://search.pstatic.net/common?src=https://i.imgur.com/FxLGXbt.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h5 id="go-back-n-arq"><a class="anchor" href="#go-back-n-arq">#</a> Go-Back-N ARQ</h5>
+<p>对滑窗协议的一种改进方法是<strong>Go-Back-N ARQ</strong>，当出现丢包时它只会把窗口内的包重新发送。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/KZPczGt.png">https://search.pstatic.net/common?src=https://i.imgur.com/KZPczGt.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h5 id="selective-repeat-arq"><a class="anchor" href="#selective-repeat-arq">#</a> Selective Repeat ARQ</h5>
+<p>另一种改进方法是<strong>selective repeat ARQ</strong>，它只会重新发送丢失或损坏的包从而进一步提升带宽的利用率。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/80AwIwn.png">https://search.pstatic.net/common?src=https://i.imgur.com/80AwIwn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="forward-error-correction"><a class="anchor" href="#forward-error-correction">#</a> Forward Error Correction</h4>
+<p>在网络游戏中需要额外处理丢包的问题，因此我们在自定义网络协议时一般会结合**forward error correction(FEC)**的方法来避免数据的反复发送。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/k1DV9q4.png">https://search.pstatic.net/common?src=https://i.imgur.com/k1DV9q4.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CsHLLBt.png">https://search.pstatic.net/common?src=https://i.imgur.com/CsHLLBt.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>目前常用的FEC算法包括异或校验位以及Reed-Solomon codes两大类。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/XSe7wNx.png">https://search.pstatic.net/common?src=https://i.imgur.com/XSe7wNx.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h5 id="xor-fec"><a class="anchor" href="#xor-fec">#</a> XOR FEC</h5>
+<p>异或校验位是使用**异或(XOR)**运算来恢复丢失数据的方法。这里需要注意的是当同时有多个包丢失时，使用异或校验位是无法恢复数据的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/jVvBZ6n.png">https://search.pstatic.net/common?src=https://i.imgur.com/jVvBZ6n.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WHgXNfq.png">https://search.pstatic.net/common?src=https://i.imgur.com/WHgXNfq.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h5 id="reed-solomon-codes"><a class="anchor" href="#reed-solomon-codes">#</a> Reed-Solomon Codes</h5>
+<p><strong>Reed-Solomon codes</strong>是经典的信息传输算法，它利用Vandemode矩阵及其逆阵来恢复丢失的数据。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ambH2LP.png">https://search.pstatic.net/common?src=https://i.imgur.com/ambH2LP.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/JXRqK67.png">https://search.pstatic.net/common?src=https://i.imgur.com/JXRqK67.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rWgOaVo.png">https://search.pstatic.net/common?src=https://i.imgur.com/rWgOaVo.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>总结一下，在自定义UDP时需要考虑ARQ和FEC两类问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/sGR29tV.png">https://search.pstatic.net/common?src=https://i.imgur.com/sGR29tV.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="clock-synchronization"><a class="anchor" href="#clock-synchronization">#</a> Clock Synchronization</h2>
+<p>有了网络协议后就可以开始对网络游戏进行开发了，不过在具体设计游戏前我们还需要考虑不同玩家之间的时钟同步**(clock synchronization)**问题。</p>
+<h3 id="round-trip-time"><a class="anchor" href="#round-trip-time">#</a> Round Trip Time</h3>
+<p>由于网络通信延迟的存在，客户端向服务器端发送一个包后都需要等待一定的时间才能收到回包，这个间隔的时间称为<strong>round-trip time(RTT)</strong>。RTT的概念类似于ping，不过它们的区别在于ping更加偏向于底层而RTT则位于顶部的应用层。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4stDgLL.png">https://search.pstatic.net/common?src=https://i.imgur.com/4stDgLL.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="network-time-protocol"><a class="anchor" href="#network-time-protocol">#</a> Network Time Protocol</h3>
+<p>利用RTT就可以实现不同设备之间的时间同步。实际上不仅仅是网络游戏，现实生活中的各种电子设备进行同步都使用了RTT的技术。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/M3rtVnf.png">https://search.pstatic.net/common?src=https://i.imgur.com/M3rtVnf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在实际设备的时间同步过程中一般会利用层次化的结构来进行实现。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/jQnWaqR.png">https://search.pstatic.net/common?src=https://i.imgur.com/jQnWaqR.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>NTP的算法实际上非常简单，我们只需要从客户端发送请求然后从服务器接收一个时刻就好，这样就可以得到4个时间戳。如果我们进一步假定网络上行和下行的延迟是一致的，我们可以直接计算出RTT的时间长短以及两个设备之间的时间偏差。当然需要注意的是在实际中网络上行和下行的带宽往往是不一致的，因此这个算法也不是十分的严谨。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gPKvNtD.png">https://search.pstatic.net/common?src=https://i.imgur.com/gPKvNtD.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/uVmrlot.png">https://search.pstatic.net/common?src=https://i.imgur.com/uVmrlot.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/RbcMpsm.png">https://search.pstatic.net/common?src=https://i.imgur.com/RbcMpsm.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>实际上我们可以证明在不可靠的通信中是无法严格校准时间的。不过在实践中我们可以通过不断的使用NTP算法来得到一系列RTT值，然后把高于平均值50%的部分丢弃，剩下的RTT平均值的1.5倍就可以作为真实RTT的估计。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/u91VJfr.png">https://search.pstatic.net/common?src=https://i.imgur.com/u91VJfr.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6AOUgh9.png">https://search.pstatic.net/common?src=https://i.imgur.com/6AOUgh9.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="remote-procedure-call"><a class="anchor" href="#remote-procedure-call">#</a> Remote Procedure Call</h2>
+<h3 id="socket-programming"><a class="anchor" href="#socket-programming">#</a> Socket Programming</h3>
+<p>尽管利用socket我们可以实现客户端和服务器的通信，但对于网络游戏来说完全基于socket的通信是非常复杂的。这主要是因为网络游戏中客户端需要向服务器发送大量不同类型的消息，同时客户端也需要解析相应类型的反馈，这就会导致游戏逻辑变得无比复杂。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/KZM8Gvm.png">https://search.pstatic.net/common?src=https://i.imgur.com/KZM8Gvm.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/u0PpVr6.png">https://search.pstatic.net/common?src=https://i.imgur.com/u0PpVr6.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3U7rWwh.png">https://search.pstatic.net/common?src=https://i.imgur.com/3U7rWwh.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>另一方面客户端和服务器往往有着不同的硬件和操作系统，这些差异会使得游戏逻辑更加复杂且难以调试。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/RlvC7u3.png">https://search.pstatic.net/common?src=https://i.imgur.com/RlvC7u3.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="rpc"><a class="anchor" href="#rpc">#</a> RPC</h3>
+<p>因此在现代网络游戏中一般会使用**RPC(remote procedure call)**的方式来实现客户端和服务器的通信。基于RPC的技术在客户端可以像本地调用函数的方式来向服务器发送请求，这样使得开发人员可以专注于游戏逻辑而不是具体底层的实现。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/0S5BHcm.png">https://search.pstatic.net/common?src=https://i.imgur.com/0S5BHcm.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/YLHfSUC.png">https://search.pstatic.net/common?src=https://i.imgur.com/YLHfSUC.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/B9KyYkC.png">https://search.pstatic.net/common?src=https://i.imgur.com/B9KyYkC.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在RPC中会大量使用**IDL(interface definiton language)**来定义不同的消息形式。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/zyH16Q8.png">https://search.pstatic.net/common?src=https://i.imgur.com/zyH16Q8.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>然后在启动时通过<strong>RPC stubs</strong>来通知客户端有哪些RPC是可以进行调用的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9LamOli.png">https://search.pstatic.net/common?src=https://i.imgur.com/9LamOli.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lU7y4gU.png">https://search.pstatic.net/common?src=https://i.imgur.com/lU7y4gU.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然真实游戏中的RPC在实际进行调用时还有很多的消息处理和加密工作。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/E8B4iMu.png">https://search.pstatic.net/common?src=https://i.imgur.com/E8B4iMu.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="network-topology"><a class="anchor" href="#network-topology">#</a> Network Topology</h2>
+<h3 id="peer-to-peer"><a class="anchor" href="#peer-to-peer">#</a> Peer-to-Peer</h3>
+<p>在设计网络游戏时还需要考虑网络自身的架构。最经典的网络架构是<strong>P2P(peer-to-peer)</strong>，此时每个客户端之间会直接建立通信。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BZZpxpu.png">https://search.pstatic.net/common?src=https://i.imgur.com/BZZpxpu.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当P2P需要集中所有玩家的信息时则可以选择其中一个客户端作为主机，这样其它的客户端可以通过连接主机的方式来实现联机。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/KwGMySw.png">https://search.pstatic.net/common?src=https://i.imgur.com/KwGMySw.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>很多早期经典的游戏都是使用这样的网络架构来实现联网功能。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7M95cjf.png">https://search.pstatic.net/common?src=https://i.imgur.com/7M95cjf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="dedicated-server"><a class="anchor" href="#dedicated-server">#</a> Dedicated Server</h3>
+<p>在现代网络游戏中更多地会使用<strong>dedicated server</strong>这样的网络架构，此时网络中有一个专门的服务器向其它客户端提供服务。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HTIobK1.png">https://search.pstatic.net/common?src=https://i.imgur.com/HTIobK1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>从实践结果来看，对于小型的网络游戏P2P是一个足够好的架构，而对于大型的商业网络游戏则必须使用dedicated server这样的形式。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2b7aAt7.png">https://search.pstatic.net/common?src=https://i.imgur.com/2b7aAt7.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/h6XtOgN.png">https://search.pstatic.net/common?src=https://i.imgur.com/h6XtOgN.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="game-synchronization"><a class="anchor" href="#game-synchronization">#</a> Game Synchronization</h2>
+<p>在前面的课程中我们介绍过游戏世界是分层的。从玩家的角度来看，玩家的操作通过输入层一路向下到达游戏逻辑层，然后通过渲染器展示给玩家。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/mhJ7u3t.png">https://search.pstatic.net/common?src=https://i.imgur.com/mhJ7u3t.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而在网络游戏中，除了单机游戏都需要的分层外我们还需要考虑不同玩家之间的同步。在理想情况下我们希望客户端只负责处理玩家的输入，整个游戏逻辑都放在服务器端。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/O18uyKs.png">https://search.pstatic.net/common?src=https://i.imgur.com/O18uyKs.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>由于延迟的存在，不同玩家视角下的对方可能会有不同的行为表现。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/N20v8ts.png">https://search.pstatic.net/common?src=https://i.imgur.com/N20v8ts.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>因此我们需要使用游戏同步技术来保证玩家的游戏体验是一致的。目前常用的同步技术包括快照同步、帧同步以及状态同步等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/yKnCCci.png">https://search.pstatic.net/common?src=https://i.imgur.com/yKnCCci.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="snapshot-synchronization"><a class="anchor" href="#snapshot-synchronization">#</a> Snapshot Synchronization</h3>
+<p>**快照同步(snapshot synchronization)**是一种相对古老的同步技术。在快照同步中客户端只负责向服务器发送当前玩家的数据，由服务器完成整个游戏世界的运行。然后服务器会为游戏世界生成一张快照，再发送给每个客户端来给玩家反馈。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/IQMJUaK.png">https://search.pstatic.net/common?src=https://i.imgur.com/IQMJUaK.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>快照同步可以严格保证每个玩家的状态都是准确的，但其缺陷在于它给服务器提出了非常巨大的挑战。因此在实际游戏中一般会降低服务器上游戏运行的帧率来平衡带宽，然后在客户端上通过插值的方式来获得高帧率。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/AEm7RCO.png">https://search.pstatic.net/common?src=https://i.imgur.com/AEm7RCO.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/I7DP65v.png">https://search.pstatic.net/common?src=https://i.imgur.com/I7DP65v.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>由于每次生成快照的成本是相对较高的，为了压缩数据我们可以使用状态的变化量来对游戏状态进行表示。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rMP3i1z.png">https://search.pstatic.net/common?src=https://i.imgur.com/rMP3i1z.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/mves6kv.png">https://search.pstatic.net/common?src=https://i.imgur.com/mves6kv.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>快照同步非常简单也易于实现，但它基本浪费掉了客户端上的算力同时在服务器上会产生过大的压力。因此在现代网络游戏中基本不会使用快照同步的方式。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FfcLpSy.png">https://search.pstatic.net/common?src=https://i.imgur.com/FfcLpSy.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="lockstep-synchronization"><a class="anchor" href="#lockstep-synchronization">#</a> Lockstep Synchronization</h3>
+<p>**帧同步(lockstep synchronization)**是现代网络游戏中非常常用的同步技术。不同于快照同步完全通过服务器来运行游戏世界，在帧同步中服务器更多地是完成数据的分发工作。玩家的操作通过客户端发送到服务器上，经过服务器汇总后将当前游戏世界的状态返还给客户端，然后在每个客户端上运行游戏世界。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/1euHnTF.png">https://search.pstatic.net/common?src=https://i.imgur.com/1euHnTF.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="lockstep-initialization"><a class="anchor" href="#lockstep-initialization">#</a> Lockstep Initialization</h4>
+<p>使用帧同步时首先需要进行初始化，将客户端上所有的游戏数据与服务器进行同步。这一过程一般是在游戏loading阶段来实现的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CMgmUwJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/CMgmUwJ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="deterministic-lockstep"><a class="anchor" href="#deterministic-lockstep">#</a> Deterministic Lockstep</h4>
+<p>在游戏过程中客户端会在每一帧将玩家数据发送到服务器上，服务器接收到所有玩家的数据后再统一转发到玩家客户端上，然后由玩家客户端执行游戏逻辑。当然这种同步方式也存在一定的缺陷，当某个玩家的数据滞后了所有玩家都必须要进行等待。这种情况在一些早期的联网游戏中都很常见。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HV7yXAp.png">https://search.pstatic.net/common?src=https://i.imgur.com/HV7yXAp.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/PysXnFy.png">https://search.pstatic.net/common?src=https://i.imgur.com/PysXnFy.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bbprCsj.png">https://search.pstatic.net/common?src=https://i.imgur.com/bbprCsj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="bucket-synchronization"><a class="anchor" href="#bucket-synchronization">#</a> Bucket Synchronization</h4>
+<p>为了克服这样的问题，人们提出了<strong>bucket synchronization</strong>这样的策略。此时服务器只会等待bucket长度的时间，如果超时没有收到客户端发来的数据就越过去，看下一个bucket时间段能否接收到。通过这样的方式其它玩家就无需一直等待了。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/DgUu6sJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/DgUu6sJ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>bucket synchronization本质是对玩家数据的一致性以及游戏体验进行的一种权衡。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Q8VbczA.png">https://search.pstatic.net/common?src=https://i.imgur.com/Q8VbczA.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="deterministic-difficulties"><a class="anchor" href="#deterministic-difficulties">#</a> Deterministic Difficulties</h4>
+<p>帧同步的一大难点在于它要保证不同客户端上游戏世界在相同输入的情况下有着完全一致的输出。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WJhpGd6.png">https://search.pstatic.net/common?src=https://i.imgur.com/WJhpGd6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>为了保证输出的确定性我们首先要保证浮点数在不同客户端上的一致性，这可以使用IEEE 754标准来实现。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dknWYuT.png">https://search.pstatic.net/common?src=https://i.imgur.com/dknWYuT.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>其次在不同的设备上我们需要保证相关的数学运算函数有一致的行为，对于这种问题则可以使用查表的方式来避免实际的计算。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZWREFCA.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZWREFCA.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/AAiS8tm.png">https://search.pstatic.net/common?src=https://i.imgur.com/AAiS8tm.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>除此之外还可以使用定点数来替换浮点数，从而避免浮点数导致的各种问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/1dWMRlL.png">https://search.pstatic.net/common?src=https://i.imgur.com/1dWMRlL.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>除了浮点数之外还要考虑随机数的问题，我们要求随机数在不同的客户端上也必须是完全一致的。因此在游戏客户端和服务器进行同步时需要将随机数种子以及随机数生成算法进行同步。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/73HE7yp.png">https://search.pstatic.net/common?src=https://i.imgur.com/73HE7yp.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/RLlboTV.png">https://search.pstatic.net/common?src=https://i.imgur.com/RLlboTV.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>总结一下，保证客户端上游戏世界模拟一致的常用方法如下：</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/hzfLfoY.png">https://search.pstatic.net/common?src=https://i.imgur.com/hzfLfoY.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="tracing-and-debugging"><a class="anchor" href="#tracing-and-debugging">#</a> Tracing and Debugging</h4>
+<p>现代网络游戏的逻辑往往非常复杂，在玩家进行游玩时可能无法避免地出现一些bug，因此对于服务器来说检测客户端发送的数据是否存在bug就非常重要。一般来说我们会要求客户端每隔一段时间就上传本地的log，由服务器来检查上传数据是否存在bug。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/btwvmgg.png">https://search.pstatic.net/common?src=https://i.imgur.com/btwvmgg.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="lag-and-delay"><a class="anchor" href="#lag-and-delay">#</a> Lag and Delay</h4>
+<p>为了处理网络延迟的问题我们还可以在客户端上缓存若干帧，当然缓存的大小会在一定程度上影响玩家的游戏体验。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/wKHfYVk.png">https://search.pstatic.net/common?src=https://i.imgur.com/wKHfYVk.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>另一方面我们还可以把游戏逻辑帧和渲染帧进行分离，然后通过插值的方式来获得更加平滑的渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ujc90wZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/ujc90wZ.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HraSLPC.png">https://search.pstatic.net/common?src=https://i.imgur.com/HraSLPC.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="reconnection-problem"><a class="anchor" href="#reconnection-problem">#</a> Reconnection Problem</h4>
+<p>由于网络的不稳定，玩家可能会不可避免地遇到断线的情况，此时我们还需要设计断线重连的机制。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dWDYMYx.png">https://search.pstatic.net/common?src=https://i.imgur.com/dWDYMYx.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>实际上再进行帧同步时每个若干帧会设置一个关键帧。在关键帧进行同步时还会更新游戏世界的快照，这样可保证即使游戏崩溃了也可以从快照中恢复。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/77JxtFl.png">https://search.pstatic.net/common?src=https://i.imgur.com/77JxtFl.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>为了实现这样的功能可以使用<strong>quick catch up</strong>技术，此时我们暂停游戏的渲染把所有的计算资源用来执行游戏逻辑。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ChKjkZa.png">https://search.pstatic.net/common?src=https://i.imgur.com/ChKjkZa.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而在服务器端也可以使用类似的技术，从而帮助掉线的玩家快速恢复到游戏的当前状态。实际上网络游戏的观战和回放功能也是使用这样的技术来实现的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/thT8qmi.png">https://search.pstatic.net/common?src=https://i.imgur.com/thT8qmi.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Af3toAV.png">https://search.pstatic.net/common?src=https://i.imgur.com/Af3toAV.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/VOjiM0n.png">https://search.pstatic.net/common?src=https://i.imgur.com/VOjiM0n.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/amdVNYV.png">https://search.pstatic.net/common?src=https://i.imgur.com/amdVNYV.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="lockstep-cheating-issues"><a class="anchor" href="#lockstep-cheating-issues">#</a> Lockstep Cheating Issues</h4>
+<p>网络游戏中作弊行为的检查是非常重要的。对于帧同步的游戏，玩家可以通过发送虚假的状态来实现作弊行为，这就要求我们实现一些反作弊机制。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/zQUAdaa.png">https://search.pstatic.net/common?src=https://i.imgur.com/zQUAdaa.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/nYorUTc.png">https://search.pstatic.net/common?src=https://i.imgur.com/nYorUTc.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/pq6eOLm.png">https://search.pstatic.net/common?src=https://i.imgur.com/pq6eOLm.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="lockstep-summary"><a class="anchor" href="#lockstep-summary">#</a> Lockstep Summary</h4>
+<p>总结一下，帧同步会占用更少的带宽也比较适合各种需要实时反馈的游戏。而帧同步的难点主要集中在如何保证在不同客户端上游戏运行的一致性，如何设计断线重连机制等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/8kYdIwT.png">https://search.pstatic.net/common?src=https://i.imgur.com/8kYdIwT.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/1MtwE0j.png">https://search.pstatic.net/common?src=https://i.imgur.com/1MtwE0j.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="state-synchronization"><a class="anchor" href="#state-synchronization">#</a> State Synchronization</h3>
+<p>**状态同步(state synchronization)**是目前大型网游非常流行的同步技术，它的基本思想是把玩家的状态和事件进行同步。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/NULvJO4.png">https://search.pstatic.net/common?src=https://i.imgur.com/NULvJO4.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Pm5bGaV.png">https://search.pstatic.net/common?src=https://i.imgur.com/Pm5bGaV.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>进行状态同步时由客户端提交玩家的状态数据，而服务器则会在收集到所有玩家的数据后运行游戏逻辑，然后把下一时刻的状态分发给所有的客户端。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/pdLhfXx.png">https://search.pstatic.net/common?src=https://i.imgur.com/pdLhfXx.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Y85yMr4.png">https://search.pstatic.net/common?src=https://i.imgur.com/Y85yMr4.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="authorized-and-replicated-clients"><a class="anchor" href="#authorized-and-replicated-clients">#</a> Authorized and Replicated Clients</h4>
+<p>状态同步中服务器称为<strong>authorized server</strong>，它是整个游戏世界的绝对权威；而玩家的本地客户端称为<strong>authorized client</strong>，它是玩家操作游戏角色的接口；在其他玩家视角下的同一角色则称为<strong>replicated client</strong>，表示它们仅仅是authorized client的一个副本。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dBSxewy.png">https://search.pstatic.net/common?src=https://i.imgur.com/dBSxewy.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="state-synchronization-example"><a class="anchor" href="#state-synchronization-example">#</a> State Synchronization Example</h4>
+<p>当authorized client执行了某种行为时首先会向服务发送相关的数据，然后由服务器驱动游戏逻辑并把相应的状态发布给所有的玩家。当其他客户端接收到更新后的状态时，再驱动replicated client执行authorized client的行为。类似地，authorized client行为产生的后果也是由服务器进行计算再发布给所有的客户端。这样的好处在于我们无需要求每个客户端上的模拟是严格一致的，整个游戏世界本质上仍然是由统一的服务器进行驱动。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bcg3Ef3.png">https://search.pstatic.net/common?src=https://i.imgur.com/bcg3Ef3.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5YFmho5.png">https://search.pstatic.net/common?src=https://i.imgur.com/5YFmho5.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7m4OQQg.png">https://search.pstatic.net/common?src=https://i.imgur.com/7m4OQQg.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/PqvdC6S.png">https://search.pstatic.net/common?src=https://i.imgur.com/PqvdC6S.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="dumb-client-problem"><a class="anchor" href="#dumb-client-problem">#</a> Dumb Client Problem</h4>
+<p>由于游戏角色的所有行为都需要经过服务器的确认才能执行，状态同步会产生<strong>dumb client</strong>的问题，即玩家视角下角色的行为可能是滞后的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/la1hpwr.png">https://search.pstatic.net/common?src=https://i.imgur.com/la1hpwr.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>要缓解这样的问题可以在客户端上对玩家的行为进行预测。比如说当角色需要进行移动时首先在本地移动半步，然后等服务器传来确定的消息后再进行对齐，这样就可以改善玩家的游戏体验。在守望先锋中就使用了这样的方式来保证玩家顺畅的游玩。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CZeCNpS.png">https://search.pstatic.net/common?src=https://i.imgur.com/CZeCNpS.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/d7rEr71.png">https://search.pstatic.net/common?src=https://i.imgur.com/d7rEr71.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>由于网络波动的存在，来自服务器的确认消息往往会滞后于本地的预测。因此我们可以使用一个buffer来缓存游戏角色的状态，这样当收到服务器的消息时首先跟buffer中的状态进行检验。当buffer中的状态和服务器的数据不一致时就需要根据服务器的数据来矫正玩家状态。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/g9UmJfj.png">https://search.pstatic.net/common?src=https://i.imgur.com/g9UmJfj.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tiEgguJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/tiEgguJ.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/an1O2qU.png">https://search.pstatic.net/common?src=https://i.imgur.com/an1O2qU.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WJ0LdQC.png">https://search.pstatic.net/common?src=https://i.imgur.com/WJ0LdQC.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然这样的机制对于网络条件不好的玩家是不太公平的，他们的角色状态会不断地被服务器修正。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Upf6B4E.png">https://search.pstatic.net/common?src=https://i.imgur.com/Upf6B4E.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="packet-loss"><a class="anchor" href="#packet-loss">#</a> Packet Loss</h4>
+<p>对于丢包的问题在服务器端也会维护一个小的buffer来储存玩家的状态。如果buffer被清空则说明可能出现了掉线的情况，此时服务器会复制玩家上一个输入来维持游戏的运行。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HT2xI2P.png">https://search.pstatic.net/common?src=https://i.imgur.com/HT2xI2P.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>帧同步和状态同步两种主流同步技术的对比如下：</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7cnr6C0.png">https://search.pstatic.net/common?src=https://i.imgur.com/7cnr6C0.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="reference"><a class="anchor" href="#reference">#</a> Reference</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1La411o7kG/?spm_id_from=333.788&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 18：Online Gaming Architecture Fundamentals (Part I)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1HN4y157Zq/?spm_id_from=333.788&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 18：Online Gaming Architecture Fundamentals (Part II)</a></li>
+</ul>
+<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">Total Views: </span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/28/game-engine/games104系列笔记（十八）/">Loading...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">Edited on </span><time title="Modified: 2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>Donate</button><p>Give me a cup of [coffee]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/monero.avif" alt="AUVeggry monero"><p>monero</p></div><div><img loading="lazy" src="/assets/bitcoin.avif" alt="AUVeggry Bitcoin"><p>Bitcoin</p></div></div></div><div id="copyright"><ul><li class="author"><strong>Post author: </strong>AUVeggry<i class="ic i-at"><em>@</em></i>sakura"s blog"</li><li class="link"><strong>Post link: </strong><a href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" title="games104系列笔记（十八）">https://sakurame.eu.org/2023/06/28/game-engine/games104系列笔记（十八）/</a></li><li class="license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> unless stating additionally.</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/u3j8yl.jpg" title="games104系列笔记（十七）"><span class="type">Previous Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十七）</h3></a></div><div class="item right"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="next" itemprop="url" data-background-image="https://ptpimg.me/6452um.jpg" title="games104系列笔记（十九）"><span class="type">Next Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十九）</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="Contents"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#network-protocols"><span class="toc-number">1.</span> <span class="toc-text"> Network Protocols</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#the-problem-of-communication"><span class="toc-number">1.1.</span> <span class="toc-text"> The Problem of Communication</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#socket"><span class="toc-number">1.2.</span> <span class="toc-text"> Socket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tcp"><span class="toc-number">1.3.</span> <span class="toc-text"> TCP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#udp"><span class="toc-number">1.4.</span> <span class="toc-text"> UDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reliable-udp"><span class="toc-number">1.5.</span> <span class="toc-text"> Reliable UDP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#automatic-repeat-request"><span class="toc-number">1.5.1.</span> <span class="toc-text"> Automatic Repeat Request</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#sliding-window-protocol"><span class="toc-number">1.5.1.1.</span> <span class="toc-text"> Sliding Window Protocol</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#go-back-n-arq"><span class="toc-number">1.5.1.2.</span> <span class="toc-text"> Go-Back-N ARQ</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#selective-repeat-arq"><span class="toc-number">1.5.1.3.</span> <span class="toc-text"> Selective Repeat ARQ</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#forward-error-correction"><span class="toc-number">1.5.2.</span> <span class="toc-text"> Forward Error Correction</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#xor-fec"><span class="toc-number">1.5.2.1.</span> <span class="toc-text"> XOR FEC</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#reed-solomon-codes"><span class="toc-number">1.5.2.2.</span> <span class="toc-text"> Reed-Solomon Codes</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#clock-synchronization"><span class="toc-number">2.</span> <span class="toc-text"> Clock Synchronization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#round-trip-time"><span class="toc-number">2.1.</span> <span class="toc-text"> Round Trip Time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#network-time-protocol"><span class="toc-number">2.2.</span> <span class="toc-text"> Network Time Protocol</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remote-procedure-call"><span class="toc-number">3.</span> <span class="toc-text"> Remote Procedure Call</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#socket-programming"><span class="toc-number">3.1.</span> <span class="toc-text"> Socket Programming</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rpc"><span class="toc-number">3.2.</span> <span class="toc-text"> RPC</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#network-topology"><span class="toc-number">4.</span> <span class="toc-text"> Network Topology</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#peer-to-peer"><span class="toc-number">4.1.</span> <span class="toc-text"> Peer-to-Peer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dedicated-server"><span class="toc-number">4.2.</span> <span class="toc-text"> Dedicated Server</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#game-synchronization"><span class="toc-number">5.</span> <span class="toc-text"> Game Synchronization</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#snapshot-synchronization"><span class="toc-number">5.1.</span> <span class="toc-text"> Snapshot Synchronization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lockstep-synchronization"><span class="toc-number">5.2.</span> <span class="toc-text"> Lockstep Synchronization</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#lockstep-initialization"><span class="toc-number">5.2.1.</span> <span class="toc-text"> Lockstep Initialization</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#deterministic-lockstep"><span class="toc-number">5.2.2.</span> <span class="toc-text"> Deterministic Lockstep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#bucket-synchronization"><span class="toc-number">5.2.3.</span> <span class="toc-text"> Bucket Synchronization</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#deterministic-difficulties"><span class="toc-number">5.2.4.</span> <span class="toc-text"> Deterministic Difficulties</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tracing-and-debugging"><span class="toc-number">5.2.5.</span> <span class="toc-text"> Tracing and Debugging</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#lag-and-delay"><span class="toc-number">5.2.6.</span> <span class="toc-text"> Lag and Delay</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#reconnection-problem"><span class="toc-number">5.2.7.</span> <span class="toc-text"> Reconnection Problem</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#lockstep-cheating-issues"><span class="toc-number">5.2.8.</span> <span class="toc-text"> Lockstep Cheating Issues</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#lockstep-summary"><span class="toc-number">5.2.9.</span> <span class="toc-text"> Lockstep Summary</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#state-synchronization"><span class="toc-number">5.3.</span> <span class="toc-text"> State Synchronization</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#authorized-and-replicated-clients"><span class="toc-number">5.3.1.</span> <span class="toc-text"> Authorized and Replicated Clients</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#state-synchronization-example"><span class="toc-number">5.3.2.</span> <span class="toc-text"> State Synchronization Example</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dumb-client-problem"><span class="toc-number">5.3.3.</span> <span class="toc-text"> Dumb Client Problem</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#packet-loss"><span class="toc-number">5.3.4.</span> <span class="toc-text"> Packet Loss</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">6.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="Related"><ul><li><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li class="active"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="Overview"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="AUVeggry" src="/assets/avatar.avif"><p class="name" itemprop="name">AUVeggry</p><div class="description" itemprop="description">The spirit of independence and the freedom of thought </div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">64</span><span class="name">posts</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">categories</span></a></div><div class="item tags"><a href="/tags/"><span class="count">21</span><span class="name">tags</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>Home</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>About</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>About This Site</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>Appreciation</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>Privacy Policy</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>Posts</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>Archives</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>Categories</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>Tags</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>Friends</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>Random Posts</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/">games104系列笔记（五）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="In计算机基础理论">计算机基础理论</a></div><span><a href="/2023/04/28/basic-theory/UNIX%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%EF%BC%9A%E9%80%9A%E4%BF%A1%EF%BC%8C%E5%B9%B6%E5%8F%91%E5%92%8C%E7%BA%BF%E7%A8%8B/">UNIX系统编程：通信，并发和线程</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2022/05/28/thinking/%E4%B8%89%E5%B9%B4%E4%B9%8B%E9%9A%8F%E7%AC%94/">三年之随笔</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2024/01/01/thinking/%E3%80%8A%E9%80%9A%E5%BE%80%E5%A5%B4%E5%BD%B9%E4%B9%8B%E8%B7%AF%E3%80%8B%E7%BC%A9%E8%AF%91/">《通往奴役之路》缩译</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%B8%89%E7%AB%A0%E7%A5%9E%E4%B8%80%E6%A0%B7%E7%9A%84%E5%B7%A5%E5%85%B7%E4%BB%AC/">第三章神一样的工具们</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E8%AE%A4%E8%AF%86%E7%91%95%E7%96%B5/">第四章认识瑕疵</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/">games104笔记</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2023/06/09/vcbstudio/%E7%86%9F%E6%82%89VapourSynth/">熟悉VapourSynth</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2022/05/01/thinking/%E4%B8%80%E7%A7%8D%E5%B9%B3%E5%B8%B8%E7%9A%84%E7%94%9F%E6%B4%BB%E6%80%81%E5%BA%A6/">一种平常的生活态度</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="In计算机基础理论">计算机基础理论</a></div><span><a href="/2023/04/30/basic-theory/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA%E7%AC%AC%E5%9B%9B%E7%89%88%EF%BC%88%E6%8C%81%E7%BB%AD%EF%BC%89/">算法导论第四版（持续）</a></span></li></ul></div><div class="rpost pjax"><h2>Recent Comments</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><div class="status"><div class="copyright">© 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">AUVeggry @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="Symbols count total">1.1m words</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="Reading time total">17:13</span></div><div class="powered-by">Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> &amp; Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><br><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:var(--grey-5);"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号</a></span></div></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2023/06/28/game-engine/games104系列笔记（十八）/`,
+    favicon: {
+        show: `(●´3｀●) Here we go again.`,
+        hide: `(´Д｀) It's a disaster!`
+    },
+    search: {
+        placeholder: "Search for Posts",
+        empty: "We didn't find any results for the search: ${query}",
+        stats: "${hits} results found in ${time} ms"
+    },
+    nocopy: "false",
+    copyright: `Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>`,
+    quiz: {
+        choice: `Multiple Choice`,
+        multiple: `Multiple Answer`,
+        true_false: `True/False`,
+        essay: `Questions`,
+        gap_fill: `Gap Filling`,
+        mistake: `Wrong Answer`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script></body></html>

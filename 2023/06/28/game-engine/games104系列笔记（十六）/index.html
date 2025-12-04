@@ -1,0 +1,343 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="sakura" s="" blog""="" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="sakura" s="" blog""="" type="application/atom+xml"><link rel="alternate" type="application/json" title="sakura&quot;s blog&quot;" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://unpkg.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-CEOMSI5S.js"><link rel="modulepreload" href="/js/copy-tex-VNMZZ56J.js"><link rel="modulepreload" href="/js/post-DBDT2P4X.js"><link rel="modulepreload" href="/js/chunk-3NVTWMK7.js"><link rel="modulepreload" href="/js/tcomments-MCLWTQDC.js"><link rel="modulepreload" href="/js/chunk-ERE5SKT5.js"><link rel="modulepreload" href="/js/index.esm-RIWV4EDG.js"><link rel="modulepreload" href="/js/chunk-KXPDGESI.js"><link rel="modulepreload" href="/js/chunk-I5LMONQL.js"><link rel="modulepreload" href="/js/cf-patch.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><script src="/js/cf-patch.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script><link rel="preload" href="https://ptpimg.me/75djw9.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/ofuv6x.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/5n0t71.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/0198zm.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/b3w739.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/58864f.jpg" as="image" fetchpriority="high"><meta name="keywords" content="游戏引擎"><meta name="description" content="<blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a href=&quot;https://games104.boomingtech.com/en/&quot;>GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏AI的基本内容。<br />"><link rel="canonical" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/"><link rel="stylesheet" href="/css/post.css?v=0.5.4"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.4"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>games104系列笔记（十六）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="pagefind_mount"></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（十六）</h1><div class="meta"><span class="item" title="Created: 2023-06-28 23:01:11"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">Posted on</span><time itemprop="dateCreated datePublished" datetime="2023-06-28T23:01:11+08:00">2023-06-28</time></span><span class="item" title="Symbols count in article"><span class="icon"><i class="ic i-pen"></i></span><span class="text">Symbols count in article</span><span>16k</span><span class="text">words</span></span><span class="item" title="Reading time"><span class="icon"><i class="ic i-clock"></i></span><span class="text">Reading time</span><span>14 mins.</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="Toggle navigation bar"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/75djw9.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/ofuv6x.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/5n0t71.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/0198zm.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/b3w739.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/58864f.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">Home</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="In游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" data-pagefind-body="data-pagefind-body" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="AUVeggry"><meta itemprop="description" content=", The spirit of independence and the freedom of thought "></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="sakura&quot;s blog&quot;"></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a target="_blank" rel="noopener" href="https://games104.boomingtech.com/en/">GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏AI的基本内容。<br>
+<span id="more"></span></p>
+</blockquote>
+<h2 id="navigation"><a class="anchor" href="#navigation">#</a> Navigation</h2>
+<p>游戏AI是玩法系统重要的组成部分，其中最基本的功能是允许玩家选择目的地进行<strong>导航(navigation)</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/NowXwKg.png">https://search.pstatic.net/common?src=https://i.imgur.com/NowXwKg.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>导航算法需要考虑游戏地图的不同表达形式，然后寻找到从起点到目的地的最短路径，有时还需要结合一些其它算法来获得更加光滑的路线。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gYKOfzy.png">https://search.pstatic.net/common?src=https://i.imgur.com/gYKOfzy.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="map-representation"><a class="anchor" href="#map-representation">#</a> Map Representation</h3>
+<p>因此我们首先需要考虑游戏中如何来表达地图，我们可以认为地图是玩家和NPC可以行动的区域。游戏中常见的地图形式包括路点<strong>网络图(waypoint network)</strong>、<strong>网格(grid)</strong>、**寻路网格(navigation mesh)<strong>以及</strong>八叉树(sparse voxel octree)**等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OYDu8iH.png">https://search.pstatic.net/common?src=https://i.imgur.com/OYDu8iH.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/kPOhH7c.png">https://search.pstatic.net/common?src=https://i.imgur.com/kPOhH7c.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="waypoint-network"><a class="anchor" href="#waypoint-network">#</a> Waypoint Network</h4>
+<p>waypoint network是早期游戏中最常用的地图表示方式。我们可以把地图上的路标使用节点来表示，然后可通行的节点使用边来连接起来就形成了一个网络结构。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qXDILJ1.png">https://search.pstatic.net/common?src=https://i.imgur.com/qXDILJ1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当玩家需要进行导航时只需要选择距离起点和目的地最近的两个路标，然后在网络图上进行导航即可。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/aRJu9E2.png">https://search.pstatic.net/common?src=https://i.imgur.com/aRJu9E2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>waypoint network的优势在于它非常易于实现，而且我们有成熟的路径搜索算法可以直接应用在网络图上；但它的缺陷在于路网图需要不断地和开发中的地图进行更新，而且使用路网进行导航时角色会倾向于沿路径中心前进而无法利用两边的通道。因此在现代游戏中路网的应用并不是很多。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CWHulfR.png">https://search.pstatic.net/common?src=https://i.imgur.com/CWHulfR.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="grid"><a class="anchor" href="#grid">#</a> Grid</h4>
+<p>网格同样是表达游戏地图的经典方法，常用的网格地图包括方格地图、三角形地图或是六边形地图等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rZfpwW8.png">https://search.pstatic.net/common?src=https://i.imgur.com/rZfpwW8.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>使用网格来表示地图时只需要把不可通行的区域遮挡住就可以了，因此网格可以动态地反映地图环境的变化。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4W2KL5B.png">https://search.pstatic.net/common?src=https://i.imgur.com/4W2KL5B.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>显然网格地图同样非常容易实现，而且支持动态更新，也便于调试；而它的缺陷在于网格地图的精度受制于地图分辨率，而且比较占用存储空间，最严重的问题是网格很难表示重叠区域之间的连接关系。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/d45U0hV.png">https://search.pstatic.net/common?src=https://i.imgur.com/d45U0hV.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="navigation-mesh"><a class="anchor" href="#navigation-mesh">#</a> Navigation Mesh</h4>
+<p>为了克服网格地图的这些问题，人们开发出了寻路网格这样的地图表达形式。在寻路网格中可通行的区域会使用多边形来进行覆盖，这样可以方便地表达不同区域直接相互连接的拓扑关系。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/72FC5tn.png">https://search.pstatic.net/common?src=https://i.imgur.com/72FC5tn.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/vgf8AlW.png">https://search.pstatic.net/common?src=https://i.imgur.com/vgf8AlW.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在寻路网格中我们还会要求每个多边形都必须是凸多边形，这样才能保证角色在行进中不会穿过网格。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2j6zXlf.png">https://search.pstatic.net/common?src=https://i.imgur.com/2j6zXlf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>寻路网格是现代游戏中广泛应用的地图表达形式，而它的缺陷主要在于生成寻路网格的算法相对比较复杂，而且它无法表达三维空间的拓扑连接关系。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/zipSbRi.png">https://search.pstatic.net/common?src=https://i.imgur.com/zipSbRi.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="voxel-voxel-octree"><a class="anchor" href="#voxel-voxel-octree">#</a> Voxel Voxel Octree</h4>
+<p>如果要制作三维空间中的地图则可以考虑八叉树这样的数据结构。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3zLpnOL.png">https://search.pstatic.net/common?src=https://i.imgur.com/3zLpnOL.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="path-finding"><a class="anchor" href="#path-finding">#</a> Path Finding</h3>
+<p>得到游戏地图后就可以使用寻路算法来计算路径了，当然无论我们使用什么样的地图表达方式我们首先都需要把游戏地图转换为拓扑地图，然后再使用相应的算法进行寻路。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/cnymCfs.png">https://search.pstatic.net/common?src=https://i.imgur.com/cnymCfs.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6H0jZIY.png">https://search.pstatic.net/common?src=https://i.imgur.com/6H0jZIY.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="depth-first-search"><a class="anchor" href="#depth-first-search">#</a> Depth-First Search</h4>
+<p>寻路算法的本质是在图上进行搜索，因此我们可以使用**深度优先搜索(depth-first search, DFS)**来进行求解。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WLIiyP2.png">https://search.pstatic.net/common?src=https://i.imgur.com/WLIiyP2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="width-first-search"><a class="anchor" href="#width-first-search">#</a> Width-First Search</h4>
+<p>另一种常用的图搜索算法是<strong>广度优先搜索(width-first search, BSF)</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qIjB3T4.png">https://search.pstatic.net/common?src=https://i.imgur.com/qIjB3T4.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="dijkstra-algorithm"><a class="anchor" href="#dijkstra-algorithm">#</a> Dijkstra Algorithm</h4>
+<p>直接使用DFS或是BFS往往是过于低效的，实践中更常用的寻路算法是<strong>Dijkstra算法(Dijkstra algorithm)</strong>：</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OetqRny.png">https://search.pstatic.net/common?src=https://i.imgur.com/OetqRny.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3pgWF0B.png">https://search.pstatic.net/common?src=https://i.imgur.com/3pgWF0B.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4kL80jw.png">https://search.pstatic.net/common?src=https://i.imgur.com/4kL80jw.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="a-star"><a class="anchor" href="#a-star">#</a> A Star</h4>
+<p>Dijkstra算法可以计算从起始节点出发到图上任意节点的最短路径，但它的缺陷在于图上很多节点对于我们想要计算的路径是没有意义的。因此人们还提出了<strong>A star</strong>算法来进行改进，在A star算法中通过引入一个启发式函数来控制节点访问的倾向性，使得路径的搜索会更倾向于访问目标点。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/m9iKxea.png">https://search.pstatic.net/common?src=https://i.imgur.com/m9iKxea.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZQZT7Il.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZQZT7Il.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在网格地图中常用的启发函数包括Manhattan距离等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/g99PD7V.png">https://search.pstatic.net/common?src=https://i.imgur.com/g99PD7V.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而在寻路网格中则可以使用欧氏距离作为启发函数。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/q2AkyRE.png">https://search.pstatic.net/common?src=https://i.imgur.com/q2AkyRE.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3OPi9S4.png">https://search.pstatic.net/common?src=https://i.imgur.com/3OPi9S4.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CYcj7il.png">https://search.pstatic.net/common?src=https://i.imgur.com/CYcj7il.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>显然启发式算法的设计对于最终计算得到的路径会产生显著的影响。当启发函数的值过低时可能会需要更多次循环才能寻找到路径，而当启发函数值过高时则可能无法找到最短路径。因此在实际应用中需要进行一定的权衡。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/uNt3Qqi.png">https://search.pstatic.net/common?src=https://i.imgur.com/uNt3Qqi.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="path-smoothing"><a class="anchor" href="#path-smoothing">#</a> Path Smoothing</h3>
+<p>直接使用寻路算法得到的路径往往包含各种各样的折线不够光滑，因此我们还需要使用一些路径平滑的算法来获得更加光滑的路径。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/65QCV5I.png">https://search.pstatic.net/common?src=https://i.imgur.com/65QCV5I.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>游戏导航中比较常用funnel算法来对折线路径进行平滑，它不仅可以应用在二维平面上也可以应用在寻路网格上。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Xt09Pyl.png">https://search.pstatic.net/common?src=https://i.imgur.com/Xt09Pyl.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HuTJwNr.png">https://search.pstatic.net/common?src=https://i.imgur.com/HuTJwNr.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="navmesh-generation"><a class="anchor" href="#navmesh-generation">#</a> NavMesh Generation</h3>
+<p>如何从游戏地图上生成寻路网格是一个相对困难的问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/IttR04U.png">https://search.pstatic.net/common?src=https://i.imgur.com/IttR04U.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>一般来说想要生成寻路网格首先需要将地图转换为体素，然后在体素地图上计算距离场得到区域的划分，最后就可以在划分好的区域中生成一个凸多边形网格作为寻路网格。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5uHRHol.png">https://search.pstatic.net/common?src=https://i.imgur.com/5uHRHol.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/PL4YnLA.png">https://search.pstatic.net/common?src=https://i.imgur.com/PL4YnLA.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/zelYNTv.png">https://search.pstatic.net/common?src=https://i.imgur.com/zelYNTv.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/p8Chp6H.png">https://search.pstatic.net/common?src=https://i.imgur.com/p8Chp6H.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/g1MFQ9q.png">https://search.pstatic.net/common?src=https://i.imgur.com/g1MFQ9q.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>除此之外我们还可以在多边形上设置不同的flag来触发不同的动画、声效以及粒子效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/IWcQ6Z1.png">https://search.pstatic.net/common?src=https://i.imgur.com/IWcQ6Z1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>对于动态的环境我们可以把巨大的场景地图划分为若干个tile。当某个tile中的环境发生改变时只需要重新计算该处的路径就可以得到新的路径。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/hsIXDXl.png">https://search.pstatic.net/common?src=https://i.imgur.com/hsIXDXl.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>还需要注意的是使用自动化算法生成的寻路网格是不包括传送点这样的信息的，有时为了提升玩家和场景的互动我们还需要手动设置这些传送点。当然这会导致寻路算法更加复杂。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/SAtEQBW.png">https://search.pstatic.net/common?src=https://i.imgur.com/SAtEQBW.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="steering"><a class="anchor" href="#steering">#</a> Steering</h2>
+<p>得到最优路径后就可以根据路径来控制角色前进了。但在实际游戏中角色可能包含自身的运动学约束使得我们无法严格按照计算出的路径进行运动，这一点对于各种载具尤为明显。因此我们还需要结合<strong>steering</strong>算法来调整实际的行进路径。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lp99uMo.png">https://search.pstatic.net/common?src=https://i.imgur.com/lp99uMo.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>steering算法可以按照行为分为以下几种：<strong>追赶和逃脱(seek/flee)</strong>、<strong>速度匹配(velocity match)<strong>以及</strong>对齐(align)</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7adi8uZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/7adi8uZ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="seekflee"><a class="anchor" href="#seekflee">#</a> Seek/Flee</h3>
+<p>seek/flee的要求是根据自身和目标当前的位置来调整自身的加速度从而实现追赶或是逃脱的行为，像游戏中的跟踪、躲避或是巡逻等行为都可以使用seek/flee来实现。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/UiWKyTT.png">https://search.pstatic.net/common?src=https://i.imgur.com/UiWKyTT.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EOxRT6q.png">https://search.pstatic.net/common?src=https://i.imgur.com/EOxRT6q.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="velocity-match"><a class="anchor" href="#velocity-match">#</a> Velocity Match</h3>
+<p>velocity match的目的是利用当前自身和目标的相对速度以及匹配时间来进行控制，使得自身可以按指定的速度到达目标位置。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HUdJyk0.png">https://search.pstatic.net/common?src=https://i.imgur.com/HUdJyk0.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="align"><a class="anchor" href="#align">#</a> Align</h3>
+<p>align则是从角度和角加速度的层面进行控制，使得自身的朝向可以接近目标。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ToUpq8o.png">https://search.pstatic.net/common?src=https://i.imgur.com/ToUpq8o.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="crowd-simulation"><a class="anchor" href="#crowd-simulation">#</a> Crowd Simulation</h2>
+<p>**群体模拟(crowd simulation)**是游戏AI必须要处理的问题。在游戏场景中往往会具有大量的NPC，如何控制和模拟群体性的行为是现代游戏的一大挑战。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/eoP4lld.png">https://search.pstatic.net/common?src=https://i.imgur.com/eoP4lld.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>游戏场景中群体模拟的先驱是Reynolds，他同时也是steering系统的提出者。目前游戏中群体行为模拟的方法主要可以分为三种：<strong>微观模型(microscopic models)</strong>、<strong>宏观模型(macroscopic models)<strong>以及</strong>混合模型(mesoscopic models)</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5MnaF9X.png">https://search.pstatic.net/common?src=https://i.imgur.com/5MnaF9X.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="microscopic-models"><a class="anchor" href="#microscopic-models">#</a> Microscopic Models</h3>
+<p>微观模型的思想是对群体中每一个个体进行控制从而模拟群体的行为，通常情况下我们可以设计一些规则来控制个体的行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/SHkaE4Z.png">https://search.pstatic.net/common?src=https://i.imgur.com/SHkaE4Z.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/k6LqZY9.png">https://search.pstatic.net/common?src=https://i.imgur.com/k6LqZY9.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="macroscopic-models"><a class="anchor" href="#macroscopic-models">#</a> Macroscopic Models</h3>
+<p>宏观模型的思想则是在场景中设计一个势场或流场来控制群体中每个个体的行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/hRayLFW.png">https://search.pstatic.net/common?src=https://i.imgur.com/hRayLFW.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="mesoscopic-models"><a class="anchor" href="#mesoscopic-models">#</a> Mesoscopic Models</h3>
+<p>混合模型则综合了微观和宏观两种模型的思路，它首先把整个群体划分为若干个小组，然后在每个小组中对每个个体使用微观模型的规则来进行控制。这样的方法在各种RTS游戏中有着广泛的应用。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/sILQ4Ki.png">https://search.pstatic.net/common?src=https://i.imgur.com/sILQ4Ki.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="collision-avoidance"><a class="anchor" href="#collision-avoidance">#</a> Collision Avoidance</h3>
+<p>群体模拟中的一大难点在于如何保证个体之间不会出现碰撞的问题。比较常用的方法是对每个个体施加一定的力来控制它的运动，这样就可以操纵群体的运动行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rDCqeuH.png">https://search.pstatic.net/common?src=https://i.imgur.com/rDCqeuH.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/snYXpxU.png">https://search.pstatic.net/common?src=https://i.imgur.com/snYXpxU.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>另一种处理的方法是基于**速度障碍(velocity obstacle, VO)**来进行控制。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/NVg4MRR.png">https://search.pstatic.net/common?src=https://i.imgur.com/NVg4MRR.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>VO的思想是当两个物体将要发生碰撞时相当于在速度域上形成了一定的障碍，因此需要调整自身的速度来避免相撞。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CpN0O5r.png">https://search.pstatic.net/common?src=https://i.imgur.com/CpN0O5r.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当参与避让的个体数比较多时还需要进行一些整体的优化，此时可以使用ORCA等算法进行处理。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Qs8cIj1.png">https://search.pstatic.net/common?src=https://i.imgur.com/Qs8cIj1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="sensing"><a class="anchor" href="#sensing">#</a> Sensing</h2>
+<p><strong>感知(sensing)<strong>是游戏AI的基础，根据获得信息的不同我们可以把感知的内容分为</strong>内部信息(internal information)<strong>和</strong>外部信息(external information)</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6SDtqNB.png">https://search.pstatic.net/common?src=https://i.imgur.com/6SDtqNB.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>内部信息包括AI自身的位置、HP以及各种状态。这些信息一般可以被AI直接访问到，而且它们是AI进行决策的基础。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/DWpGTJP.png">https://search.pstatic.net/common?src=https://i.imgur.com/DWpGTJP.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而外部信息则主要包括AI所处的场景中的信息，它会随着游戏进程和场景变化而发生改变。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3H0weGF.png">https://search.pstatic.net/common?src=https://i.imgur.com/3H0weGF.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>外部信息的一种常用表达方式是<strong>influence map</strong>，场景的变化会直接反映在influence map上。当AI需要进行决策时会同时考虑自身的状态并且查询当前的influence map来选择自身的行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/QMW85m8.png">https://search.pstatic.net/common?src=https://i.imgur.com/QMW85m8.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/kENc5Mv.png">https://search.pstatic.net/common?src=https://i.imgur.com/kENc5Mv.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>游戏AI进行感知时还需要注意我们不能假设AI可以直接获得所有游戏的信息，而是希望AI能够像玩家一样只利用局部感知的信息来进行决策。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/j7682HD.png">https://search.pstatic.net/common?src=https://i.imgur.com/j7682HD.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="classic-decision-making-algorithms"><a class="anchor" href="#classic-decision-making-algorithms">#</a> Classic Decision Making Algorithms</h2>
+<p>在上面这些知识的基础上就可以开始构建游戏AI系统了。游戏AI算法的核心是**决策(decision making)<strong>系统，经典的决策系统包括</strong>有限状态机(finite state machine, FSM)<strong>和</strong>行为树(behavior tree, BT)**两种。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/e3jPk0w.png">https://search.pstatic.net/common?src=https://i.imgur.com/e3jPk0w.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="finite-state-machine"><a class="anchor" href="#finite-state-machine">#</a> Finite State Machine</h3>
+<p>在有限状态机模型中我们认为AI的行为可以建模为在不同状态之间的游走，不同状态之间的切换称为<strong>转移(transition)</strong>。以吃豆人游戏为例，游戏AI可以使用一个包含3个状态的状态机来表示。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/N2Ra01C.png">https://search.pstatic.net/common?src=https://i.imgur.com/N2Ra01C.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Z31sYmR.png">https://search.pstatic.net/common?src=https://i.imgur.com/Z31sYmR.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>有限状态机的缺陷在于现代游戏中AI的状态空间可能是非常巨大的，因此状态之间的转移会无比复杂。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/p6GJfIY.png">https://search.pstatic.net/common?src=https://i.imgur.com/p6GJfIY.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>为了克服有限状态机过于复杂的问题，人们还提出了**hierarchical finite state machine(HFSM)**这样的模型。在HFSM中我们把整个复杂的状态机分为若干层，不同层之间通过有向的接口进行连接，这样可以增加模型的可读性。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/B7s5Eop.png">https://search.pstatic.net/common?src=https://i.imgur.com/B7s5Eop.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="behavior-tree"><a class="anchor" href="#behavior-tree">#</a> Behavior Tree</h3>
+<p>在现代游戏中更为常用的决策算法是行为树，它的决策行为更接近人脑的决策过程。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fB7RF1x.png">https://search.pstatic.net/common?src=https://i.imgur.com/fB7RF1x.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>行为树中的**执行节点(excution node)**表示AI执行的过程，它包括条件判断以及具体执行的动作两种节点。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/AAMJSsw.png">https://search.pstatic.net/common?src=https://i.imgur.com/AAMJSsw.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>行为树中的另一种节点是<strong>控制节点(control node)</strong>，它用来表示决策过程的控制流。control node包括sequence、selector、parallel以及decorator等几种。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/mUME3m1.png">https://search.pstatic.net/common?src=https://i.imgur.com/mUME3m1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p><strong>sequence</strong>是表示对当前节点的子节点依次进行访问和执行，一般可以用来表示AI在当前状态下的行为计划。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZICLz0o.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZICLz0o.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BxrTXGy.png">https://search.pstatic.net/common?src=https://i.imgur.com/BxrTXGy.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p><strong>selector</strong>同样会遍历当前节点的子节点，但不同于sequence的地方是如果某个子节点返回True则会终止遍历。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/82BGT5I.png">https://search.pstatic.net/common?src=https://i.imgur.com/82BGT5I.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5NW15o2.png">https://search.pstatic.net/common?src=https://i.imgur.com/5NW15o2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p><strong>parallel</strong>会同时执行当前节点下的所有子节点。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Er2XteB.png">https://search.pstatic.net/common?src=https://i.imgur.com/Er2XteB.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2f48cJz.png">https://search.pstatic.net/common?src=https://i.imgur.com/2f48cJz.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gul61tg.png">https://search.pstatic.net/common?src=https://i.imgur.com/gul61tg.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>行为树在进行执行时需要注意每一次执行时都需要返回根节点。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OD7uAsQ.png">https://search.pstatic.net/common?src=https://i.imgur.com/OD7uAsQ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在现代游戏中还提出了<strong>decorator</strong>节点来丰富可以执行的行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Dzh4NyR.png">https://search.pstatic.net/common?src=https://i.imgur.com/Dzh4NyR.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/QANYKPp.png">https://search.pstatic.net/common?src=https://i.imgur.com/QANYKPp.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>我们还可以使用<strong>precondition</strong>和<strong>blackborad</strong>来提升决策过程的可读性。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/VEVFGoA.png">https://search.pstatic.net/common?src=https://i.imgur.com/VEVFGoA.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3nV406Y.png">https://search.pstatic.net/common?src=https://i.imgur.com/3nV406Y.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>行为树的决策过程非常符合人的决策行为而且也易于调试，因此广泛应用在各种游戏AI中。当然行为树也有一些缺点，比如说每次调用时都必须从根节点出发重新执行，这样的效率是比较低的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/hvAQ2Ra.png">https://search.pstatic.net/common?src=https://i.imgur.com/hvAQ2Ra.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/g8kpKWM.png">https://search.pstatic.net/common?src=https://i.imgur.com/g8kpKWM.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/PLt4gjd.png">https://search.pstatic.net/common?src=https://i.imgur.com/PLt4gjd.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>目前随着AI技术的发展，游戏AI也开始使用一些**规划(planning)**算法来进行决策。这些更先进的算法我们会在后面的课程进行介绍。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/wzZRDuz.png">https://search.pstatic.net/common?src=https://i.imgur.com/wzZRDuz.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="reference"><a class="anchor" href="#reference">#</a> Reference</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV19N4y1T7eU?spm_id_from=333.337.search-card.all.click&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 16：Basic Artificial Intelligence (Part I)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1r34y1J7Sg/?spm_id_from=333.788&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 16：Basic Artificial Intelligence (Part II)</a></li>
+</ul>
+<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">Total Views: </span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/28/game-engine/games104系列笔记（十六）/">Loading...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">Edited on </span><time title="Modified: 2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>Donate</button><p>Give me a cup of [coffee]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/monero.avif" alt="AUVeggry monero"><p>monero</p></div><div><img loading="lazy" src="/assets/bitcoin.avif" alt="AUVeggry Bitcoin"><p>Bitcoin</p></div></div></div><div id="copyright"><ul><li class="author"><strong>Post author: </strong>AUVeggry<i class="ic i-at"><em>@</em></i>sakura"s blog"</li><li class="link"><strong>Post link: </strong><a href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" title="games104系列笔记（十六）">https://sakurame.eu.org/2023/06/28/game-engine/games104系列笔记（十六）/</a></li><li class="license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> unless stating additionally.</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/ai0u42.jpg" title="games104系列笔记（十五）"><span class="type">Previous Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十五）</h3></a></div><div class="item right"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="next" itemprop="url" data-background-image="https://ptpimg.me/dhb699.jpg" title="games104系列笔记（十七）"><span class="type">Next Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十七）</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="Contents"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#navigation"><span class="toc-number">1.</span> <span class="toc-text"> Navigation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#map-representation"><span class="toc-number">1.1.</span> <span class="toc-text"> Map Representation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#waypoint-network"><span class="toc-number">1.1.1.</span> <span class="toc-text"> Waypoint Network</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#grid"><span class="toc-number">1.1.2.</span> <span class="toc-text"> Grid</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#navigation-mesh"><span class="toc-number">1.1.3.</span> <span class="toc-text"> Navigation Mesh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#voxel-voxel-octree"><span class="toc-number">1.1.4.</span> <span class="toc-text"> Voxel Voxel Octree</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#path-finding"><span class="toc-number">1.2.</span> <span class="toc-text"> Path Finding</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#depth-first-search"><span class="toc-number">1.2.1.</span> <span class="toc-text"> Depth-First Search</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#width-first-search"><span class="toc-number">1.2.2.</span> <span class="toc-text"> Width-First Search</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dijkstra-algorithm"><span class="toc-number">1.2.3.</span> <span class="toc-text"> Dijkstra Algorithm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#a-star"><span class="toc-number">1.2.4.</span> <span class="toc-text"> A Star</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#path-smoothing"><span class="toc-number">1.3.</span> <span class="toc-text"> Path Smoothing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#navmesh-generation"><span class="toc-number">1.4.</span> <span class="toc-text"> NavMesh Generation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#steering"><span class="toc-number">2.</span> <span class="toc-text"> Steering</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#seekflee"><span class="toc-number">2.1.</span> <span class="toc-text"> Seek/Flee</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#velocity-match"><span class="toc-number">2.2.</span> <span class="toc-text"> Velocity Match</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#align"><span class="toc-number">2.3.</span> <span class="toc-text"> Align</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#crowd-simulation"><span class="toc-number">3.</span> <span class="toc-text"> Crowd Simulation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#microscopic-models"><span class="toc-number">3.1.</span> <span class="toc-text"> Microscopic Models</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#macroscopic-models"><span class="toc-number">3.2.</span> <span class="toc-text"> Macroscopic Models</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mesoscopic-models"><span class="toc-number">3.3.</span> <span class="toc-text"> Mesoscopic Models</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#collision-avoidance"><span class="toc-number">3.4.</span> <span class="toc-text"> Collision Avoidance</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sensing"><span class="toc-number">4.</span> <span class="toc-text"> Sensing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#classic-decision-making-algorithms"><span class="toc-number">5.</span> <span class="toc-text"> Classic Decision Making Algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#finite-state-machine"><span class="toc-number">5.1.</span> <span class="toc-text"> Finite State Machine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#behavior-tree"><span class="toc-number">5.2.</span> <span class="toc-text"> Behavior Tree</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">6.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="Related"><ul><li><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li class="active"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="Overview"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="AUVeggry" src="/assets/avatar.avif"><p class="name" itemprop="name">AUVeggry</p><div class="description" itemprop="description">The spirit of independence and the freedom of thought </div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">64</span><span class="name">posts</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">categories</span></a></div><div class="item tags"><a href="/tags/"><span class="count">21</span><span class="name">tags</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>Home</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>About</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>About This Site</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>Appreciation</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>Privacy Policy</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>Posts</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>Archives</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>Categories</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>Tags</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>Friends</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>Random Posts</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A08-bit%E4%BD%8E%E7%A0%81%E7%8E%87%E5%8E%8B%E5%88%B6/">第十二章8-bit低码率压制</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%B8%80%E5%88%87%E7%9A%84%E8%B5%B7%E7%82%B9%E2%80%94%E2%80%94%E8%AE%A4%E8%AF%86BD/">第二章一切的起点——认识BD</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2023/08/28/thinking/united-93%E4%B9%8B%E6%80%9D/">united_93之思</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/privacy/" title="In隐私保护指北">隐私保护指北</a></div><span><a href="/2023/06/09/privacy/PGP%E7%9A%84%E9%97%AE%E9%A2%98/">PGP的问题</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%85%AB%E7%AB%A0VS%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%80/">第八章VS视频处理基础</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/privacy/" title="In隐私保护指北">隐私保护指北</a></div><span><a href="/2024/03/21/privacy/%E6%9F%90%E7%A7%91%E5%AD%A6%E7%9A%84PGP%E7%AE%97%E5%8F%B7%E6%8C%87%E5%8D%97/">某科学的PGP算号指南</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E8%AE%A4%E8%AF%86%E7%91%95%E7%96%B5/">第四章认识瑕疵</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%BA%94%E7%AB%A0VapourSynth%E5%9F%BA%E7%A1%80/">第五章VapourSynth基础</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/">games104系列笔记（十八）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">games104系列笔记（一）</a></span></li></ul></div><div class="rpost pjax"><h2>Recent Comments</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><div class="status"><div class="copyright">© 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">AUVeggry @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="Symbols count total">1.1m words</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="Reading time total">17:13</span></div><div class="powered-by">Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> &amp; Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><br><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:var(--grey-5);"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号</a></span></div></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2023/06/28/game-engine/games104系列笔记（十六）/`,
+    favicon: {
+        show: `(●´3｀●) Here we go again.`,
+        hide: `(´Д｀) It's a disaster!`
+    },
+    search: {
+        placeholder: "Search for Posts",
+        empty: "We didn't find any results for the search: ${query}",
+        stats: "${hits} results found in ${time} ms"
+    },
+    nocopy: "false",
+    copyright: `Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>`,
+    quiz: {
+        choice: `Multiple Choice`,
+        multiple: `Multiple Answer`,
+        true_false: `True/False`,
+        essay: `Questions`,
+        gap_fill: `Gap Filling`,
+        mistake: `Wrong Answer`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script></body></html>

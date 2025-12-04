@@ -1,0 +1,818 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="sakura" s="" blog""="" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="sakura" s="" blog""="" type="application/atom+xml"><link rel="alternate" type="application/json" title="sakura&quot;s blog&quot;" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://unpkg.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-CEOMSI5S.js"><link rel="modulepreload" href="/js/copy-tex-VNMZZ56J.js"><link rel="modulepreload" href="/js/post-DBDT2P4X.js"><link rel="modulepreload" href="/js/chunk-3NVTWMK7.js"><link rel="modulepreload" href="/js/tcomments-MCLWTQDC.js"><link rel="modulepreload" href="/js/chunk-ERE5SKT5.js"><link rel="modulepreload" href="/js/index.esm-RIWV4EDG.js"><link rel="modulepreload" href="/js/chunk-KXPDGESI.js"><link rel="modulepreload" href="/js/chunk-I5LMONQL.js"><link rel="modulepreload" href="/js/cf-patch.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><script src="/js/cf-patch.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script><link rel="preload" href="https://ptpimg.me/sb71ea.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/6452um.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/gzt9vt.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/wf2fu2.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/ofuv6x.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/e8k2yf.jpg" as="image" fetchpriority="high"><meta name="keywords" content="图形学"><meta name="description" content="The spirit of independence and the freedom of thought "><link rel="canonical" href="https://sakurame.eu.org/2023/06/24/computer-graphic/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%B2%BE%E7%B2%B9%E7%AC%94%E8%AE%B0/"><link rel="stylesheet" href="/css/post.css?v=0.5.4"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.4"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>光线追踪精粹笔记</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="pagefind_mount"></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">光线追踪精粹笔记</h1><div class="meta"><span class="item" title="Created: 2023-06-24 13:55:59"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">Posted on</span><time itemprop="dateCreated datePublished" datetime="2023-06-24T13:55:59+08:00">2023-06-24</time></span><span class="item" title="Symbols count in article"><span class="icon"><i class="ic i-pen"></i></span><span class="text">Symbols count in article</span><span>60k</span><span class="text">words</span></span><span class="item" title="Reading time"><span class="icon"><i class="ic i-clock"></i></span><span class="text">Reading time</span><span>54 mins.</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="Toggle navigation bar"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/sb71ea.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/6452um.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/gzt9vt.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/wf2fu2.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/ofuv6x.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/e8k2yf.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">Home</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/computer-graphic/" itemprop="item" rel="index" title="In计算机图形学"><span itemprop="name">计算机图形学<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" data-pagefind-body="data-pagefind-body" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/24/computer-graphic/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%B2%BE%E7%B2%B9%E7%AC%94%E8%AE%B0/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="AUVeggry"><meta itemprop="description" content=", The spirit of independence and the freedom of thought "></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="sakura&quot;s blog&quot;"></span><div class="body md" itemprop="articleBody"><h1 id="光线追踪精粹-笔记"><a class="anchor" href="#光线追踪精粹-笔记">#</a> 光线追踪精粹 笔记</h1>
+<p>原书来源：<a target="_blank" rel="noopener" href="https://www.realtimerendering.com/raytracinggems/">https://www.realtimerendering.com/raytracinggems/</a></p>
+<h2 id="一-光线追踪基础"><a class="anchor" href="#一-光线追踪基础">#</a> 一、光线追踪基础</h2>
+<h4 id="重要性采样"><a class="anchor" href="#重要性采样">#</a> <strong>重要性采样</strong>：</h4>
+<pre class="shiki shiki-themes vitesse-light vitesse-dark" style="background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee" tabindex="0"><code class="language-text"><span class="line"><span>指使用不均匀分布的PDF（概率密度函数）采样来减少误差。</span></span></code></pre>
+<h4 id="准蒙特卡洛采样"><a class="anchor" href="#准蒙特卡洛采样">#</a> <strong>准蒙特卡洛采样</strong>：</h4>
+<pre class="shiki shiki-themes vitesse-light vitesse-dark" style="background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee" tabindex="0"><code class="language-text"><span class="line"><span>使用数论方法的样本低差异模式代替传统的伪随机数生成器来创建随机样本的方法。</span></span></code></pre>
+<h4 id="光线的表示方式"><a class="anchor" href="#光线的表示方式">#</a> <strong>光线的表示方式</strong>：</h4>
+<p>P(t) = O + t<strong>d</strong>,其中O是空间中的一个点（光线射线的原点），<strong>d</strong>是光线的方向。一般<strong>d</strong>是归一化后的，这样t就是距离了。</p>
+<p><strong>问</strong>：t是距离带来什么好处？</p>
+<p>答：这样可以用tmin和tmax表示光线前进的最近最远的值，方便光线停止。</p>
+<p>DXR中的光鲜数据结构：</p>
+<pre class="shiki shiki-themes vitesse-light vitesse-dark" style="background-color:#ffffff;--shiki-dark-bg:#121212;color:#393a34;--shiki-dark:#dbd7caee" tabindex="0"><code class="language-text"><span class="line"><span>struct RayDesc {</span></span>
+<span class="line"><span>    float3 origin;</span></span>
+<span class="line"><span>    float3 Direction;</span></span>
+<span class="line"><span>    float tmin;</span></span>
+<span class="line"><span>    float tmax</span></span>
+<span class="line"><span>}</span></span></code></pre>
+<h4 id="光线追踪器中的必要shaderdx12为例"><a class="anchor" href="#光线追踪器中的必要shaderdx12为例">#</a> <strong>光线追踪器中的必要shader(DX12为例)</strong>：</h4>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/1.PNG" alt="1"></a></p>
+<ol>
+<li>
+<p>光线生成着色器，启动整个管线，允许开发人员使用内置TraceRay来指定要启动哪些光线</p>
+</li>
+<li>
+<p>相交着色器，</p>
+</li>
+<li>
+<p>任意命中着色器，可以丢弃无用的相交（例如忽略透明的物体）</p>
+</li>
+<li>
+<p>最近命中着色器（主要是计算颜色）</p>
+</li>
+<li>
+<p>未命中着色器</p>
+<p>光线追踪的伪代码如下：</p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/2.PNG" alt="2"></a></p>
+<p>一般使用normal（法线分布函数决定下一个光线往哪里迭代）</p>
+<h4 id="blas底层加速结构和tlas顶层加速结构"><a class="anchor" href="#blas底层加速结构和tlas顶层加速结构">#</a> <strong>BLAS（底层加速结构）和TLAS（顶层加速结构）</strong></h4>
+<p>底层加速结构包括几何土元和程序化生成的图元。而TLAS包含一个或者多个BLAS，BLAS构建慢，但是求交快，TLAS构建快但是过度使用会影响性能。在动态场景中，如果只是节点包围盒发生了变化，refit就可以。但如果一直refit而不rebuild又会降低求交效率。所以要平衡refit和rebuild(rebuild慢)</p>
+<p>DX12只需要输入VB和IB就可以调用接口直接构建加速结构，包括BLAS和TLAS</p>
+<h4 id="着色器表"><a class="anchor" href="#着色器表">#</a> <strong>着色器表</strong></h4>
+<p>着色器表是GPU内存中按照64位对齐的连续块，用来存储光追着色器数据和场景资源绑定。下面是其中一种布局方式。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/3.PNG" alt="3"></a></p>
+<p>在实际使用的过程当中，我们需要使用map来对shader table里面的内容赋值，包括不同着色器的identifier等，需要自己设置不同shader的offset。</p>
+<h4 id="球幕相机"><a class="anchor" href="#球幕相机">#</a> <strong>球幕相机</strong></h4>
+<p>第4章介绍的是一种特殊的camera，这种camera可以渲染全景（类似手机相机里面的全景拍照）和环形立体投影（类似VR的双眼）。这一章最重要的是如何根据屏幕像素点的位置计算半球面的仰角和方向角（如下图的屏幕空间）。具体方法是用弧度除以像素数，得到每像素弧度，然后再根据像素点到中心点（摄像机的位置）计算方向角，最后计算高度，从而得到光线的方向。</p>
+<p>例如对于4096*4096分辨率的图片，球幕总弧度为180度（π），则每像素弧度是π/4096,那么I像素点的方向就是p = （I-M）*π/4096,其中M是摄像机位置。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/4.PNG" alt="4"></a></p>
+<p>球幕相机还可以做左右眼的偏移，具体可以看该书的代码**。**</p>
+<h4 id="5避免自相交的快速可靠的方法"><a class="anchor" href="#5避免自相交的快速可靠的方法">#</a> 5.<strong>避免自相交的快速可靠的方法</strong></h4>
+<p>本章给了一个问题“给定数组A，他由N个数字（Ai）组成，如何快速的查询数组任意区间内的最小值和最大值，例如第8个元素和第23个元素之间的最小值和最大值”。</p>
+<p>这种方法在ray marching的时候会用到。</p>
+<p>方法一：暴力法：预计算一个NxN的矩阵，每一个元素(i, j)表示第i个元素到第j个元素之间的最大值和最小值。这种方法的存储空间复杂度是o(N2)，查询复杂度是O(1)，修改复杂度是O(N2)</p>
+<p>方法二：稀疏表查询法，是一种对暴力法的优化，他的想法是认为所有的序列（i-j)其实都是两个（2的整数倍长度）序列的并集，描述比较麻烦，可以看下图所示：L1是只存储长度为2的序列的最小值，L2只存储从该位置开始长度为4的最小值，以此类推，那么A2-A8总共7个数，相当于两个4个数序列的并集，即最后一张图的3和4，那么A2-A8的最小值就是3。这种方法的空间复杂度是O（NlogN），查询复杂度是O（1），修改复杂度是O(logN)</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/5.PNG" alt="5"></a></p>
+<p>方法三：区间树递归查询法。区间树如下所示，每个节点存储所有子节点的最大值和最小值和对应的index范围。查询的时候需要递归的向下查询，本方法的空间复杂度是O(N),查询的复杂度是O(logN)，修改的复杂度也是O(N)</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/6.PNG" alt="6"></a></p>
+<p>方法四：区间树迭代查询法，这是一组二叉树：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/7.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/7.PNG" alt="7"></a></p>
+<p>其查询伪代码为：<a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/8.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/8.PNG" alt="8"></a></p>
+<p>本质就是左边如果是奇数，右边index如果是偶数，那么就直接merge到result上面（因为这两个地方再往上一个level就包含了另一个数了）。</p>
+<p>该方法的时间和空间复杂度都和递归法相同，但是因为不需要递归，常数节省非常多，所以效率很高。是最常用的方法。</p>
+<h2 id="二-相交和效率"><a class="anchor" href="#二-相交和效率">#</a> 二、相交和效率</h2>
+<h4 id="6-避免自相交的快速可靠的方法"><a class="anchor" href="#6-避免自相交的快速可靠的方法">#</a> 6. 避免自相交的快速可靠的方法</h4>
+<p><strong>传统方法</strong>：使用光线命中距离代入光线方程（当光线传输距离过长时，这种方法会因为精度误差问题导致交点不在平面上，不利于解决自相交问题（添加bias))</p>
+<p><strong>采用质心坐标的参数化方法</strong>：用光线方程和三角形相交时点的质心坐标来表示相交点，因为质心坐标也有精度问题，导致算出的交点可能不在原光线上，但是仍然在相交平面上，在解决自相交问题时会好一点。</p>
+<p><strong>避免自相交</strong>：即使把新光线的起点“精确”放到表面上，仍然会产生自相交，因为起点到表面的距离可能不是0，下面是一些常用方法：</p>
+<ol>
+<li>图片ID排除法：显式的排除以橡胶的图元，问题在于如果交点在共同的边上，或者新光线和表面夹角比较小，仍然会自相交；（2，无法处理重复或者重叠的几何体。（3，只适合平面的图元。如果图片不是平面的，则可能会产生有效的自相交。</li>
+<li>限制光线区间：设置光线相交距离的最小值ε &gt; 0,这种方法需要根据不同场景调整ε 的值，不够可靠和通用。也会出现小夹角下（距离足够长）时的自相交，或者错过了一个临近的表面的有效交点（例如交点旁边有个垂直的面）如下图所示。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/9.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/9.PNG" alt="9"></a></p>
+<ol>
+<li>沿着色法向量或者原光线方向偏移，和方法2的问题类似。而且因为插值和法线贴图的原因，着色法向量可能不垂直于表面。</li>
+<li>沿几何法向量做自适应的偏移。这个方法是书中推荐的方法，他认为误差的大小和交点距离原点（0,0,0）的距离成正比，距离越远，误差越大，ε 应该根据这个距离动态调整。该算法实际上是设置了一个阈值origin(),比这个阈值小的距离则直接加上normal的偏移，比这个阈值大的距离，则转换到整数空间做偏移后再转换到浮点数，以减小不同距离下的浮点数误差。如下所示<a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/10.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/10.PNG" alt="10"></a></li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/11.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/11.PNG" alt="11"></a></p>
+<h4 id="7-光线和球体相交检测的精度提升"><a class="anchor" href="#7-光线和球体相交检测的精度提升">#</a> 7. 光线和球体相交检测的精度提升</h4>
+<p><strong>光线球体相交的通用解法</strong>：设光线为R(t) = O + td,球的方程为(P-G)<em>(P-G) = r</em>r,（其中G是球体的中心点），直接代入公式可以判断是否有交点以及交点位置P0。并且能够知道在交点处的单位法向量是（P0-G）/r。</p>
+<p>因为浮点误差，这种方法在球距离光源很远的时候会出现问题，如下图所示,从左到右是单位球距离相机100,2000,4100和8000时的效果。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/12.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/12.PNG" alt="12"></a></p>
+<p>同样因为浮点误差，在光线靠近一个巨大的球体时，也会出现问题，如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/13.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/13.PNG" alt="13"></a></p>
+<p><strong>为什么会出现浮点误差</strong>：浮点数是s<em>pow(2, e)的表示形式，当加减法时，会把s和e做对齐，较小的浮点数尾数就会被右移，这样精度就会降低。这种问题在计算c = f</em>f - r<em>r时很明显例如（b</em>b-4<em>a</em>c),平方后导致可用精度减半，再相减就会以更小的精度为保留。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/15.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/15.PNG" alt="15"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/14.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/14.PNG" alt="14"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/16.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/16.PNG" alt="16"></a></p>
+<p><strong>更好的解法</strong>：书中给了一个更好的解法，如上图所示，f = O-G。这种方法的基本思想是做点乘之前前先做减法。</p>
+<p><strong>巨量消失</strong>：当两个非常接近的浮点数做减法时，会保留非常小量的有效位数。当光线和一个巨大球体的交点落在光线起点附近时就会出现这种情况。（b ≈ pow(b, 2) - 4ac时）</p>
+<p><strong>解决巨量消失的方法</strong>：利用二次方程两个解t0*t1 = c/a,使用以下方程求解其中一个解，避免两个相近的数相减(让b翻倍)：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/17.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/17.PNG" alt="17"></a></p>
+<h4 id="8-计算光线和双线性曲面相交的几何方法"><a class="anchor" href="#8-计算光线和双线性曲面相交的几何方法">#</a> 8. 计算光线和双线性曲面相交的几何方法</h4>
+<p><strong>双线性曲面</strong>：是支持但不计算光线相交的最简单的曲面，其定义如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/18.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/18.PNG" alt="18"></a></p>
+<p>这种双线性曲面其实是有四个控制点，这可以看成是一个四边形，或者是用两个三角形来表示。而如果想要把三角形网格转换成参数曲面网格，则需要有一种专门的方法做这个事情。</p>
+<p>可以把三角形看成退化的四边形，这样就可以用(1-u)(1-v), u, (1-u)v来表示三角形了。</p>
+<p><strong>GARP</strong>：这个方法是一种把三角形组装成四边形后求交的方法。他把四边形组成的3维曲面，通过和光线求公式，得到一个或者两个（参数化曲面可能有自重叠的情况）解，每一个解都用uv和t来表示。该方法需要较好的数学基础和3维空间的想象能力，在求叉乘和abc的时候有些没搞明白,代码如下：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/19.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/19.PNG" alt="19"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20.PNG" alt="20"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/21.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/21.PNG" alt="21"></a></p>
+<h4 id="9-dxr中的多重命中光线追踪"><a class="anchor" href="#9-dxr中的多重命中光线追踪">#</a> 9. DXR中的多重命中光线追踪</h4>
+<p><strong>多重命中</strong>：指的是在命中一个面以后光线继续前进，一根光线命中多个面并返回多个面的信息的情况，通常用来模拟弹道穿透、射频广播等领域。多重命中仍然需要高效进行。</p>
+<p><strong>多重命中的暴力遍历法</strong>：暴力遍历就是按照正常情况，在anyhitshader里面ignorehit持续遍历，并且记录下来经过的相交点的信息（包括漫反射颜色、距离和法线等），这种方法比较灵活，但是比较慢，每一次相交基本都要遍历所有的BVH节点。</p>
+<p><strong>节点剔除多重命中BVH遍历</strong>：其实就是当已经收集了N &gt;= Nquery的时候，判断当前交点是否比已知的最远节点还要远，如果还要远，则直接剔除掉。如果，如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/22.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/22.PNG" alt="22"></a></p>
+<p>实验数据显示，anyhit shader和intersection shader实现暴力和节点剔除的效率完全不同，这是为什么？？？？？？？</p>
+<p>答：书最后给了解释，认为在相交着色器中有很多“区间更新”的操作，会做更频繁的剔除工作，这个工作比节省的开销还要大。</p>
+<h4 id="10-一种具有高扩展效率的简单负载均衡方案"><a class="anchor" href="#10-一种具有高扩展效率的简单负载均衡方案">#</a> 10. 一种具有高扩展效率的简单负载均衡方案</h4>
+<p>简单来说就是把大量像素均匀的分配给各个处理单元。</p>
+<p>一个简单的例子：一根光线直接打到环境球上，另一根光线在汽车的前灯处反复反弹，这两根光线产生的开销就完全不同。且这种开销无法预知。 负载均衡应该适时的考虑不同CPU或者GPU计算单元的计算能力，给计算能力强的单元更多的任务。</p>
+<p><strong>简单分块</strong>的负载均衡方法：如果有4个CPU，那么把整块图像均匀的分成四块是比较简单的方法，这种方法的缺点在于可能某一块的场景十分复杂，计算比较慢。其他三块都在等他</p>
+<p><strong>按任务大小</strong>的负载均衡方法：把简单分块的块分的足够小（每个像素），这种方法对缓存不太友好。</p>
+<p>按<strong>Task Distribution</strong>的方法：n个像素的图像被划分成m个区域，，每个区域有s个像素，，且m是2的幂次m = pow(2, b)，m需要保证每个区域都至少有s个像素（例如128）且m越大越好。假设处理器有P个，那么{0,1,2，...，m-1}个区域应该被划分成p个连续的区间。区间的长度应正比于处理器的相对性能。最后把每个区域都做一个重映射（例如把每个下标的最低b比特位左右反转）从而是使区域均匀分布。代码如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23.PNG" alt="23"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24.PNG" alt="24"></a></p>
+<p>因为“例如把每个下标的最低b比特位左右反转”这个方法自己是自己的逆函数，所以想要重新找到绘制块然后将所有的块组装起来也是很简单的,如下图所示。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/25.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/25.PNG" alt="25"></a></p>
+<h2 id="三-反射-折射和阴影"><a class="anchor" href="#三-反射-折射和阴影">#</a> 三、反射、折射和阴影</h2>
+<h4 id="11自动处理相邻volumes的材质"><a class="anchor" href="#11自动处理相邻volumes的材质">#</a> 11.自动处理相邻Volumes的材质</h4>
+<p>当两个不同材质的物体相邻时，会出现材质相邻的情况（例如装着水的水杯，水杯和水是不同的材质，也是不同的mesh）在光追的时候，这两个mesh 的关系影响到最终的效果。可以把两个mesh中间留一些缝隙，也可以让两个mesh 稍微重叠一点（这个时候需要设置不同mesh材质的优先级），（但是不能合并两个mesh，因为合并两个mesh会让一个mesh有不同的材质）。这一章就讲了如何处理这种问题</p>
+<p>**处理相邻材质的算法：**维护一个栈，这个栈上表示光线进入材质的材质index，当光线进入一个新的材质，就push进去新材质的index，当光线逃出一个材质时，就把逃出材质的index pop出来。材质被引用的奇偶性表示是否在某个材质内部。这有下面三种情况：</p>
+<ol>
+<li>对于反射，需要 pop top元素</li>
+<li>对于折射，pop top元素以后还需要删除以前对该材质的引用</li>
+<li>对于相同的材质边界，保持堆栈不便。</li>
+<li>如果相机本身就在一个介质内，则初始情况就要有一个初始堆栈。</li>
+<li>下面是代码</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/26.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/26.PNG" alt="26"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/27.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/27.PNG" alt="27"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/28.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/28.PNG" alt="28"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/29.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/29.PNG" alt="29"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30.PNG" alt="30"></a></p>
+<h4 id="12基于微表面阴影函数来解决凹凸贴图中的阴影边界问题"><a class="anchor" href="#12基于微表面阴影函数来解决凹凸贴图中的阴影边界问题">#</a> 12.基于微表面阴影函数来解决凹凸贴图中的阴影边界问题</h4>
+<p>在使用凹凸贴图时，因为对法线的扰动会导致出现阴影硬边，这篇文章就是解决这个问题的。</p>
+<p>阴影硬边出现的原因在于凹凸贴图对法线的扰动是不均匀的：<a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/12-32.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/12-32.PNG" alt="12-32"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/12-31.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/12-31.PNG" alt="12-31"></a></p>
+<p>这篇文章主要的贡献在于，对于这种被扰动的法线，他会使用GGX法线分布函数对这个扰动做修正，从而达到平滑的效果。在他的方法里面，最重要的两个公式分别为,G1就是阴影因子（当前法线阴影项的合理概率），αggx则是GGX金丝来的粗糙度，根据这两个值，文章给了代码的实现：θi是入射光方向和真实表面法线的夹角，θd是表面法线和凹凸发现的夹角。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/12-33.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/12-33.PNG" alt="12-33"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/12-34.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/12-34.PNG" alt="12-34"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/12-35.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/12-35.PNG" alt="12-35"></a></p>
+<h4 id="13光线追踪实时阴影"><a class="anchor" href="#13光线追踪实时阴影">#</a> 13.光线追踪实时阴影</h4>
+<p>光线追踪相比较shadow map的优势：</p>
+<ol>
+<li>避免了因为shadow map分辨率不足导致的锯齿状阴影</li>
+<li>避免了peter panning</li>
+<li>可以处理半影（软阴影）</li>
+<li>可以对半透明物体产生的阴影做处理。</li>
+</ol>
+<p>本文的一些加速方法：</p>
+<ol>
+<li>只对半影区域做密集采样，对完全阴影和完全光照的地方做稀疏采样。文章中存储前四帧所有光源的可见性到一个四通道纹理中，一个通道存储一帧所有光源的可见性，半影通常发生在可见性发生变化的区域，（在这些区域需要做密集采样）。除此以外，文章还使用了一个5x5的最大值滤波器和一个13x13的低通滤波器，最大值滤波器保证周围的像素点也会受到一个超大变化量的影响（一个超大变化量会影响多个像素），而低通滤波器则可以防止快速运动时的闪烁</li>
+<li>时域采样复用，使用reprojection技术，</li>
+<li>如何增加或减少采样数量：如果可见性变化大于一个阈值，S = min(Smax, S+1)如果可见性小于一个阈值，且前四帧的采样数恒定，S = max(0, S-1).对于reprojection失败的像素，直接按照Smax做采样，当屏幕上大部分像素都重投影失败时，为了防止性能下降，可以将Smax的值降低。</li>
+<li>采样mask：当采样数降到0时，表示这个像素一直没有变化，可以直接复用之前的shading结果，单这样可能会发生误差累积，所以文中的策略是把屏幕分成多个4x4的块，每次要强制更新这4x4pixel里面的像素，把2x2=4和块看成一组，四帧里面每组更新其中一个块，如下所示：<a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/13-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/13-4.PNG" alt="13-4"></a></li>
+<li>计算可见性：空间滤波+时间滤波，类似SVGF的方式。最后输出的是降噪后的全图的可见性buffer，最后则会根据这个可见性buffer来做阴影着色。</li>
+<li>在计算灯光的可见性之前会先做light culling，把过远的灯光都cull掉。</li>
+</ol>
+<h4 id="14用dxr实现的ray-guided的单散射介质体积水焦散"><a class="anchor" href="#14用dxr实现的ray-guided的单散射介质体积水焦散">#</a> 14.用DXR实现的Ray-Guided的单散射介质体积水焦散</h4>
+<p><strong>焦散的传统绘制方式</strong>：首先确定水面的position和normal，从光源处绘制一个水表面的pos和normal的图，这个叫做焦散图。从这些位置出发，一部分光线发生折射并且和水下的纹理相交，相交的位置存储在折射焦散图里面，一部分光线发生反射，和墙壁等水上场景相交，相交的结果存储在反射焦散图里面。这些焦散图在后面体积光切片时会被用到。</p>
+<p><strong>与场景求交的方法</strong>（base）：</p>
+<ol>
+<li>
+<p>对shadow map和depth buffer做raymarching，来找到交点，但是可能会有一部分场景同时被shadow map和depth buffer挡住</p>
+</li>
+<li>
+<p>对shadow map和depth buffer做多layer，在多个视角做shadow map和depth buffer，从而产生多张图，这种方法复杂度很高，代价也很高。</p>
+</li>
+<li>
+<p>把水下场景体素化，对体素做raymarching。但是这样做非常慢。</p>
+<p><strong>本文的方法</strong>（使用DXR）：</p>
+<p>下图公式描述了从眼睛E向右看时，射入眼睛里的辐照度公式。</p>
+<p>其中P是射向E的线的中点，Ω是所有折射进来的光线，</p>
+<p>τ : 是水体积的消光系数，</p>
+<p>l(ω)+|P-E| :光线到达P点之前沿着水下传播的消光，P-E是P点到E点的长度（消光（or吸光），值的是光强度发生了衰减）</p>
+<p>σs(P)：点P出的散射系数</p>
+<p>p(E − P, ω)：相位函数，决定了有多少从折射光方向散射到P点</p>
+<p>Lin : 沿折射光方向照射到P点处的辐照度</p>
+<p>v : 沿折射光方向的可见度，例如折射光线是否到达了P点？有两种可能的近似方案来对所有的散射事件做积分计算：</p>
+<ol>
+<li>
+<p>使用3D grid去累积每个网格中心的离散值，这里需要使用足够高的分辨率防止漏光。</p>
+<p>（1）.水面上的点到场景交点需要有足够多的光线，对于每一个到达grid cell的折射光线，计算距离grid cell中心最近的点P</p>
+<p>（2）计算从P点到达眼睛的相位函数和透射辐照度</p>
+<p>（3）对网格单元中透射的辐照度进行离散积分。</p>
+</li>
+<li>
+<p>创建一个足够密集的三角形光束体，来近似使用渲染管线和additive blending计算的散射积分。下一章提供了一个避免三角形和水面三角形因折射光线方向的快速变化产生非凸包的情况。</p>
+</li>
+</ol>
+<p><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/14-3.PNG" alt="14-3"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/14-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/14-4.PNG" alt="14-4"></a></p>
+</li>
+</ol>
+<p><strong>计算光束压缩比</strong>：所谓三角形凸包，其实就是水面三角形和水底下折射三角形（每个水面三角形发出的折射光线和水底相交）形成的几何体，如图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/14-7.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/14-7.PNG" alt="14-7"></a></p>
+<p>这两个三角形会形成一个光束压缩比，计算方式为，水面三角形面积除以水底三角形面积，这个压缩比用来描述三角形光束形成非凸体积的可能性，或者控制把每个凸包细分为更小光束的密度。</p>
+<p><strong>渲染焦散图</strong>：将所有水面三角形用PS写到两个texture上，一个是water surface的3D position，另一个是这个water surface的surface normal</p>
+<p><strong>光线追踪折射焦散图和累积表面焦散</strong>：使用DXR对上一步得到的焦散图中的有效像素做光线追踪，与场景的交点存到折射焦散图里面，此外交点位置会被变换到screenspace，并且会被用来累积表面焦散散射。</p>
+<ol>
+<li>对于焦散图中每个pixel做trace</li>
+<li>计算光线和水下场景几何体的交点，有些情况下可以把这个光线cull掉，例如一个shadow map test发现这个光线被水表面上方的某个几何体遮挡住的时候。</li>
+<li>将交点的位置写到折射焦散图中。</li>
+<li>可选，沿着折射光线与场景交点的反射方向二次trace一个光线，并且把交点存到一个反弹的焦散图中</li>
+<li>在一个offscreen buffer里面对焦散做累加（离散积分）。其步骤是，把交点转换到screenspace上，并且用InterlockedAdd在该屏幕位置做累积。累积的辐照度值可以用之前的压缩比来做缩放，也可以根据距离和吸光系数来做缩放。</li>
+</ol>
+<p><strong>自适应水表面三角形的曲面细分</strong>：这一个步骤主要是为了</p>
+<ol>
+<li>
+<p>防止三角形光束变成非凸包</p>
+</li>
+<li>
+<p>尽量接近散射积分的理想结果而提供足够多的slice</p>
+</li>
+<li>
+<p>确保没有体积光穿透场景中的小物体而造成漏光</p>
+<p>曲面细分和非凸包如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/14-12.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/14-12.PNG" alt="14-12"></a></p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/14-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/14-5.PNG" alt="14-5"></a></p>
+<p><strong>构建三角形光束体</strong>：</p>
+<p>使用geometry shader 对经过曲面细分的三角形构建三角形光束体对应的triangulated hull</p>
+<ol>
+<li>把输入顶点映射到焦散图或者折射焦散图空间</li>
+<li>从焦散图中读取光束顶部三角形的position</li>
+<li>从焦散图中读取光束底部三角形的position</li>
+<li>构建八个三角形。</li>
+<li>计算每个输出顶点处的三角形光束的估计厚度，这样厚度就会通过插值传递给VS</li>
+<li>计算每个输出顶点的光线方向。</li>
+</ol>
+<p><strong>使用 addivice blending渲染体积焦散</strong></p>
+<p>使用PS做additive blending，根据当前3D position和茶之后的光线方向，计算相位函数（phase function），把散射项乘以插值后的厚度。</p>
+<p><strong>结合表面焦散和体积焦散</strong></p>
+<ol>
+<li>
+<p>对表面焦散做降噪和模糊</p>
+</li>
+<li>
+<p>用降噪后的表面焦散照亮场景，例如乘上GBuffer中的albedo</p>
+</li>
+<li>
+<p>对体积焦散结果做模糊并把它添加到经过了光照的GBuffer，从而实现两个焦散的结合。</p>
+<p>整个步骤如下所示</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/14-6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/14-6.PNG" alt="14-6"></a></p>
+</li>
+</ol>
+<h2 id="四-采样"><a class="anchor" href="#四-采样">#</a> 四、采样</h2>
+<h4 id="15重要性采样"><a class="anchor" href="#15重要性采样">#</a> 15.重要性采样</h4>
+<p>普通的蒙特卡洛采样(这里面X是一组n维的随机数，其实就是均匀的对函数做采样，得到的期望值）：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/15-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/15-1.PNG" alt="15-1"></a></p>
+<p>例如算AO的时候，一个P点的环境光遮蔽函数a如下式定义，f(x)这个时候就是可见性：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/15-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/15-2.PNG" alt="15-2"></a></p>
+<p>用蒙特卡洛采样上式函数就如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/15-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/15-3.PNG" alt="15-3"></a></p>
+<p>重要性采样其实就是给每一个采样点一个权值，权值越高，则为了保证贡献相同，这个地方的采样点的概率就应该越低，如下式所示。为了保证下式是无偏的，P(xi)越高，则f(xi)也应该越高</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/15-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/15-4.PNG" alt="15-4"></a></p>
+<p>则基于重要性采样的环境光遮蔽函数就如下所示(按照正比于cosθ的概率生成光线（θ是相对于表面法线的夹角，因为接近水平的光线不需要很多）p(x)越接近于被积函数f(x)，效果越好，但是f(x)通常未知)：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/15-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/15-5.PNG" alt="15-5"></a></p>
+<p>蒙特卡洛积分使用方差来衡量误差，随机变量X的方差定义如下：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/15-6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/15-6.PNG" alt="15-6"></a></p>
+<p>方差是用来衡量随机变量和期望值（均值）之间的差距，如果方差小，则说明和均值是接近的。而样本数越多，方差越小，误差越小。一般来说方差是误差的平方。光线数翻倍，则方差减半，所以从1条光线到2条光线误差降低非常快，但是1000条光线到2000条光线误差就显得没那么快了。（所以好的采样点，降噪算法非常重要）</p>
+<p>与此同时，把光线传播距离（距离近的光源采样光线数量多）和光源能量（光强度大的光源采样光线数量多）可以减小方差，从而提升采样效率。</p>
+<h4 id="16采样变换"><a class="anchor" href="#16采样变换">#</a> 16.采样变换</h4>
+<p>本章主要是将如何按照期望的概率密度分布函数生成样本的方法，主要是在特定域中做变换。</p>
+<p>中间涉及到如何在一维空间做均匀采样，如何把一个均匀分布的函数转换成另一个函数，使另一个函数的采样点也是均匀分布的，包括正态分布，离散采样，二维双线性采样，二维纹理分布采样，利用mipmap的树状结构纹理采样，均匀表面采样，三角形到正方形的变换，三角形网格采样，球型采样。PHONE模型采样，GGX采样等技术。</p>
+<p>在本章中，我们可以学到在不同几何表示上如何做均匀采样，我认为是非常重要的，但是内容太多，每一种采样类型都可以写好多笔记，这一章还是当成字典多看书吧。</p>
+<h4 id="17消除光线追踪中的亮光点"><a class="anchor" href="#17消除光线追踪中的亮光点">#</a> 17.消除光线追踪中的亮光点</h4>
+<p>光线追踪经常会出现图像中有一些非常明亮的噪点，这些噪点是因为当场景中有一些完全反射的物体时，光线追踪时会有一些光线恰好达到这个完全反射的物体上，然后又trace到光源上面，因为光源通常是(500, 500, 500)这样的亮度（为了保证整个场景的亮度），所以这些采样点就会出现过爆的现象，如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/17-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/17-2.PNG" alt="17-2"></a></p>
+<p>解决这个办法有两个，一个是在最后着色时，把超过1的像素亮度clamp掉，这样会导致能量损失，最后可能光球下面的焦散就没了。</p>
+<p>另一种方法叫path regularization，就是直接对具有反射材质的BSDF公式做blur（是blurBSDF，不是blur噪点），这样每一个点就都不会过爆，但是大部分射到反射材质的点亮度都会比较高，这样相当于拥有多个不那么亮的亮点了</p>
+<h4 id="18gpu实现的多光源重要性采样"><a class="anchor" href="#18gpu实现的多光源重要性采样">#</a> 18.GPU实现的多光源重要性采样</h4>
+<p>这个和RTXDI的采样基本一致，就是认为采样的时候，应该按照每个光源的贡献，成比例的概率去采样，这就需要一个全局的光源概率PDF。</p>
+<p>本章中把所有光源都用一个分层的树状加速结构来知道采样，每个节点代表一组光源，在每一层中估计每组光源的贡献，并且在每层随机选择向下遍历的路径，如下所示：</p>
+<p>给一个着色点X，每一层按照概率估计每个相邻子节点对X的重要性，最后，用一个服从均匀分布的随机数来决定树上的路径，越重要的光源采样概率越高。</p>
+<p>重要性指标：</p>
+<ol>
+<li>辐射通量，光源越强，贡献越大</li>
+<li>到着色点的距离，距离越近，贡献越大</li>
+<li>光源的朝向</li>
+<li>光源的可见性，不可见的光源没有贡献</li>
+<li>着色点的BRDF，在BRDF主方向上贡献更大。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/18-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/18-1.PNG" alt="18-1"></a></p>
+<p>为了处理含有大量光源的场景，避免采样数量过多，有一些比较经典的传统方法来加速渲染，例如建立空间加速架构，光源剔除，重要性采样光源等方法。</p>
+<ol>
+<li>**实时光源剔除：**人为的限制每个光源的影响范围，使光源强度在某个距离变为0，从而限制影响给定点的光源数量，再加上tile base shading，把光源放在tile上。使用per tile的light tree来提高剔除率。</li>
+<li>**VPL：**VPL的想法是追踪从光源发出的光，并且在路径上存储VPL，利用这些VPL来近似间接光照，VPL的概念有点像对多光源做重要性采样，把多光源聚类成cluster并且作为树的一个节点，在遍历的时候估计每个节点的贡献。不过VPL和多光源重要性采样也是有区别的，VPL是直接把估计直接用来光照上，而多光源重要性采样则是把估计值用来选择哪一个光源。</li>
+<li><strong>光源的重要性采样</strong>：主要是按照贡献对光源排序，只对大于一定阈值的光源做可见性检测，然后基于可见性的统计去添加剩余光的贡献。有的人用八叉树划分光源，通过八叉树节点上所有光源的贡献就是这个八叉树节点的贡献；有的人把空间做均匀细分；有的人使用kd树或者BVH，并且限制光源的影响范围，通过随机选择光源范围来缓解因为限制光源范围导致的能量损失偏差；Iray使用了hierarchical light importance sampling ，只使用三角形，并且给每个三角形一个辐射通量（功率），给每个三角形建立BVH，节点的贡献使用一个辐射通量值和一个方向信息。</li>
+</ol>
+<p>基础知识回顾：</p>
+<ol>
+<li>
+<p>**光照积分：**从物体表面点X离开，沿着观察方向v的辐射度Lo，是emitted和reflected 的辐射度之和，如下所示,其中f是BRDF，Li是沿着方向l的入射辐射度，L(X ← Y)表示从Y向X发射的辐射度：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/18-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/18-2.PNG" alt="18-2"></a></p>
+<p>半球上的积分可以重写为光源上一点在半球整个表面上的积分，如下图所示，dA是光源上的一小块，X-Y表示平方衰减：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/18-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/18-3.PNG" alt="18-3"></a></p>
+<p>因此，如果场景中有m个光源，则X上反射的辐射度公式可以写为，其中v代表可见性，max(nl,0)表示光源只有一个面发光而不是双面发光的：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/18-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/18-4.PNG" alt="18-4"></a></p>
+</li>
+<li>
+<p>**光源选择的重要性采样：**直接看公式吧，答案就是只有光源PDF和光源实际的辐照度成比例时，最后蒙特卡洛估计中的求和项就会变成常数项的求和，方差就为零，这也是为什么PDF尽量要和采样点的辐照度贡献成比例的原因：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/18-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/18-5.PNG" alt="18-5"></a></p>
+</li>
+<li>
+<p><strong>光源的光线追踪</strong>：光强度指的是单位表面上的辐射度，要用光强度除以光的几何形状的表面积。而通常情况下光的几何形状和实际发光体是两个东西。为了防止光照被光源本身的mesh遮挡住，DX12的API可以设置一个参数来控制这个额。</p>
+</li>
+</ol>
+<p><strong>本书的算法</strong></p>
+<ol>
+<li>
+<p>**光源预处理：**预先计算每个三角形光源的辐射通量值，通常是三角形发出的总辐射功率，漫反射光源的通量：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/18-6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/18-6.PNG" alt="18-6"></a></p>
+<p>Li（X）是X位置的发射辐射度，Ai是三角形的面积。</p>
+<p>三角形的辐射度是需要在纹理空间把所有的emit 三角形光栅化，使每个像素都表示最大mipmap level中的一个纹素，然后需要在PS里面对对应texel中的辐照度取出来，然后对其做原子操作的累加。最后再除以纹素的个数，从而得到辐射度的平均值，这个 操作主要是原子操作费时间。因为这个操作里面PS没有render target，所以viewport可以无限大，我们可以用VS从内存中取出UV，同时吧三角形放在纹理空间合适的位置，保证其一直在视口里面。最后还要把辐射通量是0的三角形剔除掉。</p>
+</li>
+<li>
+<p><strong>构建加速结构</strong>：从上到下建立二叉BVH，要平衡树的质量和构建速度。为了把不同光源的方向考虑进来，每一个节点还要存一个方向锥体，包括一个轴和两个角度（主要是限制在发现周围的发射方向。还要定义一个分割平面，把所有的光源分成两个子节点。SAH和SAOH是两种分割方法，他们的代价计算方式都不同，如下所示,n(C)和a(C)分别返回节点C的光源个数和表面积，：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/18-7.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/18-7.PNG" alt="18-7"></a></p>
+</li>
+<li>
+<p>**光源重要性采样：**采样时就要考虑各种参数带来的权重了，其中</p>
+<p>（1）距离：距离是通过着色点和当前BVH节点的AABB中心点的距离</p>
+<p>（2）光源的通量：节点的通量是带节点内包含的所有光源发出的通量之和，这个是之前与计算好的，如果BVH变化了，那也需要重新预处理这些值</p>
+<p>（3） 光源方向：通过光源的法线和节点的AABB中心到渲染点方向之间的夹角</p>
+<p>（4）节点重要性,其中X-C是着色点X距离C的AABB中心的距离，θ是来自节点C的光源方向锥：</p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/18-8.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/18-8.PNG" alt="18-8"></a></p>
+<ol>
+<li>**随机数的使用：**使用均匀随机数，选择两个子节点，节点的重要性除以总重要性</li>
+<li>对叶子节点采样，最后在光源上生成光源样本。</li>
+</ol>
+<p>最后结果表明，确实使用的信息越多，收敛越快，应该多重考虑距离，光照通量，光源方向等信息。</p>
+<h2 id="五-降噪"><a class="anchor" href="#五-降噪">#</a> 五、降噪</h2>
+<h4 id="19在ue4中利用光追和降噪做电影级渲染"><a class="anchor" href="#19在ue4中利用光追和降噪做电影级渲染">#</a> 19.在UE4中利用光追和降噪做电影级渲染</h4>
+<p>本章主要介绍了将光追集成到UE4中遇到了一些问题，以及对应的解决方法，包括：</p>
+<ol>
+<li>把DXR集成到UE4中，并且能够重用现有的材质shader（这一步主要是工程上的东西，包括如何编译大量的光线追踪渲染器，如何增加对BLAS和TLAS做抽象，如何在引擎层更新BVH树并且还能做到跨平台可扩展，如何修改shader parameters，如何做保留渲染，如何为光线追踪定制一套新的着色器，怎么批量提交多种光线的着色器参数，怎么样才能完全发挥光线追踪的特性）</li>
+<li>利用NVIDIA中的RT core，做硬件加速的BVH遍历和光线/三角形相交测试</li>
+<li>做了一个新的reconstruction filters，可以用在高质量的随机渲染效果上，包括软阴影，glossy 反射，diffuse GI，AO和半透明，每个像素只需要很少的sample。</li>
+</ol>
+<p>UE4在集成光追的时候，想要把不同光路做拆分，阴影，反射和diffuse光线都不同，然后每个效果只用很少的光线，并且努力做降噪从而弥补样本数量的不足，他们用局部属性去提高降噪 质量（例如利用光照的大小，或者BRDF lobe的形状）并且把这些局部属性和最终图像结果结合，他们把这个新技术成为分区光路滤波（partitioned light path filtering）</p>
+<p><strong>光追的阴影：</strong></p>
+<ol>
+<li>
+<p>光追阴影在半影方面优势很大，这种半影在车展上效果很好。</p>
+</li>
+<li>
+<p>lighting evaluation：使用LTC的方法，然后使用光追来收集可见性项的估计，然后再对结果做composite，这里面使用了split sum近似把可见性项拆出来：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/19-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/19-1.PNG" alt="19-1"></a></p>
+</li>
+<li>
+<p>阴影降噪：分为时间和空间两个部分，空间降噪器主要是局部遮挡的频率分析，例如为软阴影做的轴对齐滤波器，降噪器知道光源的信息，例如大小，形状，方向，距离receiver的距离等。而时间降噪器则增加了每个像素的有效样本数。</p>
+</li>
+</ol>
+<p><strong>光追的反射：</strong></p>
+<ol>
+<li>
+<p>SSR只能局限于屏幕空间，light probe不能处理动态场景</p>
+</li>
+<li>
+<p>反射物体的材质shader做简化（因为光追每次求交都会跑材质shader）</p>
+</li>
+<li>
+<p>反射的降噪：只依赖于反射光线的入射幅度项的降噪算法，再次使用split sum把入射幅度项L拆出来，单独对他做降噪，剩下的BRDF做预积分，如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/19-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/19-2.PNG" alt="19-2"></a></p>
+<p>反射降噪也分为时间和空间两个部分。对于其中的空间滤波器，他们在屏幕空间中推导了一个各向异性形状的滤波核，这个滤波核考虑了局部阴影点的BRDF分布，并基于命中距离，表面粗糙度和法线把BRDF投影回屏幕空间做估计。时间降噪器则使用了反射的motion vector（这种方法在曲面上不理想，需要用32章中的技术）</p>
+</li>
+<li>
+<p>基于光追的高光着色：LTC是一种对任意粗糙度进行分析产生逼真面积光的技术，但是他不能处理遮挡。光追有可见性信息，所以可以用来评估材质着色的镜面分量。在文章中，他们简单的把面积光当成emissive object，shade them at the reflection hit point。</p>
+</li>
+</ol>
+<p><strong>光追的diffuse GI：</strong></p>
+<ol>
+<li>AO：原来是用SSAO做的</li>
+<li>基于光追的暴力方法：我们从一个候选的GBuffer采样点中发射一个cosine-hemispherical distribution光线。然后记录emitter的BRDF加权结果（不是可见性），这种方法很费时，但是可以作为base。UE4的做法则是用一个light map 来提供近似的间接光照分布。他们使用了volumetric light map来作为求交的emission，这样开销就跟计算可见性相似了。</li>
+<li>使用path tracing 代替light map。</li>
+<li>使用降噪：</li>
+</ol>
+<p><strong>（混合）光追的半透明（延迟渲染管线）：</strong>：</p>
+<p>使用单独一个半透明光追pass来渲染半透明物体，不用GBuffer 了。当然有一些技巧，例如当光线的透光性越等与0时提前终止掉光线防止不必要的场景穿透等。</p>
+<h4 id="20-实时光线追踪的texture-lod"><a class="anchor" href="#20-实时光线追踪的texture-lod">#</a> 20. 实时光线追踪的Texture LOD</h4>
+<p>光线追踪也需要用texture的mipmap，但是和光栅化自动选择mipmap不同，光追的mipmap level需要自己计算，光栅化的做法是在PS中计算一个quad的difference。但是在迭代的光追里面就不再适用于一个quad去计算了（因为本来就不是屏幕空间的）。本章中介绍了两个计算MipMap Level的方法，一个叫做 ray differentials，通过chain rule去计算texture footprint，这种方法需要大量的计算，每条光线需要大量的数据，但是可以提供高质量的texture filtering。第二种方法叫做ray cones，计算相对简单，他用锥体来表示ray footprints。</p>
+<p>mipmap值λ的计算方法如下，<strong>这个公式很有用，后面两个方法基本都在围绕这两个公式。你会回来看的</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-0.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-0.PNG" alt="20-0"></a></p>
+<p><strong>Texture LOD —— ray differentials算法</strong>（扩展了ray differentials）</p>
+<p>序：光线可以直接访问mipmap的level 0，但是一方面需要对每个像素使用很多光线，另一方面重复访问level会导致cache不友好，而且当物体离相机很远的时候，会产生模糊</p>
+<p>射线的数学表达式,O是原点，射线微分（ray differential）由四个向量组成，其中x，y是屏幕坐标，相邻像素之间有一个单位：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-1.PNG" alt="20-1"></a></p>
+<p>整个核心思想是光线在场景做bounce时，对每条路径做ray differential。</p>
+<ol>
+<li>
+<p>初始化相机光线：在w*h的分辨率下，坐标x,y的像素的非归一化射线表示为,p是[0, 1],c是[-1, 1]，{r,u,v}是右手坐标系中正交相机经过FOV缩放后的基向量：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-2.PNG" alt="20-2"></a></p>
+<p>射线微分如下所示（其实就是xy方向的偏微分）,其中r是一个像素到下一个像素的right vector，u是up vector：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-3.PNG" alt="20-3"></a></p>
+</li>
+<li>
+<p>优化后的质心坐标微分计算，三角形的任何点都可以用质心坐标(u, v)表示，当光线和三角形相交于点P以后，需要计算四个偏微分∂u/∂x, ∂u/∂y, ∂v/∂x, 和 ∂v/∂y：假设P是空间中任意一点，则点P可以表示为，其中s为投影距离，g为与三角形表面不平行的投影向量：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-4.PNG" alt="20-4"></a></p>
+<p>这个方程有点像射线和三角形求交的公式，可以用克莱姆法则变成线性方程组，如下所示(u和v的分子分母上下同时乘上e2*g，sg项和ve2项都为0了)：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-5.PNG" alt="20-5"></a></p>
+<p>这里面直接求出</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-6.PNG" alt="20-6"></a></p>
+<p>认为P = O + td，然后再经过链式法则推导计算∂u/∂x, ∂u/∂y, ∂v/∂x, 和 ∂v/∂y，并通过这几个偏微分算出纹素(s,t)的偏微分：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-7.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-7.PNG" alt="20-7"></a></p>
+<p>问：为什么要计算纹素的偏微分？？？？？</p>
+<p>答：最后算出来的射线微分，代入到文章一开始的公式当中，就可以得到当前点的mipmap值了</p>
+</li>
+<li>
+<p>把GBuffer里面的值代入到第二步推导出的公式当中，可以得到每个像素点的射线微分</p>
+<p><strong>Texture LOD —— ray Cone算法</strong></p>
+</li>
+<li>
+<p>利用ray cone做texture LOD：当一个像素的纹理LOD λ计算出来后，在GPU中使用三线性mipmap的纹理采样，如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-8.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-8.PNG" alt="20-8"></a></p>
+<p>所谓射线锥，其实就是一个从眼睛到像素再到物体形成的锥体，然后再从与物体的交点开始往前做锥体，其实可以发现，射线锥最主要是计算锥的方向（已知），宽度（未知，也是最主要的）和角度（已知）。其实宽度就是锥体和物体相交地方的宽度，只不过锥体两个边在不同相交地方拥有不同的法线，最后角度就不一样（具体的角度由原来扩大或缩小β/2个角度）。如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-9.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-9.PNG" alt="20-9"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-10.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-10.PNG" alt="20-10"></a></p>
+<p>在计算宽度的时候，直接使用w0 = 2‖d0‖tan(α/2) ≈ α‖d0‖, 即可，宽度越大，LOD的mipmap层级应该越高</p>
+</li>
+<li>
+<p>更快速的计算β：直接通过发现计算β：如下图所示，只需要通过变动法线n，就可以得到只要法线移动β/2个角度，反射光线就会移动β，从而实现快速计算。</p>
+</li>
+<li>
+<p>最后归纳出mipmap level的计算公式如下,其中光线第一次和物体相交记为i=0，ni表示第i个相交点的发现，di是上一个交点到当前交点的距离，△i是第i个交点的基础的三角形LOD：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/20-11.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/20-11.PNG" alt="20-11"></a></p>
+</li>
+</ol>
+<p>书中最后还展示了Ray Cone的伪代码，具体看书即可**（非常建议看一下，看完之后会对Ray Cone印象深刻的）**</p>
+<h4 id="21-使用ray-cone和ray-diff-做环境贴图的过滤"><a class="anchor" href="#21-使用ray-cone和ray-diff-做环境贴图的过滤">#</a> 21. 使用Ray Cone和Ray Diff 做环境贴图的过滤</h4>
+<p>这章一看标题就是把上一章的内容拿来用了，公式做了非常多的简化，也没什么好记得笔记</p>
+<h4 id="22-通过自适应光追改进taa"><a class="anchor" href="#22-通过自适应光追改进taa">#</a> 22. 通过自适应光追改进TAA</h4>
+<p>文章提出了一种新的实用算法叫做ATAA(自适应时域抗锯齿)，通过自适应光线追踪超采样的方式扩展TAA。具体来说就是在TAA的过程当中，输出一个segmentation mask用来保存失败的TAA pixel以及失败的原因，然后利用sparse 光线追踪替换这些失败的点。如下图所示。这种方法可以对失败的像素采用8x数量的光线做超采样，得到的效果相当于8xTAA，但是如果失败的像素点只占6%的话，平均每个像素还不到0.5根光线。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/22-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/22-1.PNG" alt="22-1"></a></p>
+<p>算法细节：</p>
+<p><strong>segmentation 的策略</strong></p>
+<p>需要一个motion vector，判断当前像素是否在上一帧中找不到像素，如果找不到的话就用FXAA（因为很快）。对于那些运动的物体，虽然上一帧中能找到对应的像素，但是颜色值完全不同，这个时候就可以标记为需要用光追矫正。</p>
+<p>实际上可以使用类似SVGF的方法，对深度，法线，网格ID，亮度做一个组合，最后生成一个segmentation mask</p>
+<p><strong>光追的策略：</strong></p>
+<p>其实也没什么特殊操作，就是时空复用采样点以增加采样点数量的一系列优化方式，以加速收敛</p>
+<p><strong>局限性：</strong></p>
+<ol>
+<li>当有些物体是subpixel级别的，就可能会被忽略掉。</li>
+<li>因为DXR无法准确识别Mipmap level，所以会和SSAA的结果相比要差一些。</li>
+<li>因为光线稀疏的分布在整个屏幕中，所以无法保证后处理pass的必要数据是在像素里面的。</li>
+</ol>
+<h2 id="六-混合管线系统"><a class="anchor" href="#六-混合管线系统">#</a> 六、混合管线系统</h2>
+<h4 id="23寒霜frostbite引擎预览系统中的可交互lightmap和irradiance-volume"><a class="anchor" href="#23寒霜frostbite引擎预览系统中的可交互lightmap和irradiance-volume">#</a> 23.寒霜（frostbite）引擎（预览系统）中的可交互lightmap和Irradiance Volume</h4>
+<p>依赖light map和probe的静态GI烘焙一次就能得到好的效果，而且还很快，有移动光源的动态GI则又耗时，运行时也只是个近似。light map的生成可以并行化，因为每一个texel都可以独立生成。</p>
+<h5 id="一输入与输出"><a class="anchor" href="#一输入与输出">#</a> 一.输入与输出</h5>
+<p>输入：</p>
+<ol>
+<li>
+<p>**几何数据：**每一个三角形都有一个UV2，以便将光照贴到模型上，不过这些模型都是proxy meshes，都是经过减面的模型，这样可以减轻因light map分辨率不够导致的自相交，同时还要保证UV尽量避免texture sample时产生的拉伸而变形。UV也可能会被分为很多块，以防止块与块之间距离太近导致漏光。</p>
+</li>
+<li>
+<p>**材质：**每个几何模型都有一些材质属性，例如diffuse albedo， emissive color等</p>
+</li>
+<li>
+<p>**光源信息：**点光源，面光源，方向光和天光等，天光存储在一个分辨率比较小的cubemap里面</p>
+</li>
+<li>
+<p>**irradiance volumes：**要对动态物体的光照做预览，动态物体的光照会被层次irradiance volumes照亮，每一个irradiance volume存储了一个三维网格的SH。</p>
+</li>
+<li>
+<p>场景的几何体都会做预处理，为light map的texel产生出一种叫做sample location的东西，作为光追时的起始点，每一个样本点的位置都落在每一个光照贴图上，然后这些样本点将会与没有展开UV的场景几何体求交，求交成功的点会参与到稍后进行的光追计算中（如下图所示）。计算采样位置会用Halton低差异序列在proxy mesh的UV空间内。场景的几何体都用BVH存起来。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-1.PNG" alt="23-1"></a></p>
+</li>
+</ol>
+<p>输出：</p>
+<p>输出数据会存到lightmap或者irradiance volume中，</p>
+<ol>
+<li>**irradiance：**主要是lightmap或者irradiance volume中的directional irradiance。irradiance的表示方式有很多种，例如平均值，主成分方向（principal direction）或者SH。</li>
+<li>sky visibility：主要描述了给定一个lightmap texel或者irradiance volume point，他的天空可见度，这个数值会参与到后面的材质效果当中。</li>
+<li>AO：这个主要记录了lightmap texel或者irradiance volume point的AO，实时计算时会参与到reflection occlusion中。</li>
+</ol>
+<h5 id="二gi"><a class="anchor" href="#二gi">#</a> <a target="_blank" rel="noopener" href="http://xn--4kq.GI">二.GI</a> pipeline总览</h5>
+<p>如下图所示,总共分为几个步骤：</p>
+<ol>
+<li>更新场景，例如模型的移动或者灯光的变化</li>
+<li>更新缓存，如果辐照度缓存无效或者还没计算完成，就要用光追计算缓存中入射光的辐照度，这个缓存会用于加速管线中光线追踪的计算。</li>
+<li>schedule texels：基于摄像机角度，把大部分相关的light map texel或者可见的irradiance volumes都找出来</li>
+<li>trace texels：对每一个待计算的texel和辐照度采样点做光追，，这些光路可以用来计算入射光辐照度，也可以用来计算天空可见度以及AO</li>
+<li>merge texels，把钢计算的irradiance samples加到持久化的输出里面</li>
+<li>后处理，包括dilation和降噪</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-2.PNG" alt="23-2"></a></p>
+<h5 id="三光照计算和光路构建pipeline总览的第4步"><a class="anchor" href="#三光照计算和光路构建pipeline总览的第4步">#</a> 三.光照计算和光路构建（pipeline总览的第4步）：</h5>
+<p>计算lightmap每个texel的辐照度E，就需要对上半球内的入射光的光强度L使用投影立体角的值做带权积分，这个方程不好解，采用蒙特卡洛积分法来做。简单来说就是构建若干条由lightmap texel到光源的光路，然后用他们做光线追踪，这些点都依附在几何体表面上，如下伪代码所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-3.PNG" alt="23-3"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-4.PNG" alt="23-4"></a></p>
+<p>但是上面的方法相对较慢，有很多优化方法，例如：</p>
+<p><strong>使用重要性采样</strong>，使用光照法线上半球内的投影值作为权重做重要性采样，因为垂直入射光的贡献应该更大。</p>
+<p>**使用随机数构建光路：**使用低差异序列选择采样点位置，再用低差异序列生成样本的方向，可以使用四维低差异序列代替两个二维低差异序列。这样可以保证足够均匀，减少采样方差。</p>
+<p>**next event estimation：**当场景只有一个光源且体积很小时，光线几乎不可能找到光源，那么就把一条光路上的所有点都和光源链接起来，然后计算他们的贡献。这样可以重用很多已经够早好的子路径，来构建更多的光路。</p>
+<h5 id="四光源"><a class="anchor" href="#四光源">#</a> 四.光源：</h5>
+<p>局部点光源：辐照度强度由光源到着色表面的距离和光线入射的角度决定。</p>
+<p>面光源：面光源的辐照度是对面光源可见的表面积分得到的。这里就使用next event estimation来做就行，如下图所示</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-5.PNG" alt="23-5"></a></p>
+<p>方向光：方向光的辐照度在光路路径中的每一个反射点上被采样。</p>
+<p>天光：当一个光线没有与场景任何一个点相交时使用天光。</p>
+<h5 id="五特殊材质除漫反射材质外"><a class="anchor" href="#五特殊材质除漫反射材质外">#</a> 五.特殊材质（除漫反射材质外）</h5>
+<p>自放光表面：带有自发光的三角形会直接被放到类似BVH的加速结构里面</p>
+<p>半透明物体：光的透过量由物体表面的漫反射率和透光率决定，基于这两个值，会随机决定一调光线是透过物体还是反射。如果穿透物体的话，则光源不会和半透物体的交点连接。</p>
+<p>透明物体：透明物体会影响光照的可见度，这个效果可以在anyhit shader里面将透射度乘以一个可见度来完成。</p>
+<h5 id="六scheduling-texelspipeline中的第五条"><a class="anchor" href="#六scheduling-texelspipeline中的第五条">#</a> 六.Scheduling texels（pipeline中的第五条）</h5>
+<p>在做光追之前，系统需要决定哪些texel是需要计算的，这里使用了一个启发式的算法，例如（视图优先算法）和（质量收敛剔除法，convergence culling）</p>
+<p>convergence culling会去遍历所有的texel，看是否已经收敛了，在没收敛的texel上取一个sample放在buffer里面</p>
+<p>当所有需要计算的sample都放入到buffer中以后，开始做scheduling texel的第二部分，每一个sample 可能会被evaluated很多次，次数和系统性能相关，下图表述了texel计算时候的调度策略，ns表示纹素对应的样本数，nt表示纹素的数量，ni表示运算迭代数，最后总的采样数是ns<em>nt</em>ni,</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-6.PNG" alt="23-6"></a></p>
+<h5 id="七性能开销"><a class="anchor" href="#七性能开销">#</a> 七.性能开销：</h5>
+<p>实现了一套代码去评估光追的时间，系统会根据光追消耗的时间动态调整sample的数量，代码没啥好说的，如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-7.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-7.PNG" alt="23-7"></a></p>
+<h5 id="八后处理"><a class="anchor" href="#八后处理">#</a> 八.后处理：</h5>
+<p>为了“所见即所得”，需要解决三个问题:</p>
+<p>(1) texel可能会变黑，因为可能某个纹素还没来得及计算，这个需要对输出的light map做一个dilation filter，保证所有的texel在运行时线性UV采样不会出现黑色。</p>
+<p>（2）texel有噪点，噪点会随着时间的增加而减弱，寒霜采用了一种预测收敛期望值的降噪算法对结果做处理，核心思想是追踪纹素的方差，并且通过这个方差去控制做邻域滤波的大小，最后这个filter会应用到light map 空间，并且用几何体ID去识别边界，这样可以避免对边界做filter，如下图所示,这个方法叫做A-Trous denoiser：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-8.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-8.PNG" alt="23-8"></a></p>
+<p>上面这个方法，其实就是根据不同的geometryID和亮度方差做filter，只选择跟当前像素点相似的pixel做filter，例如上图中绿色的点是在被filter降噪的点，距离最近的方框只有左下角因为亮度差距太大被cull掉了，稍微大一点的框左下角的红色因为ID不同被cull掉了，这样就只filter附近的像素。文章计算方差的代码如下，认为置信区间大于95%就算收敛：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-9.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-9.PNG" alt="23-9"></a></p>
+<p>(3) 接缝问题（seams：lightmap里面不同UVblock之间会有接缝的问题，当两个texel在世界空间中对应的几何体相连接，但是UV空间不连接时就会有这个问题，寒霜使用了基于CPU的接缝修补方案。</p>
+<h5 id="九加速技术"><a class="anchor" href="#九加速技术">#</a> 九.加速技术</h5>
+<ol>
+<li><strong>view prioritization</strong>，view的优先级技术：编辑场景的时候，camera可能只观察到场景的一小部分，那就对需要渲染的texel做一个排序，只渲染可见的texel加速收敛，如下伪代码</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-10.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-10.PNG" alt="23-10"></a></p>
+<ol>
+<li>**light 加速结构：**有点像light culling，只计算有可能对着色点产生光照的光源。这个加速结构是一个spatial hash function，有点像是一个3d的k-d tree（或者是不均匀的voxel），不过是空间包围盒。每一个包围盒都被映射到一个具有ne个元素的一维哈希函数上。这个哈希表会在场景加载时，在GPU上创建一次，存了一个灯光都够影响到的所有采样点样本点的索引，</li>
+<li>**辐照度缓存：**计算每个反射点到每个可见光的开销很大，要对这个做缓存，具体策略是根据不同的光照成分缓存不同的光照贴图，例如局部光照、阳光和天光都有自己的一块缓存，这样某一个光照更新的时候只用更新对应的缓存就好了，不用更新所有。有这个缓存，则计算的时候就不需要做很多光线追踪，而是做很多次贴图采样就可以了。</li>
+</ol>
+<h5 id="十性能效果"><a class="anchor" href="#十性能效果">#</a> 十.性能效果</h5>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/23-11.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/23-11.PNG" alt="23-11"></a></p>
+<h4 id="24基于光子映射的全局光照"><a class="anchor" href="#24基于光子映射的全局光照">#</a> 24.基于光子映射的全局光照</h4>
+<p>光子映射主要用于动态光源和物体，能够和静态的GI一起合作。具体的pipeline如下所示</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-1.PNG" alt="24-1"></a></p>
+<p>这一章有几个关键的步骤，分别是生成RSM，并且基于RSM做第一次bounce，使用小波变换构建重要性采样点，使用俄罗斯轮盘做提前termination， 存储光子（photon），光子splatting（溅射？大致意思就是影响到周围的像素点），定义splatting的kernel（大小），构建kernel的形状，光子发射，时间滤波和空间滤波。</p>
+<ol>
+<li><strong>生成RSM，并且基于RSM做第一次Bounce</strong>：确定所有光源要发射的光子总数，然后把这些光子按照光强度成比例分配给各个光源，对每一个光源生成RSM。</li>
+<li><strong>使用小波变换构建重要性采样点</strong>：我们并不是根据RSM均匀的生成采样点，而是要做重要性采样，小波变换有两个步骤，首先要将离散Haar小波变换应用到概率图上，生成图像的金字塔表示，之后使用低差异序列重建每个样本的位置（第16章的采样变换），并且基于小波变换中每次迭代的缩放系数来矫正采样位置。（注意这里是对整个RSM level使用小波变换，每步的分辨率减半，直到分辨率变为2x2，这么小的分辨率使用一个pass消耗很大，所以最后一级单独使用CS计算）如下图所示：</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-2.PNG" alt="24-2"></a></p>
+<ol>
+<li>
+<p><strong>对光子做trace</strong>：对每一个RSM采样点使用重要性采样生成RSM光线的方向，采样生成的方向应该和RSM点的BRDF类似。然后再对这个反射的方向使用俄罗斯轮盘做提前termination，概率是BRDF和采样方向概率之间的比例。而存活的光子则会相应的调整其输出保证最后结果正确，这种方式可以在光线遇到反射很少光的表面时，几乎没有光子会继续下去了。</p>
+<p>直接看代码会清楚一点：</p>
+<p>生成光线：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-3.PNG" alt="24-3"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-4.PNG" alt="24-4"></a></p>
+<p>最近命中着色器从payload中解压所需要的值，然后确定接下来反射的光线（包括俄罗斯轮盘）</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-5.PNG" alt="24-5"></a></p>
+<p>存储的光子被添加到线性缓冲区，使用原子操作。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-6.PNG" alt="24-6"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-7.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-7.PNG" alt="24-7"></a></p>
+</li>
+<li>
+<p><strong>定义splatting kernel的大小：</strong></p>
+<p>kernel的大小很重要，如果kernel太大光线就会很模糊，如果太小就会有很多噪点。因为很大的kernel会使光子覆盖很多像素，导致raster，shading和blending的工作更多。。光子kernel的大小和光线长度、光子密度分布有关系，光线长度的缩放因子如下所示,，其中l是光线长度，lmax是定义的最大光线长度的常数：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-8.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-8.PNG" alt="24-8"></a></p>
+<p>光子密度越大，kernel应该越小，光子密度和缩放如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-9.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-9.PNG" alt="24-9"></a></p>
+<p>其中αx和αy是相机视锥体的apertures（光圈），Zview是和相机的距离，tx和ty是tile dimensions in pixels，rx和ry表示图像分辨率</p>
+<p>kernel的大小用代码表示如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-10.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-10.PNG" alt="24-10"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-11.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-11.PNG" alt="24-11"></a></p>
+</li>
+<li>
+<p><strong>定义splatting kernel的形状</strong>：</p>
+<p>在光子相交的表面法线方向应该减小kernel的半径，在光的传播方向上应该放大kernel，。代码如下所示</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-12.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-12.PNG" alt="24-12"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-13.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-13.PNG" alt="24-13"></a></p>
+</li>
+<li>
+<p><strong>光子splatting</strong>：</p>
+<p>整个splatting使用上面定义的nernel来做就可以了，没什么特别的，如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-14.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-14.PNG" alt="24-14"></a></p>
+</li>
+<li>
+<p>时间滤波：</p>
+<p>时间和空间滤波算法都是基于两个像素之间的深度差异和他们表面差异的edge-stopping函数，（就是双边滤波吧）。防止跨越边界做滤波，深度差权重定义如下：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-15.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-15.PNG" alt="24-15"></a></p>
+<p>其中z(P)是像素位置P处的屏幕空间深度，并且△z(P)是深度梯度矢量。</p>
+<p>时间滤波就是把这一帧和上一帧通过reprojection算出的mv放在一起，然后两个平均一下，如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-16.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-16.PNG" alt="24-16"></a></p>
+</li>
+<li>
+<p>空间滤波：这里使用A-Trous小波变换，是一种multi-pass的滤波算法， 每一个passi都会把kernel增大到Ωi，每一个stage，filter都会增大一倍，并且中间的sample会被忽略掉（不会增加sample点，从而增大开销），这种算法对GPU比较友好，因为这样group shared memory就可以被高效利用了，如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-17.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-17.PNG" alt="24-17"></a></p>
+<p>但这种滤波方式会让图像过渡模糊，文中提出了一种基于内容的图像滤波方式，即利用静态小波变换解决离散小波变换位移不变的缺点。文章利用静态小波变换，他在每次迭代时保存每个像素的detail coefficients，detail coefficient如下定义：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-18.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-18.PNG" alt="24-18"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-19.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-19.PNG" alt="24-19"></a></p>
+<p>第14和15个式子指的是像素P在A-Trous小波变换的第i次迭代的辐照度值记为Si（P），di是detail coefficient，有了这么一个detail coefficient，那么最原始的辐照度值S0（P）就能够很好的计算出来， 如下式所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-20.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-20.PNG" alt="24-20"></a></p>
+</li>
+</ol>
+<p>但是其实如果这么做的话，只是相当于把原图s0饶了一大圈子由得到了S0，我们想得到的其实是做完滤波的图像， 这里就用到了variance clipping的方法，如下式所示：这里面bi就是在时域滤波时候用的颜色空间BBox。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-21.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-21.PNG" alt="24-21"></a></p>
+<p>最后再应用这个已经做过滤波的辐照度texture</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/24-22.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/24-22.PNG" alt="24-22"></a></p>
+<h4 id="25基于实时光线追踪的混合渲染器"><a class="anchor" href="#25基于实时光线追踪的混合渲染器">#</a> 25.基于实时光线追踪的混合渲染器：</h4>
+<p>这个感觉很平常，直接把步骤写一下好了： 一. 对象空间渲染</p>
+<p>(1)纹理空间对象参数化</p>
+<p>（2）透明度和半透明的光线追踪</p>
+<p>二.全局光照（diffuse）</p>
+<p>三.生成GBuffer</p>
+<p>四.直接阴影</p>
+<p>（1）用Gbuffer辅助生成阴影</p>
+<p>（2）阴影去噪</p>
+<p>五.反射</p>
+<p>（1）使用Gbuffer辅助生成反射</p>
+<p>（2）用光线追踪在反射交界处生成阴影</p>
+<p>（3）反射去噪</p>
+<p>六.直接光照</p>
+<p>七.反射和辐射度合并</p>
+<p>八.后处理</p>
+<h4 id="26deferred-混合path-tracing"><a class="anchor" href="#26deferred-混合path-tracing">#</a> 26.deferred 混合path tracing</h4>
+<p>渲染pipeline如下，基本就是混合渲染管线，就是多用了一个reprojection，然后分开计算specular和diffuse，也没什么特别的：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/26-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/26-1.PNG" alt="26-1"></a></p>
+<h4 id="27基于光线追踪的高品质科学可视化"><a class="anchor" href="#27基于光线追踪的高品质科学可视化">#</a> 27.基于光线追踪的高品质科学可视化</h4>
+<p>这里主要是做科学可视化中复杂的数据、概念和物理现象时用的光追，要求所见即所得的工具，介绍了一个叫做VMD的分子（化学）可视化工具，里面有一些关键技术，不详细说了</p>
+<ol>
+<li>使用正确的几何图元（球体可以用半径+原点）</li>
+<li>冗余消除，压缩及量化（可视化流体流动，如果组成的所有段都有相同的半径，那就可以把半径这个公共的参数提取出来）。里面提到了一个八面体法向量编码实现的法线压缩算法。</li>
+<li>关于加速结构的思考：BVH加速结构的选择很重要，因为BVH本身也有开销，特别是rebuild和refit的时间需要重新衡量，最好可以拆线程拆出来</li>
+<li>科学可视化中的AO：最好能够调一两个关键参数就能修改AO的效果，不需要美术那么高的门槛就能做，</li>
+<li>强化透明表面的边缘</li>
+<li>剔除过多的透明表面</li>
+<li>轮廓描边</li>
+<li>裁剪平面和球体</li>
+</ol>
+<h2 id="七全局光照"><a class="anchor" href="#七全局光照">#</a> 七.全局光照</h2>
+<h4 id="28对不均匀的介质做光线追踪"><a class="anchor" href="#28对不均匀的介质做光线追踪">#</a> 28.对不均匀的介质做光线追踪</h4>
+<p><strong>一、光在介质中的传输公式：</strong></p>
+<p>光在介质中传输会有一部分被吸收，一部分被散射，这两个值分别用散射系数（scattering）σ和吸收系数（absorbing）α来描述。消光系数是两者之和。Beer-Lambert的透光率公式如下,其中光线起点为o，方向为d，T是透光率：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/28-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/28-1.PNG" alt="28-1"></a></p>
+<p>上面这个式子在光传播时非常重要，例如一根光线传播s距离的散射值就需要通过对T加权积分才能得到，如下式所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/28-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/28-2.PNG" alt="28-2"></a></p>
+<p>一个蒙特卡洛光线追踪器也希望在T上做重要性采样，具体做法是随机一个距离，通过这个距离来判断一个光子发生碰撞时到底是应该吸收还是散射（距离越远吸收的概率越高）。这样光线追踪器就可以知道到底应该是散射还是吸收。如下式所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/28-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/28-3.PNG" alt="28-3"></a></p>
+<p><strong>二.Woodcock tracking（追踪）</strong></p>
+<p>基本思想是：我们处理不了不均匀的介质，但是均匀的介质相对还是比较好处理的。那就先假想一个消光系数（fictitious extinction coefficient），让这个假想的消光系数和真实的消光系数之和等于所有位置的最大值kmax。人工介质（artificial volume）就可以看成真实粒子和虚拟粒子的混合体，，真实粒子可以发生吸收和散射，而虚构粒子不会有吸收和散射。这样在光线传播过程当中，碰撞的粒子可能是虚构的也可能是真实的，比例就是真实/虚构的比例，这样就相当于是重要性采样了。如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/28-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/28-4.PNG" alt="28-4"></a></p>
+<p>woodcock tracking的代码如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/28-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/28-5.PNG" alt="28-5"></a></p>
+<p><strong>三.实现的代码（这部分得看书，太多了）</strong></p>
+<p>代码虽然多，但其实基本上就是围绕上面sample_distance来的，不同的介质get_extinction函数的实现不同，</p>
+<h4 id="29光线追踪中的高效particle-volume-splatting"><a class="anchor" href="#29光线追踪中的高效particle-volume-splatting">#</a> 29.光线追踪中的高效particle volume splatting</h4>
+<p>本章主要讲了如何渲染大量用光线追踪照射的粒子。可以实现粒子反射、大型透明物体等很牛逼的效果。具体做法其实就是对粒子做BVH等加速结构，然后对这些加速结构做排序。</p>
+<p><strong>一、算法：</strong> 主要思想就是沿着视角光线去采样所有附近的粒子，然后沿着光线对做过深度排序的samples做积分。</p>
+<p>所有的primitive 都是一个拥有一个半径为r，中心P和2r大小的bound box的radial basis function（RBF）。我们通过原点O，方向d的光线和距离Bbox 中心的距离P来确定采样点的位置X，如下式所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/29-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/29-1.PNG" alt="29-1"></a></p>
+<p>然后再去估算这个采样点的高斯径向基函数（Gaussian radial basis function）(这个东西的解释在这里<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BE%84%E5%90%91%E5%9F%BA%E5%87%BD%E6%95%B0%E6%A0%B8">高斯径向基函数-wiki百科</a>，还有这里<a target="_blank" rel="noopener" href="https://blog.csdn.net/dengheCSDN/article/details/78109253">核函数和径向基函数</a>，整体看下来就是某种沿径向对称的标量函数，例如空间中任一点x到某一中心xc之间欧氏距离的单调函数)</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/29-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/29-2.PNG" alt="29-2"></a></p>
+<p>然后沿着每束光线对所有sample的深度做排序，对他们用一下的表达式做合并,：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/29-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/29-3.PNG" alt="29-3"></a></p>
+<p>α = ϕ(Xi)是sample 的透明度，c = c(ϕ(Xi))是采样点的颜色，f和b分别是混合操作前和操作后的值。</p>
+<p><strong>二、实现：</strong></p>
+<p>**概述：**直接按照常理生成光线会生成大量不相关的光线，导致性能低下，文章的方法会尽可能的增加遍历的相关性，使用尽可能少的光线覆盖有效的空间区域。如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/29-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/29-4.PNG" alt="29-4"></a></p>
+<p><strong>光线生成：</strong></p>
+<p>生成光线的时候，会先和Volume Bounding Box求交，把结果分成一组长条（slabs）用slab_spacing表示，每一个slab都有一个ray.tmin和ray.tmax来限制加速结构的遍历。然后使用rtTrace做求交，然后对每一个slab内的相交采样点保存到PerRayData里面。之后对sample list做排序并且做积分，</p>
+<p>具体需要看代码，有点长，简单来说就是记录一个光线和bbox交点的tenter和texit，然后把tenter和texit之间的部分(bbox内部)分成一个一个的slab，每一个slab都有一个tmin和tmax，对每一个slab做trace，其实每一个slab trace的时候就可以看成是一段普通的光线了，然后对结果做sort，最后对排序后的粒子求和</p>
+<p><strong>相交着色器和any-hit shader：</strong></p>
+<p>如下所示：简单来说就是如下灵魂画图：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/29-6.png"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/29-6.png" alt="29-6"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/29-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/29-5.PNG" alt="29-5"></a></p>
+<p>**排序和优化：**大小为31的冒泡排序？可能是因为数量比较少，所以性能还不错</p>
+<h4 id="30-使用屏幕空间光子映射技术渲染焦散"><a class="anchor" href="#30-使用屏幕空间光子映射技术渲染焦散">#</a> 30. 使用屏幕空间光子映射技术渲染焦散</h4>
+<p>光子映射是一个很耗时的工作，本章就是通过在屏幕空间的光子映射技术来渲染焦散，从而把他应用到实时渲染里面。该方法把光子存储为屏幕空间的一个texel（正常来说会存成一个voxel或者surfel)，这种方法被称为SSPM（screen space photon mapping）</p>
+<p><strong>一.概述：</strong></p>
+<p>本章把光子映射分为三个阶段，分别为：</p>
+<p>（1）光子发射和光子追踪（散射）：光线生成器的每一个光线对应一个光子，当一个光子从光源出发到达一个不透明的表面上时，将被存储在屏幕空间中，有点像SSR。屏幕空间就是一个texture，每一个纹素都存储了带噪点的焦散。</p>
+<p>（2）光子收集（降噪）：其实就是降噪，做filter</p>
+<p>（3）使用光子图来做照明：这是基于延迟渲染管线，有一个depth buffer和roughness buffer</p>
+<p><strong>二.光子发射：</strong></p>
+<p>在世界空间，发射的光子拥有color、intensity、direction。而当光子在世界空间停下来时（照射到屏幕空间）只保留光子的颜色和强度，因为一个像素会保存很多光子，压缩空间。光子的辐射通量可以同时保存光子的颜色和强度，下式所示为光子发射的辐射通量,其中pw和ph是光子的尺寸，le是来自光源的光线的辐射率（Radiance）：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30-1.PNG" alt="30-1"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30-2.PNG" alt="30-2"></a></p>
+<p>为了减少光子的浪费，需要使用projection map（其实就是从光源观察的图）把光子集中在重要区域。文章使用了一种叫做投影体（projection volume）的方式，就是一个大的包含了所有能生成焦散物体（半透明物体）的大盒子，如下图所示。将这个盒子投影到方向光的反方向，可以得到一个矩形的光区域（light area）</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30-3.PNG" alt="30-3"></a></p>
+<p>light area A的分辨率为pw ph，每个光子对应光区域a1的面积为1/(pw*ph),方向光发射的辐射通量为：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30-4.PNG" alt="30-4"></a></p>
+<p><strong>三、光子追踪</strong></p>
+<p>在世界空间做tracing，光子不被存储的条件有四种：</p>
+<p>（1）光子的强度很小（例如穿过透明物体时能量衰减到一定值）</p>
+<p>（2）要存储的位置在屏幕之外</p>
+<p>（3）光子深度超过了存储的深度缓冲（一直没有物体被击中）</p>
+<p>（4）光子是直接光照的一部分（没有打到projection volume上)</p>
+<p><strong>四、存储光子</strong></p>
+<p>把一个光子压缩成一个像素，之后降噪的时候会把像素中的光子散射到其他像素中（从临近像素中收集光子）。世界空间下，像素的面积ap为：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30-5.PNG" alt="30-5"></a></p>
+<p>这里w和h是屏幕的宽度和高度，θx和θy是FOV的x和y方向角。d是从观察点到像素在世界坐标系下的距离。因为Φe不是radiance，是辐射通量flux，所以一个光子必须被转换成radiance，所以存储在像素中的radiance lp如下式所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30-6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30-6.PNG" alt="30-6"></a></p>
+<p><strong>五、光子收集</strong></p>
+<p>直接用NVIDIA 的reflection denosizer，使用camera matrix， depth buffer， roughness buffer，normal buffer 作为输入，收集临近像素的反射值</p>
+<p><strong>六、lighting</strong></p>
+<p>和正常的屏幕空间lighting一样，photon map里面的photon是像素的附加光。</p>
+<p><strong>七、效果</strong>（说实话还是有点慢的)</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30-7.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30-7.PNG" alt="30-7"></a></p>
+<p><strong>八、（伪）代码：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30-8.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30-8.PNG" alt="30-8"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/30-9.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/30-9.PNG" alt="30-9"></a></p>
+<h4 id="31通过路径重用估计footprint-estimation来减少方差"><a class="anchor" href="#31通过路径重用估计footprint-estimation来减少方差">#</a> 31.通过路径重用估计(footprint estimation)来减少方差</h4>
+<p>多重重要性采样能加权不同采样方法的结果，使方差最小，本章就是使用子路径的footprint estimates去预测通过光子复用产生的真实的variance reduction（The trick is to use footprint estimates of sub-paths to predict the true variance reduction that is introduced by reusing all the photons.）没看懂- -</p>
+<p><strong>一.介绍</strong></p>
+<p>在做光线追踪的时候，有很多种采样策略，包括路径追踪，双向路径追踪，光子映射和VCM，如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-1.PNG" alt="31-1"></a></p>
+<p>其中路径追踪(PT)就是从眼睛出发，随机tracing寻找光源，当然也可以直接和已知的光源连起来（主要是为了解决光源较小的问题）</p>
+<p>而双向路径追踪（BPT）就是同时从光源和眼睛出发，把所有可能的链接都提供一个采样点，这种方法可以找到焦散的路径，而PT是不行的。Veach 引入了一个把所有采样方式放在一起加权的方式，这种方式几乎是最优的，叫做平衡启发式（balance heuristic），如下式：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-2.PNG" alt="31-2"></a></p>
+<p>其中a、b是可能的samplers集合S中的sampler的index，概率密度是P{a,b}.n{a.b}表示这种采样方式用了多少次，PT和BPT中n始终是1。所有不同启发式算法的权重w的和为1,例如有两种不同方式去寻找同一个路径，这两种方法给的概率居然不同，那最终的结果是两种方法的加权平均值。</p>
+<p>光子映射（PM）上一章学过了，就是沿着light sub-paths做trace，结果以光子形式存储，第二个pass中，生成view的sub-pass，并且周围的光子会被合并到当前路径中。PM可以和Veach的加权方式兼容，因为可以在每一个view sub pass vertex找到所有nΦ个光子，因此可以做大量的重用。由BPT+PM == VCM。但是Veach会引入误差。</p>
+<p><strong>二、为什么会引入误差（不能完全复用）</strong></p>
+<p>BPT的方差由从摄像机发出的view path和从光源发出的light path组成，这个方差由两个随机变量X和Y产生的,如下式所示</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-3.PNG" alt="31-3"></a></p>
+<p>因为使用nΦ个光子，light sub-pass合并时的方差会减少nΦ倍，但是如果大部分的方差来自于view sub-pass，那么实际上的方差就会比nΦ倍小得多，使用nΦ个光子会减小V<a href="%E5%85%89%E6%BA%90%E5%AD%90%E8%B7%AF%E5%BE%84">Y</a>，因此我们把第三第四项除以一个值。</p>
+<p><strong>三、有效的reuse factor</strong></p>
+<p>公式换成：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-4.PNG" alt="31-4"></a></p>
+<p><strong>四、一个近似的方案</strong></p>
+<p>其实上面那个公式最主要的是要知道V和E都是多少。文章做了几个假设，</p>
+<p>（1）假设采样密度函数p和目标函数是成比例的，那么蒙特卡洛积分器中计算的比率f/p对于任何样本都是一个恒定值，那么方差的估计就是0.</p>
+<p>（2）把入射辐射度看成来自确定性直接光计算一个随机变量的期望值（E[Y] = Li, V[Y] = 0),以及一个E[X] = 1的摄像机采样sub-pass，和V[X] = ε（像素抖动）的采样，那么最终方差就为E[Y]*E[Y]*V[X]。为了近似辐射度和重要性，我们需要每平方米的密度和每个子路径的立体角，或者也可以密度的倒数，即footprint A[X]和A[Y]，如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-5.PNG" alt="31-5"></a></p>
+<p>然后式子就变成了了下面这个（假设 ε很小）</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-6.PNG" alt="31-6"></a></p>
+<p>（3）然后我们就需要算A是多少了，这里假设对A的形状不感兴趣，只算A的面积，那么就只需要两个值就可以表示，一个是搜索面积A，另一个是用于推到面积变化的立体角Ω，</p>
+<p>（4）假设从初始区域开始，每一段路径都有自己的A和Ω，假设每一段路径都是一个具有实心角Ω的圆锥体，那么就可以计算每段路径的A，如下图所示A=Ω*d2：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-7.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-7.PNG" alt="31-7"></a></p>
+<p>因为A的面积会越来越大，所以上图中两个面积的combination是用一个卷积组合在一起的。</p>
+<p>（5）如何获得这两个区域：1. 光路上第一个vertex的光源区域，2.真实相机模型中的传感器区域，3.输入区域朝向输出方向的投影。</p>
+<p>（6）估计单个路径段的footpoint，应用了立体角的卷积，如下式所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-8.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-8.PNG" alt="31-8"></a></p>
+<p>（7）最后把所有式子合并在一起，得到：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-9.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-9.PNG" alt="31-9"></a></p>
+<p><strong>五、结果</strong></p>
+<p>结果其实一般，基本和VCM的方差差不多，但是可以解决之前提出的问题。</p>
+<h4 id="32使用辐射度缓存实现精确的实时specular-反射"><a class="anchor" href="#32使用辐射度缓存实现精确的实时specular-反射">#</a> 32.使用辐射度缓存实现精确的实时specular 反射</h4>
+<p>本章介绍了一种利用辐射度探针和屏幕空间反射，向渲染管线添加光追来减少视觉错误，以达到一种实时高光照明效果的算法</p>
+<p><strong>一、介绍</strong></p>
+<p>渲染引擎通常把全局光照分为diffuse GI和specular GI，diffuse GI和入射光无关，只需要存储一个总入射辐射度就行，例如lightmap或者辐照度探针。而specular GI和入射光方向强相关，通常出射光都是一个分布。因为没办法存所有的信息，所以通常都是预计算好的。</p>
+<p><strong>二、算法概览</strong></p>
+<p>算法结合了以前方法的经验</p>
+<p>（1）SSR可以快速近似局部specular项并且得到很真实的结果，但如果有不连续性时，就会出现问题，例如从radiance cube中采样（radiance is computed by other means）。自认为意思就是不能从已经计算过的radiance中再来采样。</p>
+<p>（2）只有类似镜子这样非常光滑的表明才需要高分辨率。稍微不那么光滑的（glossy）的表面用低分辨率就足够了。</p>
+<p>（3）从一组表面上trace的光线可能会击中非常相似的点，这个可能性会随着每像素样本数的增加而增加</p>
+<p>（4）游戏中经常会有少量动态物体。</p>
+<p>本文的方法就是把上面观察的优点组合在了一起，整个pipeline如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/31-10.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/31-10.PNG" alt="31-10"></a></p>
+<p>因为上图不够清楚，文章还给了个例子，这个例子就很清楚了，如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-1.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-1.PNG" alt="32-1"></a></p>
+<p>图中摄像机发射出了4条光线，R1，R2，R3，R4，其中R1，R2，R3可以直接从辐射度探针1（缓存）中采样，R1可以从辐射度探针（缓存）2中采样，光线R2的交叉点在屏幕空间是可见的，可以从屏幕空间中获取数据，但是R4在两个探针和屏幕空间都不可见，就必须做光追，</p>
+<p><strong>三、辐射度缓存(探针、probe）</strong></p>
+<p>正常的cubemap，可以使用八面体投影，这一步是预计算的。每一个probe都是由一个包含了albedo、normal、roughness、metalness和luminance的GBuffer组成，</p>
+<p><strong>四、光线追踪</strong></p>
+<p>根据specular BRDF生成样本方向，追踪光线并存储命中信息，在X点处，镜面上的入射光，几何法向量为 ωg ，视线方向是 ωo，Ωi是X点上的正半球，ωi是半球上的方向，fs是BRDF，渲染方程为：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-4.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-4.PNG" alt="32-4"></a></p>
+<p>使用cook-torrance模型，使用GGX法线分布，使用蒙特卡洛积分和重要性采样计算，就变成了了：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-5.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-5.PNG" alt="32-5"></a></p>
+<p>其中fΩi|Ωv是采样的概率密度函数，使用Stachowiak提出的方案（这里就有点看不懂了。。不过是分子分母同时乘上了一项），使用schlick近似代替菲涅尔项。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-6.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-6.PNG" alt="32-6"></a></p>
+<p>但不管怎样，上面这个式子可以写成，其中Ltotal是加权辐射度样本的和，Wtotal是单个像素的样本权重的和，反正是两个采样加权起来除一下，后面那项可以用另一个式子查表得到：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-7.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-7.PNG" alt="32-7"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-8.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-8.PNG" alt="32-8"></a></p>
+<p>利用重要性采样出的方向生成光线，以Gbuffer深度重建的表面位置为起始点。代码如下所示：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-2.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-2.PNG" alt="32-2"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-3.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-3.PNG" alt="32-3"></a></p>
+<p><strong>五、光线辐射度计算</strong></p>
+<p>这一部分就是把上一部分的Ltotal和Wtotal分别存成纹理，最后要对这两个纹理做滤波以后才能组合在一起。</p>
+<p>这一部分的详细信息看书上的代码就行，基本都是工程上的事情了</p>
+<p><strong>六、空间滤波</strong></p>
+<p>和第24章的空间滤波一模一样，不多说了</p>
+<p><strong>七、时间滤波</strong></p>
+<p>和第24章的时间滤波也一模一样、、、、</p>
+<p><strong>八、反射运动向量</strong></p>
+<p>反射的motion vector和屏幕空间的motion vector还不一样，例如下图就是眼睛运动时候，motion vector的示意：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-9.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-9.PNG" alt="32-9"></a></p>
+<p>文章介绍了一种通过曲面微分来解决这一问题的解析方法，这里就不多说了（才不是我懒得看了）</p>
+<p><strong>九、结果</strong></p>
+<p>文章给出了每一个步骤的性能，下面两张表是sample为1和1-4得到性能：如果缓存都没办法用，该方法会退化成光追。正常情况下比光追块两倍，如果完全复用的话，比光追快15倍（基本上就是SSR比光追的速度）</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-10.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-10.PNG" alt="32-10"></a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cloudflaresni/CG_learning_note/blob/master/rayTracing_gems/images/32-11.PNG"><img loading="lazy" src="https://github.com/cloudflaresni/CG_learning_note/raw/master/rayTracing_gems/images/32-11.PNG" alt="32-11"></a></p>
+<div class="tags"><a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" rel="tag"><i class="ic i-tag"></i>图形学</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">Total Views: </span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/24/computer-graphic/光线追踪精粹笔记/">Loading...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">Edited on </span><time title="Modified: 2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>Donate</button><p>Give me a cup of [coffee]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/monero.avif" alt="AUVeggry monero"><p>monero</p></div><div><img loading="lazy" src="/assets/bitcoin.avif" alt="AUVeggry Bitcoin"><p>Bitcoin</p></div></div></div><div id="copyright"><ul><li class="author"><strong>Post author: </strong>AUVeggry<i class="ic i-at"><em>@</em></i>sakura"s blog"</li><li class="link"><strong>Post link: </strong><a href="https://sakurame.eu.org/2023/06/24/computer-graphic/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%B2%BE%E7%B2%B9%E7%AC%94%E8%AE%B0/" title="光线追踪精粹笔记">https://sakurame.eu.org/2023/06/24/computer-graphic/光线追踪精粹笔记/</a></li><li class="license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> unless stating additionally.</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/l012k5.jpg" title="games104笔记"><span class="type">Previous Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104笔记</h3></a></div><div class="item right"><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" itemprop="url" data-background-image="https://ptpimg.me/mg8x4z.jpg" title="games104系列笔记（一）"><span class="type">Next Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（一）</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="Contents"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%B2%BE%E7%B2%B9-%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text"> 光线追踪精粹 笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text"> 一、光线追踪基础</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E6%80%A7%E9%87%87%E6%A0%B7"><span class="toc-number">1.1.0.1.</span> <span class="toc-text"> 重要性采样：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%86%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E9%87%87%E6%A0%B7"><span class="toc-number">1.1.0.2.</span> <span class="toc-text"> 准蒙特卡洛采样：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.0.3.</span> <span class="toc-text"> 光线的表示方式：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BF%85%E8%A6%81shaderdx12%E4%B8%BA%E4%BE%8B"><span class="toc-number">1.1.0.4.</span> <span class="toc-text"> 光线追踪器中的必要shader(DX12为例)：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#blas%E5%BA%95%E5%B1%82%E5%8A%A0%E9%80%9F%E7%BB%93%E6%9E%84%E5%92%8Ctlas%E9%A1%B6%E5%B1%82%E5%8A%A0%E9%80%9F%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.0.5.</span> <span class="toc-text"> BLAS（底层加速结构）和TLAS（顶层加速结构）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9D%80%E8%89%B2%E5%99%A8%E8%A1%A8"><span class="toc-number">1.1.0.6.</span> <span class="toc-text"> 着色器表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%90%83%E5%B9%95%E7%9B%B8%E6%9C%BA"><span class="toc-number">1.1.0.7.</span> <span class="toc-text"> 球幕相机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5%E9%81%BF%E5%85%8D%E8%87%AA%E7%9B%B8%E4%BA%A4%E7%9A%84%E5%BF%AB%E9%80%9F%E5%8F%AF%E9%9D%A0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.0.8.</span> <span class="toc-text"> 5.避免自相交的快速可靠的方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E7%9B%B8%E4%BA%A4%E5%92%8C%E6%95%88%E7%8E%87"><span class="toc-number">1.2.</span> <span class="toc-text"> 二、相交和效率</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E9%81%BF%E5%85%8D%E8%87%AA%E7%9B%B8%E4%BA%A4%E7%9A%84%E5%BF%AB%E9%80%9F%E5%8F%AF%E9%9D%A0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.0.1.</span> <span class="toc-text"> 6. 避免自相交的快速可靠的方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E5%85%89%E7%BA%BF%E5%92%8C%E7%90%83%E4%BD%93%E7%9B%B8%E4%BA%A4%E6%A3%80%E6%B5%8B%E7%9A%84%E7%B2%BE%E5%BA%A6%E6%8F%90%E5%8D%87"><span class="toc-number">1.2.0.2.</span> <span class="toc-text"> 7. 光线和球体相交检测的精度提升</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-%E8%AE%A1%E7%AE%97%E5%85%89%E7%BA%BF%E5%92%8C%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%9B%B2%E9%9D%A2%E7%9B%B8%E4%BA%A4%E7%9A%84%E5%87%A0%E4%BD%95%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.0.3.</span> <span class="toc-text"> 8. 计算光线和双线性曲面相交的几何方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-dxr%E4%B8%AD%E7%9A%84%E5%A4%9A%E9%87%8D%E5%91%BD%E4%B8%AD%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA"><span class="toc-number">1.2.0.4.</span> <span class="toc-text"> 9. DXR中的多重命中光线追踪</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-%E4%B8%80%E7%A7%8D%E5%85%B7%E6%9C%89%E9%AB%98%E6%89%A9%E5%B1%95%E6%95%88%E7%8E%87%E7%9A%84%E7%AE%80%E5%8D%95%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%96%B9%E6%A1%88"><span class="toc-number">1.2.0.5.</span> <span class="toc-text"> 10. 一种具有高扩展效率的简单负载均衡方案</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%8F%8D%E5%B0%84-%E6%8A%98%E5%B0%84%E5%92%8C%E9%98%B4%E5%BD%B1"><span class="toc-number">1.3.</span> <span class="toc-text"> 三、反射、折射和阴影</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#11%E8%87%AA%E5%8A%A8%E5%A4%84%E7%90%86%E7%9B%B8%E9%82%BBvolumes%E7%9A%84%E6%9D%90%E8%B4%A8"><span class="toc-number">1.3.0.1.</span> <span class="toc-text"> 11.自动处理相邻Volumes的材质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#12%E5%9F%BA%E4%BA%8E%E5%BE%AE%E8%A1%A8%E9%9D%A2%E9%98%B4%E5%BD%B1%E5%87%BD%E6%95%B0%E6%9D%A5%E8%A7%A3%E5%86%B3%E5%87%B9%E5%87%B8%E8%B4%B4%E5%9B%BE%E4%B8%AD%E7%9A%84%E9%98%B4%E5%BD%B1%E8%BE%B9%E7%95%8C%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.0.2.</span> <span class="toc-text"> 12.基于微表面阴影函数来解决凹凸贴图中的阴影边界问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#13%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E5%AE%9E%E6%97%B6%E9%98%B4%E5%BD%B1"><span class="toc-number">1.3.0.3.</span> <span class="toc-text"> 13.光线追踪实时阴影</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#14%E7%94%A8dxr%E5%AE%9E%E7%8E%B0%E7%9A%84ray-guided%E7%9A%84%E5%8D%95%E6%95%A3%E5%B0%84%E4%BB%8B%E8%B4%A8%E4%BD%93%E7%A7%AF%E6%B0%B4%E7%84%A6%E6%95%A3"><span class="toc-number">1.3.0.4.</span> <span class="toc-text"> 14.用DXR实现的Ray-Guided的单散射介质体积水焦散</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E9%87%87%E6%A0%B7"><span class="toc-number">1.4.</span> <span class="toc-text"> 四、采样</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#15%E9%87%8D%E8%A6%81%E6%80%A7%E9%87%87%E6%A0%B7"><span class="toc-number">1.4.0.1.</span> <span class="toc-text"> 15.重要性采样</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#16%E9%87%87%E6%A0%B7%E5%8F%98%E6%8D%A2"><span class="toc-number">1.4.0.2.</span> <span class="toc-text"> 16.采样变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#17%E6%B6%88%E9%99%A4%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E4%B8%AD%E7%9A%84%E4%BA%AE%E5%85%89%E7%82%B9"><span class="toc-number">1.4.0.3.</span> <span class="toc-text"> 17.消除光线追踪中的亮光点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#18gpu%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%A4%9A%E5%85%89%E6%BA%90%E9%87%8D%E8%A6%81%E6%80%A7%E9%87%87%E6%A0%B7"><span class="toc-number">1.4.0.4.</span> <span class="toc-text"> 18.GPU实现的多光源重要性采样</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E9%99%8D%E5%99%AA"><span class="toc-number">1.5.</span> <span class="toc-text"> 五、降噪</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#19%E5%9C%A8ue4%E4%B8%AD%E5%88%A9%E7%94%A8%E5%85%89%E8%BF%BD%E5%92%8C%E9%99%8D%E5%99%AA%E5%81%9A%E7%94%B5%E5%BD%B1%E7%BA%A7%E6%B8%B2%E6%9F%93"><span class="toc-number">1.5.0.1.</span> <span class="toc-text"> 19.在UE4中利用光追和降噪做电影级渲染</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-%E5%AE%9E%E6%97%B6%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%9A%84texture-lod"><span class="toc-number">1.5.0.2.</span> <span class="toc-text"> 20. 实时光线追踪的Texture LOD</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#21-%E4%BD%BF%E7%94%A8ray-cone%E5%92%8Cray-diff-%E5%81%9A%E7%8E%AF%E5%A2%83%E8%B4%B4%E5%9B%BE%E7%9A%84%E8%BF%87%E6%BB%A4"><span class="toc-number">1.5.0.3.</span> <span class="toc-text"> 21. 使用Ray Cone和Ray Diff 做环境贴图的过滤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#22-%E9%80%9A%E8%BF%87%E8%87%AA%E9%80%82%E5%BA%94%E5%85%89%E8%BF%BD%E6%94%B9%E8%BF%9Btaa"><span class="toc-number">1.5.0.4.</span> <span class="toc-text"> 22. 通过自适应光追改进TAA</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD-%E6%B7%B7%E5%90%88%E7%AE%A1%E7%BA%BF%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.6.</span> <span class="toc-text"> 六、混合管线系统</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#23%E5%AF%92%E9%9C%9Cfrostbite%E5%BC%95%E6%93%8E%E9%A2%84%E8%A7%88%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E5%8F%AF%E4%BA%A4%E4%BA%92lightmap%E5%92%8Cirradiance-volume"><span class="toc-number">1.6.0.1.</span> <span class="toc-text"> 23.寒霜（frostbite）引擎（预览系统）中的可交互lightmap和Irradiance Volume</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%80%E8%BE%93%E5%85%A5%E4%B8%8E%E8%BE%93%E5%87%BA"><span class="toc-number">1.6.0.1.1.</span> <span class="toc-text"> 一.输入与输出</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%8Cgi"><span class="toc-number">1.6.0.1.2.</span> <span class="toc-text"> 二.GI pipeline总览</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%89%E5%85%89%E7%85%A7%E8%AE%A1%E7%AE%97%E5%92%8C%E5%85%89%E8%B7%AF%E6%9E%84%E5%BB%BApipeline%E6%80%BB%E8%A7%88%E7%9A%84%E7%AC%AC4%E6%AD%A5"><span class="toc-number">1.6.0.1.3.</span> <span class="toc-text"> 三.光照计算和光路构建（pipeline总览的第4步）：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9B%9B%E5%85%89%E6%BA%90"><span class="toc-number">1.6.0.1.4.</span> <span class="toc-text"> 四.光源：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%94%E7%89%B9%E6%AE%8A%E6%9D%90%E8%B4%A8%E9%99%A4%E6%BC%AB%E5%8F%8D%E5%B0%84%E6%9D%90%E8%B4%A8%E5%A4%96"><span class="toc-number">1.6.0.1.5.</span> <span class="toc-text"> 五.特殊材质（除漫反射材质外）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%ADscheduling-texelspipeline%E4%B8%AD%E7%9A%84%E7%AC%AC%E4%BA%94%E6%9D%A1"><span class="toc-number">1.6.0.1.6.</span> <span class="toc-text"> 六.Scheduling texels（pipeline中的第五条）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%83%E6%80%A7%E8%83%BD%E5%BC%80%E9%94%80"><span class="toc-number">1.6.0.1.7.</span> <span class="toc-text"> 七.性能开销：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%AB%E5%90%8E%E5%A4%84%E7%90%86"><span class="toc-number">1.6.0.1.8.</span> <span class="toc-text"> 八.后处理：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B9%9D%E5%8A%A0%E9%80%9F%E6%8A%80%E6%9C%AF"><span class="toc-number">1.6.0.1.9.</span> <span class="toc-text"> 九.加速技术</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%81%E6%80%A7%E8%83%BD%E6%95%88%E6%9E%9C"><span class="toc-number">1.6.0.1.10.</span> <span class="toc-text"> 十.性能效果</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#24%E5%9F%BA%E4%BA%8E%E5%85%89%E5%AD%90%E6%98%A0%E5%B0%84%E7%9A%84%E5%85%A8%E5%B1%80%E5%85%89%E7%85%A7"><span class="toc-number">1.6.0.2.</span> <span class="toc-text"> 24.基于光子映射的全局光照</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#25%E5%9F%BA%E4%BA%8E%E5%AE%9E%E6%97%B6%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%9A%84%E6%B7%B7%E5%90%88%E6%B8%B2%E6%9F%93%E5%99%A8"><span class="toc-number">1.6.0.3.</span> <span class="toc-text"> 25.基于实时光线追踪的混合渲染器：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#26deferred-%E6%B7%B7%E5%90%88path-tracing"><span class="toc-number">1.6.0.4.</span> <span class="toc-text"> 26.deferred 混合path tracing</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#27%E5%9F%BA%E4%BA%8E%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%9A%84%E9%AB%98%E5%93%81%E8%B4%A8%E7%A7%91%E5%AD%A6%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-number">1.6.0.5.</span> <span class="toc-text"> 27.基于光线追踪的高品质科学可视化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E5%85%A8%E5%B1%80%E5%85%89%E7%85%A7"><span class="toc-number">1.7.</span> <span class="toc-text"> 七.全局光照</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#28%E5%AF%B9%E4%B8%8D%E5%9D%87%E5%8C%80%E7%9A%84%E4%BB%8B%E8%B4%A8%E5%81%9A%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA"><span class="toc-number">1.7.0.1.</span> <span class="toc-text"> 28.对不均匀的介质做光线追踪</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#29%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E4%B8%AD%E7%9A%84%E9%AB%98%E6%95%88particle-volume-splatting"><span class="toc-number">1.7.0.2.</span> <span class="toc-text"> 29.光线追踪中的高效particle volume splatting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#30-%E4%BD%BF%E7%94%A8%E5%B1%8F%E5%B9%95%E7%A9%BA%E9%97%B4%E5%85%89%E5%AD%90%E6%98%A0%E5%B0%84%E6%8A%80%E6%9C%AF%E6%B8%B2%E6%9F%93%E7%84%A6%E6%95%A3"><span class="toc-number">1.7.0.3.</span> <span class="toc-text"> 30. 使用屏幕空间光子映射技术渲染焦散</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#31%E9%80%9A%E8%BF%87%E8%B7%AF%E5%BE%84%E9%87%8D%E7%94%A8%E4%BC%B0%E8%AE%A1footprint-estimation%E6%9D%A5%E5%87%8F%E5%B0%91%E6%96%B9%E5%B7%AE"><span class="toc-number">1.7.0.4.</span> <span class="toc-text"> 31.通过路径重用估计(footprint estimation)来减少方差</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#32%E4%BD%BF%E7%94%A8%E8%BE%90%E5%B0%84%E5%BA%A6%E7%BC%93%E5%AD%98%E5%AE%9E%E7%8E%B0%E7%B2%BE%E7%A1%AE%E7%9A%84%E5%AE%9E%E6%97%B6specular-%E5%8F%8D%E5%B0%84"><span class="toc-number">1.7.0.5.</span> <span class="toc-text"> 32.使用辐射度缓存实现精确的实时specular 反射</span></a></li></ol></li></div><div class="related panel pjax" data-title="Related"><ul><li><a href="/2023/05/13/computer-graphic/3D-Graphics-Rendering-Cookbook/" rel="bookmark" title="3D-Graphics-Rendering-Cookbook">3D-Graphics-Rendering-Cookbook</a></li><li class="active"><a href="/2023/06/24/computer-graphic/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%B2%BE%E7%B2%B9%E7%AC%94%E8%AE%B0/" rel="bookmark" title="光线追踪精粹笔记">光线追踪精粹笔记</a></li></ul></div><div class="overview panel" data-title="Overview"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="AUVeggry" src="/assets/avatar.avif"><p class="name" itemprop="name">AUVeggry</p><div class="description" itemprop="description">The spirit of independence and the freedom of thought </div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">64</span><span class="name">posts</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">categories</span></a></div><div class="item tags"><a href="/tags/"><span class="count">21</span><span class="name">tags</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>Home</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>About</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>About This Site</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>Appreciation</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>Privacy Policy</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>Posts</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>Archives</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>Categories</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>Tags</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>Friends</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>Random Posts</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/">games104系列笔记（十九）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/">games104系列笔记（五）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%B9%9D%E7%AB%A0%E5%88%9D%E7%BA%A7%E8%A7%86%E9%A2%91%E7%91%95%E7%96%B5%E4%BF%AE%E5%A4%8D/">第九章初级视频瑕疵修复</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/">games104系列笔记（十五）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/privacy/" title="In隐私保护指北">隐私保护指北</a></div><span><a href="/2023/05/25/privacy/%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E6%8C%87%E5%8D%97%EF%BC%88%E9%95%BF%E6%9C%9F%E7%BF%BB%E8%AF%91%E9%A1%B9%E7%9B%AE%EF%BC%89/">隐私保护指南（长期翻译项目）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/">games104笔记</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/">games104系列笔记（十一）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2022/05/28/thinking/%E4%B8%89%E5%B9%B4%E4%B9%8B%E9%9A%8F%E7%AC%94/">三年之随笔</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/">games104系列笔记（六）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="In计算机基础理论">计算机基础理论</a></div><span><a href="/2024/03/29/computer-graphic/PBRT%E7%AC%AC%E5%9B%9B%E7%89%88%E4%B8%AA%E4%BA%BA%E7%B2%BE%E6%A0%A1%E7%89%88%E7%BF%BB%E8%AF%91%EF%BC%88%E9%95%BF%E6%9C%9F%E8%AE%A1%E5%88%92%E9%A1%B9%E7%9B%AE%EF%BC%89/">PBRT第四版个人精校版翻译（长期计划项目）</a></span></li></ul></div><div class="rpost pjax"><h2>Recent Comments</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><div class="status"><div class="copyright">© 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">AUVeggry @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="Symbols count total">1.1m words</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="Reading time total">17:13</span></div><div class="powered-by">Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> &amp; Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><br><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:var(--grey-5);"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号</a></span></div></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2023/06/24/computer-graphic/光线追踪精粹笔记/`,
+    favicon: {
+        show: `(●´3｀●) Here we go again.`,
+        hide: `(´Д｀) It's a disaster!`
+    },
+    search: {
+        placeholder: "Search for Posts",
+        empty: "We didn't find any results for the search: ${query}",
+        stats: "${hits} results found in ${time} ms"
+    },
+    nocopy: "false",
+    copyright: `Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>`,
+    quiz: {
+        choice: `Multiple Choice`,
+        multiple: `Multiple Answer`,
+        true_false: `True/False`,
+        essay: `Questions`,
+        gap_fill: `Gap Filling`,
+        mistake: `Wrong Answer`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script></body></html>

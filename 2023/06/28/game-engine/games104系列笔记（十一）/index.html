@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="sakura" s="" blog""="" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="sakura" s="" blog""="" type="application/atom+xml"><link rel="alternate" type="application/json" title="sakura&quot;s blog&quot;" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://unpkg.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-CEOMSI5S.js"><link rel="modulepreload" href="/js/copy-tex-VNMZZ56J.js"><link rel="modulepreload" href="/js/post-DBDT2P4X.js"><link rel="modulepreload" href="/js/chunk-3NVTWMK7.js"><link rel="modulepreload" href="/js/tcomments-MCLWTQDC.js"><link rel="modulepreload" href="/js/chunk-ERE5SKT5.js"><link rel="modulepreload" href="/js/index.esm-RIWV4EDG.js"><link rel="modulepreload" href="/js/chunk-KXPDGESI.js"><link rel="modulepreload" href="/js/chunk-I5LMONQL.js"><link rel="modulepreload" href="/js/cf-patch.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><script src="/js/cf-patch.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script><link rel="preload" href="https://ptpimg.me/dpco9h.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/wf2fu2.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/46g25q.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/5n0t71.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/v5k41w.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/5422e1.jpg" as="image" fetchpriority="high"><meta name="keywords" content="游戏引擎"><meta name="description" content="<blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a href=&quot;https://games104.boomingtech.com/en/&quot;>GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏引擎中物理系统的应用以及一些高级算法。<br />"><link rel="canonical" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/"><link rel="stylesheet" href="/css/post.css?v=0.5.4"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.4"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>games104系列笔记（十一）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="pagefind_mount"></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（十一）</h1><div class="meta"><span class="item" title="Created: 2023-06-28 23:00:28"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">Posted on</span><time itemprop="dateCreated datePublished" datetime="2023-06-28T23:00:28+08:00">2023-06-28</time></span><span class="item" title="Symbols count in article"><span class="icon"><i class="ic i-pen"></i></span><span class="text">Symbols count in article</span><span>13k</span><span class="text">words</span></span><span class="item" title="Reading time"><span class="icon"><i class="ic i-clock"></i></span><span class="text">Reading time</span><span>12 mins.</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="Toggle navigation bar"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/dpco9h.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/wf2fu2.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/46g25q.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/5n0t71.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/v5k41w.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/5422e1.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">Home</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="In游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" data-pagefind-body="data-pagefind-body" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="AUVeggry"><meta itemprop="description" content=", The spirit of independence and the freedom of thought "></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="sakura&quot;s blog&quot;"></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a target="_blank" rel="noopener" href="https://games104.boomingtech.com/en/">GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏引擎中物理系统的应用以及一些高级算法。<br>
+<span id="more"></span></p>
+</blockquote>
+<h2 id="character-controller"><a class="anchor" href="#character-controller">#</a> Character Controller</h2>
+<p>**角色控制器(character controller)**是玩家操作角色和游戏世界进行交互的接口。和很多人直观的认识不同，角色控制器在很多情况下实际上是一个非物理的。最常见的例子是玩家控制角色停止移动时角色会立即停住，而不是严格按照刚体仿真那样通过摩擦力来逐渐停止运动。某种意义上讲，角色控制器虽然是反物理的但却更符合人对物理世界的认知。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/x6NYW7E.png">https://search.pstatic.net/common?src=https://i.imgur.com/x6NYW7E.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/wgAbEwW.png">https://search.pstatic.net/common?src=https://i.imgur.com/wgAbEwW.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="build-a-controller-in-physics-system"><a class="anchor" href="#build-a-controller-in-physics-system">#</a> Build a Controller in Physics System</h3>
+<p>在构建角色控制器时一般会使用简化后的形状来包裹角色，这样便于处理各种场景之间的互动。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/KflUJE2.png">https://search.pstatic.net/common?src=https://i.imgur.com/KflUJE2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="collide-with-environment"><a class="anchor" href="#collide-with-environment">#</a> Collide with Environment</h3>
+<p>在角色和场景进行互动时最常见的情况是玩家控制的角色撞到了墙壁上。如果严格按照物理引擎进行模拟，此时角色会一直停在碰撞的位置；而现代游戏中更常见的处理方式是修改角色的运动方向，使得角色可以沿墙壁方向进行滑动。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WkqxvJj.png">https://search.pstatic.net/common?src=https://i.imgur.com/WkqxvJj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="auto-stepping"><a class="anchor" href="#auto-stepping">#</a> Auto Stepping</h3>
+<p>上下楼梯同样也是角色在场景中的一种常见行为。如果严格按照物理仿真进行处理，胶囊的上下楼梯会非常地困难。因此在游戏引擎中需要单独考虑这种情况，当角色上下楼梯时自动修正角色的位置。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/LpIReRH.png">https://search.pstatic.net/common?src=https://i.imgur.com/LpIReRH.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>对于斜坡这种情况，如果按照刚体运动学进行处理会导致角色下坡时直接从斜坡上滑下来，或是在上坡时由于具有过大的速度角色直接冲上它不应该到达的位置。为了避免这些问题需要单独考虑角色停在斜坡或是限制角色的位置。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HD0H4EI.png">https://search.pstatic.net/common?src=https://i.imgur.com/HD0H4EI.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="controller-volume-update"><a class="anchor" href="#controller-volume-update">#</a> Controller Volume Update</h3>
+<p>角色控制器还需要考虑角色体积发生变化的情况。当玩家控制角色进行下蹲等动作时需要自动更新角色控制体的体积，否则容易出现角色卡在门口无法进入的问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/i9mL6Br.png">https://search.pstatic.net/common?src=https://i.imgur.com/i9mL6Br.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="controller-push-objects"><a class="anchor" href="#controller-push-objects">#</a> Controller Push Objects</h3>
+<p>当玩家控制角色和场景中的物体互动时需要对动态对象的运动状态加以更新。比较常见的处理方式是发生碰撞时对动态对象施加一个相应的冲量来控制它们的运动。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HjTnDFv.png">https://search.pstatic.net/common?src=https://i.imgur.com/HjTnDFv.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="standing-on-moving-platform"><a class="anchor" href="#standing-on-moving-platform">#</a> Standing on Moving Platform</h3>
+<p>除此之外，角色控制器还需要考虑动态场景的情况。当角色位于运动的平台时需要根据平台的运动来调整角色的运动状态，否则会出现平台发生运动时角色的运动没有同步或是滞后的问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/hORYId3.png">https://search.pstatic.net/common?src=https://i.imgur.com/hORYId3.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="ragdoll"><a class="anchor" href="#ragdoll">#</a> Ragdoll</h2>
+<p>**布娃娃(ragdoll)**系统是游戏角色动画的一个重要组成部分，它最常见的例子是角色的处决动画：当玩家控制的角色处决了某个游戏对象时，根据处决场景的不同被处决对象会发生相应场景互动的动作。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ed9j3XJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/ed9j3XJ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="map-skeleton-to-rigid-bodies"><a class="anchor" href="#map-skeleton-to-rigid-bodies">#</a> Map Skeleton to Rigid Bodies</h3>
+<p>实际上ragdoll与前面介绍过的<a href="/2022/05/11/GAMES104-NOTES-08.html#skinned-animation-implementation">骨骼动画</a>密切相关。在模拟ragdoll的运动时，我们同样会在角色身上设置相应的节点并把不同节点之间的骨骼按照刚体进行模拟。不过出于实时计算上的考虑，ragdoll一般只会使用非常少量的节点和骨骼来进行模拟。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/G7rFn2k.png">https://search.pstatic.net/common?src=https://i.imgur.com/G7rFn2k.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="human-joint-constraints"><a class="anchor" href="#human-joint-constraints">#</a> Human Joint Constraints</h3>
+<p>同样地，在ragdoll中需要考虑角色身上不同节点的运动是带有一定约束的。如果忽略了人体骨骼关节的约束则会导致非常扭曲的模拟效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Ub9Higm.png">https://search.pstatic.net/common?src=https://i.imgur.com/Ub9Higm.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/54bcEHK.png">https://search.pstatic.net/common?src=https://i.imgur.com/54bcEHK.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>一般来说ragdoll关节的约束会由TA进行设置，如果设置的不好会出现一些反直觉的动画效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/LJ9jkf7.png">https://search.pstatic.net/common?src=https://i.imgur.com/LJ9jkf7.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/VA9MPtd.png">https://search.pstatic.net/common?src=https://i.imgur.com/VA9MPtd.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="animating-skeleton-by-ragdoll"><a class="anchor" href="#animating-skeleton-by-ragdoll">#</a> Animating Skeleton by Ragdoll</h3>
+<p>需要注意的是尽管我们可以使用ragdoll来模拟角色的动画，在实际游戏中仍然是需要通过骨骼关节系统来驱动整个角色的运动。由于ragdoll中的骨骼关节数量一般会少于实际角色的骨骼关节，我们需要使用<a href="/2022/05/17/GAMES104-NOTES-09.html#animation-retargeting">动画重定向</a>技术来将ragdoll计算出的运动映射到实际的角色骨骼上。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4cavCTn.png">https://search.pstatic.net/common?src=https://i.imgur.com/4cavCTn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="blending-between-animation-and-ragdoll"><a class="anchor" href="#blending-between-animation-and-ragdoll">#</a> Blending between Animation and Ragdoll</h3>
+<p>在使用时还需要注意角色动画切换到ragdoll的过程。还是以角色处决动画为例，在一开始被处决对象是使用预先录制的角色动画，然后在某一时刻会切换成ragdoll使用物理系统来实时计算角色的行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/M1gOC3P.png">https://search.pstatic.net/common?src=https://i.imgur.com/M1gOC3P.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>更进一步，在现代3A游戏中还会将角色动画和ragdoll实时计算出的动画进行混合来提升玩家的代入感和游戏体验。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lW6B7z6.png">https://search.pstatic.net/common?src=https://i.imgur.com/lW6B7z6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="cloth"><a class="anchor" href="#cloth">#</a> Cloth</h2>
+<p>布料系统是游戏物理仿真中的重要一环。早期的布料模拟是使用预先录制的动画来实现的，我们可以在角色身上设置一些额外的骨骼来控制衣物的运动，这样就可以实现角色执行不同动作时衣物随之飘动的效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/a75lfeS.png">https://search.pstatic.net/common?src=https://i.imgur.com/a75lfeS.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>另一种处理衣物的方法是使用刚体运动的方法来模拟衣物和角色以及场景的互动。这样的处理方法虽然需要更多的计算资源，但可以实现相对真实衣物运动的效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/DVGIo03.png">https://search.pstatic.net/common?src=https://i.imgur.com/DVGIo03.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="mesh-based-cloth-simulation"><a class="anchor" href="#mesh-based-cloth-simulation">#</a> Mesh-Based Cloth Simulation</h3>
+<p>而在现代游戏引擎中衣物运动更多地是使用网格来进行模拟。这里首先要说明的是布料仿真中使用的网格是不同于渲染中所使用的网格，出于计算效率上的考虑布料仿真中使用的网格要比渲染中的网格要稀疏很多。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/yvcxpLE.png">https://search.pstatic.net/common?src=https://i.imgur.com/yvcxpLE.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>同时在布料仿真中往往还会为网格上的每个顶点赋予一定位移的约束，从而获得更符合人直觉的仿真结果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Lpxqy0A.png">https://search.pstatic.net/common?src=https://i.imgur.com/Lpxqy0A.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="mass-spring-system"><a class="anchor" href="#mass-spring-system">#</a> Mass-Spring System</h3>
+<p>使用网格进行布料仿真的基本处理方法是使用质点弹簧系统进行模拟。我们为网格的顶点赋予一定的质量，然后将相邻顶点使用弹簧连接起来就形成了布料仿真的物理系统。这里需要注意的是除了弹簧弹力之外一般还需要为质点施加一定的阻尼来保证质点的运动最终能够停住。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ILMJXu6.png">https://search.pstatic.net/common?src=https://i.imgur.com/ILMJXu6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在放置弹簧时除了横竖方向外一般还需要在对角方向上也设置一些弹簧，这样可以保证布料具有抵抗对角方向的刚度。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OUjIc7G.png">https://search.pstatic.net/common?src=https://i.imgur.com/OUjIc7G.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>最后把外力施加在质点弹簧系统上就可以进行布料的运动仿真了。这里需要注意的是在进行仿真时不要忘记质点除了弹簧施加的弹力和阻尼外自身还会收到重力以及空气阻力的作用。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fpiqBe9.png">https://search.pstatic.net/common?src=https://i.imgur.com/fpiqBe9.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="verlet-integration"><a class="anchor" href="#verlet-integration">#</a> Verlet Integration</h3>
+<p>对质点弹簧系统进行仿真时不可避免地会使用到一些数值积分的方法，这里我们着重介绍一些Verlet积分算法。Verlet积分本质仍然是半隐式欧拉积分，不过在实际积分时可以将速度项约掉只保留位移和加速度项就能进行计算。因此Verlet积分不需要保存每一时刻的速度，我们只需要位移和力(加速度)就可以进行计算，从而提高布料仿真的效率。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ciq7KUH.png">https://search.pstatic.net/common?src=https://i.imgur.com/ciq7KUH.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="self-collision"><a class="anchor" href="#self-collision">#</a> Self Collision</h3>
+<p>布料仿真的一大难点在于如何处理**自相交(self collision)**问题。由于我们使用了没有体积的网格来表示布料，在进行仿真时很容易出现网格直接相互的穿插。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CEGDBDD.png">https://search.pstatic.net/common?src=https://i.imgur.com/CEGDBDD.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>目前布料自相交的问题还没有一个十分完善的解决方法。在工业界会使用一些trick来缓解自相交的问题，比如说对布料进行加厚、减少仿真时的时间步长、限制顶点的速度以及使用SDF进行控制等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/cT2esCi.png">https://search.pstatic.net/common?src=https://i.imgur.com/cT2esCi.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EdJTqyM.png">https://search.pstatic.net/common?src=https://i.imgur.com/EdJTqyM.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="destruction"><a class="anchor" href="#destruction">#</a> Destruction</h2>
+<p>玩家对场景的破坏是通过破坏系统来进行实现。一个好的破坏系统可以极大地提升玩家的游戏体验，有些游戏甚至是以破坏系统为核心玩法进行设计的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OStgfyI.png">https://search.pstatic.net/common?src=https://i.imgur.com/OStgfyI.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="chunk-hierarchy"><a class="anchor" href="#chunk-hierarchy">#</a> Chunk Hierarchy</h3>
+<p>我们可以使用一棵树来描述同一物体不同碎片之间的层次关系：树的根节点表示完整的物体，而它下面的每一层表示物体经受一定程度的冲击后所产生的碎片。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/AVRjG2n.png">https://search.pstatic.net/common?src=https://i.imgur.com/AVRjG2n.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="connectivity-graph"><a class="anchor" href="#connectivity-graph">#</a> Connectivity Graph</h3>
+<p>当确定了物体承受的冲击后就可以使用一张图来表示不同碎片之间的连接关系：图的节点表示碎片，而图的边则表示相互连接的碎片能够承受的荷载，当冲击大于边上的值时就会发生物体的破碎。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FYMepq6.png">https://search.pstatic.net/common?src=https://i.imgur.com/FYMepq6.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3I1rdsC.png">https://search.pstatic.net/common?src=https://i.imgur.com/3I1rdsC.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="damage-calculation"><a class="anchor" href="#damage-calculation">#</a> Damage Calculation</h3>
+<p>需要说明的是虽然我们使用了冲击和荷载这样的字眼，实际上在游戏引擎中却不会去计算这些物理量。它们只是一些人工设置的数值，并不具备真实的物理意义。在游戏开发中一般会使用一些经验公式来对冲击以及物体的承载力进行计算。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/k7rVcL1.png">https://search.pstatic.net/common?src=https://i.imgur.com/k7rVcL1.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/V3ZRUl6.png">https://search.pstatic.net/common?src=https://i.imgur.com/V3ZRUl6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="fracturing-with-voronoi-diagram"><a class="anchor" href="#fracturing-with-voronoi-diagram">#</a> Fracturing with Voronoi Diagram</h3>
+<p>那么如何去生成这样的一张图呢？在物理引擎中一般会使用**Voronoi图(Voronoi diagram)**这样的技术来对原始的物体区域进行划分，划分后的每一个区域即为所需的碎片。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HHBtH7I.png">https://search.pstatic.net/common?src=https://i.imgur.com/HHBtH7I.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/SjAw3JR.png">https://search.pstatic.net/common?src=https://i.imgur.com/SjAw3JR.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>对于三维的情况则要更加复杂一些，除了需要使用Voronoi图对空间进行划分还需要使用Delaunay三角化来重新生成碎片的三维网格。同时当物体破碎后还需要为碎片的网格赋予内部材质的纹理，这一般需要使用一些程序化的纹理生成算法。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tyvoydu.png">https://search.pstatic.net/common?src=https://i.imgur.com/tyvoydu.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/j1LY4e7.png">https://search.pstatic.net/common?src=https://i.imgur.com/j1LY4e7.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在设置Voronoi图的种子时还可以根据需要设置不同模式的种子，这样可以实现相应的破碎效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lUXYEXP.png">https://search.pstatic.net/common?src=https://i.imgur.com/lUXYEXP.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="destruction-in-physics-system"><a class="anchor" href="#destruction-in-physics-system">#</a> Destruction in Physics System</h3>
+<p>从物理系统的计算流程上来看，破碎系统一般是仿真碰撞检测后实际解算之前。这主要是因为很多破碎的事件是由碰撞所导致的，同时在物体破碎后往往还会产生新的物体(碎片)需要计算相应的运动。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2J3kAXm.png">https://search.pstatic.net/common?src=https://i.imgur.com/2J3kAXm.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="issues-with-destruction"><a class="anchor" href="#issues-with-destruction">#</a> Issues with Destruction</h3>
+<p>除了物理系统的计算外在处理场景破坏时还需要添加相应的声音和粒子效果，这样可以得到更加真实的游戏体验。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/1mlO4Po.png">https://search.pstatic.net/common?src=https://i.imgur.com/1mlO4Po.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>此外破坏系统的计算是相当昂贵的：当一个物体出现破碎后往往会带来成百上千个碎片需要进行物理仿真，这会极大地增加物理系统的计算负载，因此在使用时需要慎重考虑。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/xnQvm41.png">https://search.pstatic.net/common?src=https://i.imgur.com/xnQvm41.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="popular-destruction-implementations"><a class="anchor" href="#popular-destruction-implementations">#</a> Popular Destruction Implementations</h3>
+<p>目前很多商业引擎都有现成的破坏系统。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Bj6sG3u.png">https://search.pstatic.net/common?src=https://i.imgur.com/Bj6sG3u.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3dd57nS.png">https://search.pstatic.net/common?src=https://i.imgur.com/3dd57nS.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="vehicle"><a class="anchor" href="#vehicle">#</a> Vehicle</h2>
+<p>载具系统是现代游戏中重要的组成部分。要对载具进行模拟需要推导相应的动力学模型，以汽车为例整个汽车可以看做通过悬挂系统与地面接触的刚体。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9yzTbK6.png">https://search.pstatic.net/common?src=https://i.imgur.com/9yzTbK6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>整个汽车的驱动力来自于引擎产生的扭矩，而扭矩的大小则需要查询引擎的相关曲线来计算。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/AayfwK5.png">https://search.pstatic.net/common?src=https://i.imgur.com/AayfwK5.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在竖直方向上由于地面的起伏车身会产生悬挂系统所导致的振动。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/buQaM5i.png">https://search.pstatic.net/common?src=https://i.imgur.com/buQaM5i.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在平面上汽车的轮胎会产生平行于前进方向的径向力，同时还会产生的切向力控制车辆的转动。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/S1Y6OuP.png">https://search.pstatic.net/common?src=https://i.imgur.com/S1Y6OuP.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>根据车身重量的分布我们还需要计算汽车的重心。实际上重心的位置不仅会控制汽车的振动，还会汽车的转向性能有重要的影响。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZuIGy6K.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZuIGy6K.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6yPqGHa.png">https://search.pstatic.net/common?src=https://i.imgur.com/6yPqGHa.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/oBKlN0I.png">https://search.pstatic.net/common?src=https://i.imgur.com/oBKlN0I.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>同时需要注意的是当车辆进行加速或是刹车时重心的位置也会发生一些变化。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5VgExEa.png">https://search.pstatic.net/common?src=https://i.imgur.com/5VgExEa.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>为了更好地实现转向，现代汽车在设计时会让两个转向轮的转动有微小的差异。在进行模拟时也需要考虑这个微小的角度变化。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/XymzlfH.png">https://search.pstatic.net/common?src=https://i.imgur.com/XymzlfH.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>最后需要说明的是在计算地面和车轮求交时需要把轮子看做是球，这样才能模拟出车辆在凹凸不平的地面上行驶的效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/g8UttI7.png">https://search.pstatic.net/common?src=https://i.imgur.com/g8UttI7.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="advanced-pbdxpbd"><a class="anchor" href="#advanced-pbdxpbd">#</a> Advanced: PBD/XPBD</h2>
+<h3 id="pbd"><a class="anchor" href="#pbd">#</a> PBD</h3>
+<p>本节课最后讨论了PBD和XPBD两种更高级的物理仿真技术。和前面介绍过的仿真技术相比，PBD和XPBD是建立在**拉格朗日力学(Lagrangian mechanics)**基础上的仿真方法。在拉格朗日力学的框架中不再考虑力等物理概念，而是把物理定律视为系统的某种约束来描述运动。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Hc2CUk6.png">https://search.pstatic.net/common?src=https://i.imgur.com/Hc2CUk6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>以匀速圆周运动为例，在拉格朗日力学中我们不会去计算各种改变质点运动状态的力，而是考虑质点运动的位置约束以及速度约束。其中位置约束的导数也称为Jacobian矩阵。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OqjyiTA.png">https://search.pstatic.net/common?src=https://i.imgur.com/OqjyiTA.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>类似地，弹簧质点系统也可以表示为由约束定义的系统。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/PegWuMj.png">https://search.pstatic.net/common?src=https://i.imgur.com/PegWuMj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>PBD在求解时，PBD会把整个物理系统描述为关于位置的约束。然后通过不断迭代来计算满足约束的解。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/yRnMoWF.png">https://search.pstatic.net/common?src=https://i.imgur.com/yRnMoWF.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fOfMIs0.png">https://search.pstatic.net/common?src=https://i.imgur.com/fOfMIs0.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>整个PBD的求解流程如下：</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tUyxErZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/tUyxErZ.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/mzZrg54.png">https://search.pstatic.net/common?src=https://i.imgur.com/mzZrg54.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gIuhjwl.png">https://search.pstatic.net/common?src=https://i.imgur.com/gIuhjwl.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/U7i2vKx.png">https://search.pstatic.net/common?src=https://i.imgur.com/U7i2vKx.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/DFCsQRt.png">https://search.pstatic.net/common?src=https://i.imgur.com/DFCsQRt.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/cAvkRvj.png">https://search.pstatic.net/common?src=https://i.imgur.com/cAvkRvj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>PBD是目前游戏行业非常热门的物理仿真技术，和传统仿真技术相比PBD往往会得到更稳定的解。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BUOqb9y.png">https://search.pstatic.net/common?src=https://i.imgur.com/BUOqb9y.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="xpbd"><a class="anchor" href="#xpbd">#</a> XPBD</h3>
+<p>XPBD可以看做是对PBD的一种推广，它在PBD的基础上引入了**刚度(stiffness)**的概念来描述不同约束的强弱。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/q0UNhMU.png">https://search.pstatic.net/common?src=https://i.imgur.com/q0UNhMU.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="reference"><a class="anchor" href="#reference">#</a> Reference</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ya411j7ds/?spm_id_from=333.788">Lecture 11：Physics System – Applications</a></li>
+</ul>
+<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">Total Views: </span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/28/game-engine/games104系列笔记（十一）/">Loading...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">Edited on </span><time title="Modified: 2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>Donate</button><p>Give me a cup of [coffee]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/monero.avif" alt="AUVeggry monero"><p>monero</p></div><div><img loading="lazy" src="/assets/bitcoin.avif" alt="AUVeggry Bitcoin"><p>Bitcoin</p></div></div></div><div id="copyright"><ul><li class="author"><strong>Post author: </strong>AUVeggry<i class="ic i-at"><em>@</em></i>sakura"s blog"</li><li class="link"><strong>Post link: </strong><a href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" title="games104系列笔记（十一）">https://sakurame.eu.org/2023/06/28/game-engine/games104系列笔记（十一）/</a></li><li class="license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> unless stating additionally.</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/l012k5.jpg" title="games104系列笔记（十）"><span class="type">Previous Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十）</h3></a></div><div class="item right"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="next" itemprop="url" data-background-image="https://ptpimg.me/u5r244.jpg" title="games104系列笔记（十二）"><span class="type">Next Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十二）</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="Contents"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#character-controller"><span class="toc-number">1.</span> <span class="toc-text"> Character Controller</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#build-a-controller-in-physics-system"><span class="toc-number">1.1.</span> <span class="toc-text"> Build a Controller in Physics System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#collide-with-environment"><span class="toc-number">1.2.</span> <span class="toc-text"> Collide with Environment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#auto-stepping"><span class="toc-number">1.3.</span> <span class="toc-text"> Auto Stepping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#controller-volume-update"><span class="toc-number">1.4.</span> <span class="toc-text"> Controller Volume Update</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#controller-push-objects"><span class="toc-number">1.5.</span> <span class="toc-text"> Controller Push Objects</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#standing-on-moving-platform"><span class="toc-number">1.6.</span> <span class="toc-text"> Standing on Moving Platform</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ragdoll"><span class="toc-number">2.</span> <span class="toc-text"> Ragdoll</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#map-skeleton-to-rigid-bodies"><span class="toc-number">2.1.</span> <span class="toc-text"> Map Skeleton to Rigid Bodies</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#human-joint-constraints"><span class="toc-number">2.2.</span> <span class="toc-text"> Human Joint Constraints</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#animating-skeleton-by-ragdoll"><span class="toc-number">2.3.</span> <span class="toc-text"> Animating Skeleton by Ragdoll</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#blending-between-animation-and-ragdoll"><span class="toc-number">2.4.</span> <span class="toc-text"> Blending between Animation and Ragdoll</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cloth"><span class="toc-number">3.</span> <span class="toc-text"> Cloth</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mesh-based-cloth-simulation"><span class="toc-number">3.1.</span> <span class="toc-text"> Mesh-Based Cloth Simulation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mass-spring-system"><span class="toc-number">3.2.</span> <span class="toc-text"> Mass-Spring System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#verlet-integration"><span class="toc-number">3.3.</span> <span class="toc-text"> Verlet Integration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#self-collision"><span class="toc-number">3.4.</span> <span class="toc-text"> Self Collision</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#destruction"><span class="toc-number">4.</span> <span class="toc-text"> Destruction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#chunk-hierarchy"><span class="toc-number">4.1.</span> <span class="toc-text"> Chunk Hierarchy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#connectivity-graph"><span class="toc-number">4.2.</span> <span class="toc-text"> Connectivity Graph</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#damage-calculation"><span class="toc-number">4.3.</span> <span class="toc-text"> Damage Calculation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fracturing-with-voronoi-diagram"><span class="toc-number">4.4.</span> <span class="toc-text"> Fracturing with Voronoi Diagram</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#destruction-in-physics-system"><span class="toc-number">4.5.</span> <span class="toc-text"> Destruction in Physics System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#issues-with-destruction"><span class="toc-number">4.6.</span> <span class="toc-text"> Issues with Destruction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#popular-destruction-implementations"><span class="toc-number">4.7.</span> <span class="toc-text"> Popular Destruction Implementations</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vehicle"><span class="toc-number">5.</span> <span class="toc-text"> Vehicle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#advanced-pbdxpbd"><span class="toc-number">6.</span> <span class="toc-text"> Advanced: PBD/XPBD</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pbd"><span class="toc-number">6.1.</span> <span class="toc-text"> PBD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xpbd"><span class="toc-number">6.2.</span> <span class="toc-text"> XPBD</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">7.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="Related"><ul><li><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li class="active"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="Overview"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="AUVeggry" src="/assets/avatar.avif"><p class="name" itemprop="name">AUVeggry</p><div class="description" itemprop="description">The spirit of independence and the freedom of thought </div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">64</span><span class="name">posts</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">categories</span></a></div><div class="item tags"><a href="/tags/"><span class="count">21</span><span class="name">tags</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>Home</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>About</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>About This Site</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>Appreciation</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>Privacy Policy</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>Posts</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>Archives</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>Categories</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>Tags</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>Friends</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>Random Posts</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/privacy/" title="In隐私保护指北">隐私保护指北</a></div><span><a href="/2023/06/09/privacy/PGP%E7%9A%84%E9%97%AE%E9%A2%98/">PGP的问题</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2023/06/11/vcbstudio/%E8%AE%A4%E8%AF%86%E7%91%95%E7%96%B5/">认识瑕疵</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/">games104笔记</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/">games104系列笔记（十九）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/">games104系列笔记（二十）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2024/06/03/thinking/%E8%87%B4%E6%95%AC%E6%9D%BF%E7%A0%96%E7%BE%8E%E5%AD%A6/">致敬板砖美学之长寿板砖蓝天P775DM2笔记本电脑评测(转载自Bob's Coding Lab)</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="In计算机基础理论">计算机基础理论</a></div><span><a href="/2023/05/16/basic-theory/%E9%9D%A2%E5%90%91cloudflare%E7%9A%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA-1%E5%88%86%E9%92%9F%E5%BF%AB%E9%80%9F%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA%E6%9C%89ssl%E8%AF%81%E4%B9%A6%E7%9A%84wordpress%E5%8D%9A%E5%AE%A2/">面向cloudflare的网站搭建,1分钟快速启动一个有ssl证书的wordpress博客</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="In计算机基础理论">计算机基础理论</a></div><span><a href="/2024/03/29/computer-graphic/PBRT%E7%AC%AC%E5%9B%9B%E7%89%88%E4%B8%AA%E4%BA%BA%E7%B2%BE%E6%A0%A1%E7%89%88%E7%BF%BB%E8%AF%91%EF%BC%88%E9%95%BF%E6%9C%9F%E8%AE%A1%E5%88%92%E9%A1%B9%E7%9B%AE%EF%BC%89/">PBRT第四版个人精校版翻译（长期计划项目）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E8%AE%A4%E8%AF%86%E7%91%95%E7%96%B5/">第四章认识瑕疵</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%B8%80%E5%88%87%E7%9A%84%E8%B5%B7%E7%82%B9%E2%80%94%E2%80%94%E8%AE%A4%E8%AF%86BD/">第二章一切的起点——认识BD</a></span></li></ul></div><div class="rpost pjax"><h2>Recent Comments</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><div class="status"><div class="copyright">© 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">AUVeggry @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="Symbols count total">1.1m words</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="Reading time total">17:13</span></div><div class="powered-by">Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> &amp; Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><br><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:var(--grey-5);"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号</a></span></div></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2023/06/28/game-engine/games104系列笔记（十一）/`,
+    favicon: {
+        show: `(●´3｀●) Here we go again.`,
+        hide: `(´Д｀) It's a disaster!`
+    },
+    search: {
+        placeholder: "Search for Posts",
+        empty: "We didn't find any results for the search: ${query}",
+        stats: "${hits} results found in ${time} ms"
+    },
+    nocopy: "false",
+    copyright: `Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>`,
+    quiz: {
+        choice: `Multiple Choice`,
+        multiple: `Multiple Answer`,
+        true_false: `True/False`,
+        essay: `Questions`,
+        gap_fill: `Gap Filling`,
+        mistake: `Wrong Answer`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script></body></html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="sakura" s="" blog""="" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="sakura" s="" blog""="" type="application/atom+xml"><link rel="alternate" type="application/json" title="sakura&quot;s blog&quot;" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://unpkg.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-CEOMSI5S.js"><link rel="modulepreload" href="/js/copy-tex-VNMZZ56J.js"><link rel="modulepreload" href="/js/post-DBDT2P4X.js"><link rel="modulepreload" href="/js/chunk-3NVTWMK7.js"><link rel="modulepreload" href="/js/tcomments-MCLWTQDC.js"><link rel="modulepreload" href="/js/chunk-ERE5SKT5.js"><link rel="modulepreload" href="/js/index.esm-RIWV4EDG.js"><link rel="modulepreload" href="/js/chunk-KXPDGESI.js"><link rel="modulepreload" href="/js/chunk-I5LMONQL.js"><link rel="modulepreload" href="/js/cf-patch.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><script src="/js/cf-patch.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script><link rel="preload" href="https://ptpimg.me/6452um.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/a52b1m.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/q8lgy3.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/6c200j.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/f12qll.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/klzv3b.jpg" as="image" fetchpriority="high"><meta name="keywords" content="游戏引擎"><meta name="description" content="<blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a href=&quot;https://games104.boomingtech.com/en/&quot;>GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍现代游戏引擎的实时渲染算法。<br />"><link rel="canonical" href="https://sakurame.eu.org/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/"><link rel="stylesheet" href="/css/post.css?v=0.5.4"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.4"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>games104系列笔记（五）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="pagefind_mount"></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（五）</h1><div class="meta"><span class="item" title="Created: 2023-06-25 23:55:34"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">Posted on</span><time itemprop="dateCreated datePublished" datetime="2023-06-25T23:55:34+08:00">2023-06-25</time></span><span class="item" title="Symbols count in article"><span class="icon"><i class="ic i-pen"></i></span><span class="text">Symbols count in article</span><span>16k</span><span class="text">words</span></span><span class="item" title="Reading time"><span class="icon"><i class="ic i-clock"></i></span><span class="text">Reading time</span><span>14 mins.</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="Toggle navigation bar"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/6452um.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/a52b1m.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/q8lgy3.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/6c200j.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/f12qll.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/klzv3b.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">Home</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="In游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" data-pagefind-body="data-pagefind-body" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="AUVeggry"><meta itemprop="description" content=", The spirit of independence and the freedom of thought "></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="sakura&quot;s blog&quot;"></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a target="_blank" rel="noopener" href="https://games104.boomingtech.com/en/">GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍现代游戏引擎的实时渲染算法。<br>
+<span id="more"></span></p>
+</blockquote>
+<p>在上一节课中我们介绍了渲染的概念，而本节课我们则会开始介绍游戏引擎中具体的渲染算法。渲染是研究光与材质相互作用的学科，因此本节课从光线、材质以及shader三个方面介绍现代游戏引擎中各种经典实时算法的原理。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ev8jRMf.png">https://search.pstatic.net/common?src=https://i.imgur.com/ev8jRMf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="the-rendering-equation"><a class="anchor" href="#the-rendering-equation">#</a> The Rendering Equation</h2>
+<p>渲染的本质是求解<strong>渲染方程(the rendering equation)</strong>，它由James Kajiya于1986年提出。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/komPRjJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/komPRjJ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>不严格地讲，渲染方程指出空间点<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>在方向<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ω</mi><mi>o</mi></msub></mrow><annotation encoding="application/x-tex">\omega_o</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">o</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>上出射的能量等于它自身在该方向发射的能量加上来自半球面上所有方向入射并经过反射后反射到<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ω</mi><mi>o</mi></msub></mrow><annotation encoding="application/x-tex">\omega_o</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">o</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>上的能量之和。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OybsJIM.png">https://search.pstatic.net/common?src=https://i.imgur.com/OybsJIM.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="complexity-of-real-rendering"><a class="anchor" href="#complexity-of-real-rendering">#</a> Complexity of Real Rendering</h3>
+<p>显然想要直接求解渲染方程是相当困难的。在现实的场景中光线会在物体表面经过多次反射，同时不同的材质也有着天差地别的反射行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4DmIPlp.png">https://search.pstatic.net/common?src=https://i.imgur.com/4DmIPlp.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>渲染的难点之一在于阴影，或者说是光的可见性。如何做出合适的阴影效果远比想象中要难得多，在实践中往往需要通过大量的技巧才能实现符合人认知的阴影效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/73c8jwW.png">https://search.pstatic.net/common?src=https://i.imgur.com/73c8jwW.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>其次，场景中往往有着各种类型的光源需要考虑。常见的光源形式包括平行光、点光源、聚光灯、面光源等等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/YVnO16j.png">https://search.pstatic.net/common?src=https://i.imgur.com/YVnO16j.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>材质是渲染中最为复杂的因素之一。如何设计符合现实世界的材质模型并且满足实时计算的要求是实时渲染的一大难点。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/79RC5lh.png">https://search.pstatic.net/common?src=https://i.imgur.com/79RC5lh.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>最后，在渲染时需要考虑光线在场景中不断反射的行为。全局光照一直是渲染的终极目标。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Ll9aKjG.png">https://search.pstatic.net/common?src=https://i.imgur.com/Ll9aKjG.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>总结一下，渲染的难点可以分为一下三部分：如何计算入射光线、如何考虑材质以及如何实现全局光照。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/JwPhYP0.png">https://search.pstatic.net/common?src=https://i.imgur.com/JwPhYP0.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="starting-from-simple"><a class="anchor" href="#starting-from-simple">#</a> Starting from Simple</h2>
+<h3 id="simple-light-solution"><a class="anchor" href="#simple-light-solution">#</a> Simple Light Solution</h3>
+<p>我们从最简单的情况开始考虑。首先考虑对光照进行分解，将反射光分解为漫反射和环境光两部分。这样已经可以实现一些简单的渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/AqcuxeH.png">https://search.pstatic.net/common?src=https://i.imgur.com/AqcuxeH.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>为了更好地模拟环境光照，我们可以使用环境贴图技术把环境光存储在一个立方体表面上。这样当需要计算入射光线时只要根据方向去进行查询即可。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Fk3VWxZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/Fk3VWxZ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>实际上这样的处理方法在数学上也是解释得通的，它相当于把入射光线分解为低频的漫反射和高频的环境光。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/IMmHWhk.png">https://search.pstatic.net/common?src=https://i.imgur.com/IMmHWhk.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="blinn-phong-materials"><a class="anchor" href="#blinn-phong-materials">#</a> Blinn-Phong Materials</h3>
+<p>有了光照后我们开始考虑材质。最经典的材质模型是<strong>Blinn-Phong材质(Blinn-Phong materials)</strong>，它把材质的反射行为分解为与方向无关的环境光、与入射和观察角度有关的漫反射以及高光。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EUtEQp3.png">https://search.pstatic.net/common?src=https://i.imgur.com/EUtEQp3.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然Blinn-Phong模型也有很多问题，比如说它不遵循能量守恒，同时它也不能描述现实世界中丰富的材质外观。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OyYusoL.png">https://search.pstatic.net/common?src=https://i.imgur.com/OyYusoL.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="shadow"><a class="anchor" href="#shadow">#</a> Shadow</h3>
+<p>对于阴影问题，早期的处理方法主要是shadow volume，而现代游戏引擎的主流方法则是shadow map。shadow map的处理流程是在光源位置设置一个新的相机并渲染出一张深度图，然后在实际相机进行渲染时对每个点检测它到光源处的深度。如果该深度大于深度图对应位置处的深度则说明该点对于光源是不可见的，即位于阴影中。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fQBx9aM.png">https://search.pstatic.net/common?src=https://i.imgur.com/fQBx9aM.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/p6LbVZQ.png">https://search.pstatic.net/common?src=https://i.imgur.com/p6LbVZQ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>shadow map的主要缺陷在于它只能产生"硬阴影"而无法产生现实中渐变的"软阴影"。而且从光源和相机进行采样时往往会使用不同的采样率，这容易导致各种走样和自遮挡的问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/T1MPNGr.png">https://search.pstatic.net/common?src=https://i.imgur.com/T1MPNGr.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>把上面介绍过的这些技巧组合到一起并且配合美术的精巧设计就可以实现一些不错的渲染效果了。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/sMeZU09.png">https://search.pstatic.net/common?src=https://i.imgur.com/sMeZU09.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Ai6AoHh.png">https://search.pstatic.net/common?src=https://i.imgur.com/Ai6AoHh.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="pre-computed-global-illumination"><a class="anchor" href="#pre-computed-global-illumination">#</a> Pre-computed Global Illumination</h2>
+<p>全局光照可以显著地提升画面的渲染效果，而它的难点在于如何表示来自其它物体反射的间接光照以及如何计算光照与材质BRDF的积分(卷积)。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Tm59XDY.png">https://search.pstatic.net/common?src=https://i.imgur.com/Tm59XDY.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rfFDCXU.png">https://search.pstatic.net/common?src=https://i.imgur.com/rfFDCXU.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="spherical-harmonics"><a class="anchor" href="#spherical-harmonics">#</a> Spherical Harmonics</h3>
+<p>**球面谐波函数(spherical harmonics, SH)**是实时渲染中表示环境光照的经典方法，不过在介绍SH前我们先来回顾一下Fourier变换的相关理论。Fourier变换指出无限循环的时域信号可以分解为不同频率函数的叠加，同时时域信号的卷积等价于经过Fourier变换后频域信号的乘积。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/vqS5trx.png">https://search.pstatic.net/common?src=https://i.imgur.com/vqS5trx.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/XtSK2eu.png">https://search.pstatic.net/common?src=https://i.imgur.com/XtSK2eu.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而SH可以看成是对球面上信号进行分解，可以证明任意的球面信号可以分解为无限多基函数信号的加权和，而且这些基函数是相互正交的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/V1ZtwXT.png">https://search.pstatic.net/common?src=https://i.imgur.com/V1ZtwXT.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3bRdAKT.png">https://search.pstatic.net/common?src=https://i.imgur.com/3bRdAKT.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2I9Q9Uh.png">https://search.pstatic.net/common?src=https://i.imgur.com/2I9Q9Uh.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>基于SH我们可以对场景中任意点接收到的环境光照进行分解，一般来说只需要使用1-2阶的低频信号就可以实现合理的渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/s2msrQ1.png">https://search.pstatic.net/common?src=https://i.imgur.com/s2msrQ1.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/iVWsK4s.png">https://search.pstatic.net/common?src=https://i.imgur.com/iVWsK4s.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>假设我们使用2阶的SH对环境光照进行分解，在RGB3个通道上只需要12个参数即可表示任意点接收到的环境光。进行存储时可以对不同的系数使用不同的精度进行存储，这样任意点的环境光照可以使用RGBA的32bits来表示，换句话说每一点的光场相当于RGBA纹理图像上的一个像素。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FlLoGsC.png">https://search.pstatic.net/common?src=https://i.imgur.com/FlLoGsC.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="lightmap"><a class="anchor" href="#lightmap">#</a> Lightmap</h3>
+<p>lightmap正是基于这种思想而提出来的光照技术。我们可以将场景中每个点的光照离线烘焙到一张纹理图上，然后在渲染时读取纹理值来获得SH表达的环境光照。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6Pr5cmE.png">https://search.pstatic.net/common?src=https://i.imgur.com/6Pr5cmE.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然在进行烘焙时不需要使用包含各种细节的网格，我们只需要使用一个精度相对较低的网格并进行参数化即可。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dwWz1NV.png">https://search.pstatic.net/common?src=https://i.imgur.com/dwWz1NV.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当美术完成场景建模后就可以开始烘焙了。显然计算lightmap是非常耗时的，但通过lightmap可以实现非常逼真的场景效果，而且在实际渲染时lightmap可以实现场景的实时渲染。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/DQuIHcF.png">https://search.pstatic.net/common?src=https://i.imgur.com/DQuIHcF.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/O88XabM.png">https://search.pstatic.net/common?src=https://i.imgur.com/O88XabM.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/VJyuQ8Z.png">https://search.pstatic.net/common?src=https://i.imgur.com/VJyuQ8Z.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然lightmap也有一些缺陷，比如说离线烘焙时需要很长的时间、lightmap无法考虑动态的光源、同时存储lightmap也需要非常大的存储空间。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Tt20wAL.png">https://search.pstatic.net/common?src=https://i.imgur.com/Tt20wAL.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="light-probe"><a class="anchor" href="#light-probe">#</a> Light Probe</h3>
+<p>除了lightmap外还可以在空间上设置一些**探针(probe)**来记录环境光照，而在计算物体的着色时只需要对附近probe进行插值即可估计该点的光照。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/cGTvAow.png">https://search.pstatic.net/common?src=https://i.imgur.com/cGTvAow.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然如何设置这些probe是比较麻烦的。早期的实践中一般是由美术人工进行设置，而目前则可以使用一些自动化的工具来自动生成probe。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/07xRmcd.png">https://search.pstatic.net/common?src=https://i.imgur.com/07xRmcd.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>如果要考虑材质的反射行为则需要设置专门的反射probe。一般来说这样的反射probe不需要设置很多，但每个probe则需要有更高的精度。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/zRC4WWw.png">https://search.pstatic.net/common?src=https://i.imgur.com/zRC4WWw.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>light probe同样可以进行实时渲染。不同于lightmap，基于light probe可以实现动态的场景和物体渲染，而且现代计算机的计算性能也允许对probe进行动态更新。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/RRHp0G8.png">https://search.pstatic.net/common?src=https://i.imgur.com/RRHp0G8.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="physical-based-material"><a class="anchor" href="#physical-based-material">#</a> Physical-Based Material</h2>
+<h3 id="microfacet-theory"><a class="anchor" href="#microfacet-theory">#</a> Microfacet Theory</h3>
+<p>有了光照后我们来考虑材质。基于物理的材质模型大量使用了**微表面理论(microfacet theory)**来模拟现实世界中材质，简单来说微表面理论认为材质的表面是由大量方向各异的光滑镜面组成，这些镜面的分布控制了不同材质的反射行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5ArPG2D.png">https://search.pstatic.net/common?src=https://i.imgur.com/5ArPG2D.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>光线在物体表面上的反射可以分解为**体反射(body reflection)<strong>和</strong>表面反射(surface reflection)**两种。在体反射中光子会进入到物体的内部进行反射然后从物体表面的另一个点射出；而在表面反射中光子则会直接被反射出去。实际上物体表面的漫反射行为对应着体反射，我们可以使用Lambert模型进行表示；而表面反射的行为则可以基于微表面理论使用Cook-Torrance模型来进行表达。将二者组合到一起就构成来材质的BRDF。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3jvW5Qo.png">https://search.pstatic.net/common?src=https://i.imgur.com/3jvW5Qo.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>Cook-Torrance模型可以拆分为三项。首先是<strong>法向分布函数(normal distribution function)</strong>，它表示材质不同方向上镜面法向的分布情况。法向分布函数包含一个参数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span>来表示表面的粗糙度，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span>越大表示表面越粗糙反射行为越接近漫反射，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span>越小表示表面越光滑反射行为越接近理想镜面反射。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/K0Xa1FW.png">https://search.pstatic.net/common?src=https://i.imgur.com/K0Xa1FW.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>Cook-Torrance模型中的另一项是<strong>几何项(geometry attenuation term)</strong>，它表示不同方向镜面的自遮挡行为。在Cook-Torrance模型中使用Smith模型将几何项分解为出射方向和入射方向两个方向上的可见性乘积，每个方向上的可见性使用GGX模型进行计算。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ibTw6du.png">https://search.pstatic.net/common?src=https://i.imgur.com/ibTw6du.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>Cook-Torrance模型中的最后一项是<strong>Fresnel项(Fresnel equation)</strong>，它表示不同材质光滑表面的理想反射行为。在实时渲染中一般使用Schilick近似来计算这一项。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/vRtZGt2.png">https://search.pstatic.net/common?src=https://i.imgur.com/vRtZGt2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>为了获得真实材质的光学参数我们还需要进行实际的测量。<a target="_blank" rel="noopener" href="https://cdfg.csail.mit.edu/wojciech/brdfdatabase">MERL BRDF数据库</a>给出了常见材质的BRDF测量结果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Zaadlyj.png">https://search.pstatic.net/common?src=https://i.imgur.com/Zaadlyj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="disney-principled-brdf"><a class="anchor" href="#disney-principled-brdf">#</a> Disney Principled BRDF</h3>
+<p>为了方便不同背景的从业者进行使用，Disney提出了著名的<strong>Disney Principled BRDF</strong>来设计不同的材质模型。它的思想是设计材质模型时要尽可能方便艺术家进行理解，而不要过多地使用物理上面的概念。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4gszGdV.png">https://search.pstatic.net/common?src=https://i.imgur.com/4gszGdV.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/JaFgFqi.png">https://search.pstatic.net/common?src=https://i.imgur.com/JaFgFqi.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="pbr-specular-glossiness"><a class="anchor" href="#pbr-specular-glossiness">#</a> PBR Specular Glossiness</h3>
+<p>目前在游戏引擎中最常用的材质模型是<strong>specular glossiness模型(SG)</strong>。在SG模型中物体的反射行为分解为三张图的叠加：diffuse用来控制漫反射、specular图用来控制Fresnel项、而glossiness图则控制金属材质的粗糙度。把三张图带入BRDF计算公式就可以渲染出非常漂亮的模型。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Q4TP8Fj.png">https://search.pstatic.net/common?src=https://i.imgur.com/Q4TP8Fj.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lKbddBs.png">https://search.pstatic.net/common?src=https://i.imgur.com/lKbddBs.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在长期的实践中为了防止美术在设计时出错，人们还对SG模型进行了封装并得到了<strong>metallic roughness模型(MR)</strong>。MR模型同样包含三张图：一张base color图表示漫反射、一张roughness图表示粗糙度、还有一张metallic图表示材质的金属度。当metallic值很高时材质会更接近于金属材质产生大量的光泽反射，否则会接近于非金属材质以漫反射为主。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gQvZ6dR.png">https://search.pstatic.net/common?src=https://i.imgur.com/gQvZ6dR.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/zV0sv4Y.png">https://search.pstatic.net/common?src=https://i.imgur.com/zV0sv4Y.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>MR模型不太适合表示介于金属和非金属之间的材质，但大多数情况下仍然是工程中的首选。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/nauNkGM.png">https://search.pstatic.net/common?src=https://i.imgur.com/nauNkGM.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="image-based-lighting"><a class="anchor" href="#image-based-lighting">#</a> Image-Based Lighting</h2>
+<p>IBR本身是使用真实图像作为光照的方法，但结合PBR材质可以实现非常逼真的实时渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/aA22DVJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/aA22DVJ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>根据前面介绍过的PBR材质，物体表面的BRDF可以分解为漫反射以及镜面反射两项。我们对这两项分别进行处理在累加起来就可以实现IBR。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/h7qqdz6.png">https://search.pstatic.net/common?src=https://i.imgur.com/h7qqdz6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="diffuse-irradiance-map"><a class="anchor" href="#diffuse-irradiance-map">#</a> Diffuse Irradiance Map</h3>
+<p>对于漫反射项比较简单，我们首先通过预计算的方法对环境光照按照余弦进行积分，接着把积分后的值存储在一个表格中。实际渲染时进行查表并和漫反射系数进行相乘即可。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/62U96gx.png">https://search.pstatic.net/common?src=https://i.imgur.com/62U96gx.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="specular-approximation"><a class="anchor" href="#specular-approximation">#</a> Specular Approximation</h3>
+<p>对镜面反射的处理要相对复杂一些。我们首先需要将镜面反射的积分利用split-sum拆分成**光照项(lighting term)<strong>和</strong>BRDF项(BRDF term)**两部分，而这两项都可以通过预计算的方法事先存储在一个表格中。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/pThd9lN.png">https://search.pstatic.net/common?src=https://i.imgur.com/pThd9lN.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9i9aygl.png">https://search.pstatic.net/common?src=https://i.imgur.com/9i9aygl.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/C0XrlMq.png">https://search.pstatic.net/common?src=https://i.imgur.com/C0XrlMq.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>最后把漫反射项和镜面反射项加起来就得到了完整的环境光照。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/B48BFcH.png">https://search.pstatic.net/common?src=https://i.imgur.com/B48BFcH.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在现代3A游戏中基于IBR可以实现非常逼真的图像效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/39Jfc1I.png">https://search.pstatic.net/common?src=https://i.imgur.com/39Jfc1I.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="classic-shadow-solution"><a class="anchor" href="#classic-shadow-solution">#</a> Classic Shadow Solution</h2>
+<p>cascade shadow是实时渲染中阴影的经典处理方法。它的思想是根据距离来调整shadow map的精度，近处的精度高远处的精度低。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/YZ6TwKe.png">https://search.pstatic.net/common?src=https://i.imgur.com/YZ6TwKe.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Z3MEZ9a.png">https://search.pstatic.net/common?src=https://i.imgur.com/Z3MEZ9a.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然想要得到合理的阴影效果需要大量的技巧，而且cascade shadow需要大量的存储空间在计算上也需要大量的时间。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4XX3M90.png">https://search.pstatic.net/common?src=https://i.imgur.com/4XX3M90.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/s8hWNS6.png">https://search.pstatic.net/common?src=https://i.imgur.com/s8hWNS6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>现代实时渲染中会更多地使用PCF和PCSS等算法，它们的特点是可以实现更加自然的软阴影效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/sXCms0w.png">https://search.pstatic.net/common?src=https://i.imgur.com/sXCms0w.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Ixorp5C.png">https://search.pstatic.net/common?src=https://i.imgur.com/Ixorp5C.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/f8ppi0z.png">https://search.pstatic.net/common?src=https://i.imgur.com/f8ppi0z.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>另一种生成软阴影的方法是VSSM，它基于Chebyshev不等式来估计像素上的阴影比例。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OUaHMVN.png">https://search.pstatic.net/common?src=https://i.imgur.com/OUaHMVN.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>把上面介绍过的技术全部结合到一起就可以实现上个世代3A游戏的渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ctmPiUW.png">https://search.pstatic.net/common?src=https://i.imgur.com/ctmPiUW.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="moving-wave-of-high-quality"><a class="anchor" href="#moving-wave-of-high-quality">#</a> Moving Wave of High Quality</h2>
+<p>随着各种shader模型的提出以及硬件计算性能的进步，上面介绍的实时渲染算法已经不能完全满足人们对画质的需求。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BqrhuBS.png">https://search.pstatic.net/common?src=https://i.imgur.com/BqrhuBS.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>**实时光线追踪(real-time ray tracing)**就是一个很好的案例。随着显卡性能的提升我们可以把光线追踪算法应用在实时渲染中从而获得更加真实的光照和反射效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/LqjwqR3.png">https://search.pstatic.net/common?src=https://i.imgur.com/LqjwqR3.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>另一方面**实时全局光照(real-time global illumination)**也取得了很大的进步。这几年各种实时全局光照算法层出不穷，基于全局光照可以给游戏画面带来质的飞跃。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/JuQgzDk.png">https://search.pstatic.net/common?src=https://i.imgur.com/JuQgzDk.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在材质渲染方面，随着geometry shader的出现人们可以获得几乎无限的几何细节。同时大量基于BSSDF的shader使得人们更准确地描述物理材质与光线的相互作用。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tRTylPr.png">https://search.pstatic.net/common?src=https://i.imgur.com/tRTylPr.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在虚幻5引擎中还使用了virtual shadow map来生成更加逼真的阴影。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/y7pQ1tc.png">https://search.pstatic.net/common?src=https://i.imgur.com/y7pQ1tc.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="shader-management"><a class="anchor" href="#shader-management">#</a> Shader Management</h2>
+<p>本节课最后讨论了游戏引擎中的shader管理问题。在现代3A游戏中每一帧的画面上可能都有上千个shader在运行。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/QjHNHJF.png">https://search.pstatic.net/common?src=https://i.imgur.com/QjHNHJF.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Y1VALrs.png">https://search.pstatic.net/common?src=https://i.imgur.com/Y1VALrs.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>这些大量的shader一方面来自于美术对场景和角色的设计，另一方面不同材质在不同光照条件下的反应也使得程序员需要将不同情况下的shader组合到一起，并通过宏的方式让程序自行选择需要执行的代码。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/JQxT2s3.png">https://search.pstatic.net/common?src=https://i.imgur.com/JQxT2s3.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/45qisHA.png">https://search.pstatic.net/common?src=https://i.imgur.com/45qisHA.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/NOQWplG.png">https://search.pstatic.net/common?src=https://i.imgur.com/NOQWplG.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>除此之外不同的平台上往往使用了不同的图形库，在编写shader的时候需要考虑跨平台的问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/G0QnlMf.png">https://search.pstatic.net/common?src=https://i.imgur.com/G0QnlMf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="reference"><a class="anchor" href="#reference">#</a> Reference</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1J3411n7WT">Lecture 05：Rendering on Game Engine</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YK4y1T7yY?p=3">GAMES202 Lecture 03：Real-time Shadows 1</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YK4y1T7yY?p=4">GAMES202 Lecture 04：Real-time Shadows 2</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YK4y1T7yY?p=5">GAMES202 Lecture 05：Real-Time Environment Mapping 1</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YK4y1T7yY?p=6">GAMES202 Lecture 06：Real-Time Environment Mapping 2</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YK4y1T7yY?p=10">GAMES202 Lecture 10：Real-Time Physically-Based Materials 1</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1YK4y1T7yY?p=11">GAMES202 Lecture 11：Real-Time Physically-Based Materials 2</a></li>
+</ul>
+<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">Total Views: </span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/25/game-engine/games104系列笔记（五）/">Loading...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">Edited on </span><time title="Modified: 2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>Donate</button><p>Give me a cup of [coffee]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/monero.avif" alt="AUVeggry monero"><p>monero</p></div><div><img loading="lazy" src="/assets/bitcoin.avif" alt="AUVeggry Bitcoin"><p>Bitcoin</p></div></div></div><div id="copyright"><ul><li class="author"><strong>Post author: </strong>AUVeggry<i class="ic i-at"><em>@</em></i>sakura"s blog"</li><li class="link"><strong>Post link: </strong><a href="https://sakurame.eu.org/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" title="games104系列笔记（五）">https://sakurame.eu.org/2023/06/25/game-engine/games104系列笔记（五）/</a></li><li class="license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> unless stating additionally.</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/gzt9vt.jpg" title="games104系列笔记（四）"><span class="type">Previous Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（四）</h3></a></div><div class="item right"><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="next" itemprop="url" data-background-image="https://ptpimg.me/6461y9.jpg" title="games104系列笔记（六）"><span class="type">Next Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（六）</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="Contents"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#the-rendering-equation"><span class="toc-number">1.</span> <span class="toc-text"> The Rendering Equation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#complexity-of-real-rendering"><span class="toc-number">1.1.</span> <span class="toc-text"> Complexity of Real Rendering</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#starting-from-simple"><span class="toc-number">2.</span> <span class="toc-text"> Starting from Simple</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#simple-light-solution"><span class="toc-number">2.1.</span> <span class="toc-text"> Simple Light Solution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#blinn-phong-materials"><span class="toc-number">2.2.</span> <span class="toc-text"> Blinn-Phong Materials</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shadow"><span class="toc-number">2.3.</span> <span class="toc-text"> Shadow</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pre-computed-global-illumination"><span class="toc-number">3.</span> <span class="toc-text"> Pre-computed Global Illumination</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#spherical-harmonics"><span class="toc-number">3.1.</span> <span class="toc-text"> Spherical Harmonics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lightmap"><span class="toc-number">3.2.</span> <span class="toc-text"> Lightmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#light-probe"><span class="toc-number">3.3.</span> <span class="toc-text"> Light Probe</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#physical-based-material"><span class="toc-number">4.</span> <span class="toc-text"> Physical-Based Material</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#microfacet-theory"><span class="toc-number">4.1.</span> <span class="toc-text"> Microfacet Theory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#disney-principled-brdf"><span class="toc-number">4.2.</span> <span class="toc-text"> Disney Principled BRDF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pbr-specular-glossiness"><span class="toc-number">4.3.</span> <span class="toc-text"> PBR Specular Glossiness</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#image-based-lighting"><span class="toc-number">5.</span> <span class="toc-text"> Image-Based Lighting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#diffuse-irradiance-map"><span class="toc-number">5.1.</span> <span class="toc-text"> Diffuse Irradiance Map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#specular-approximation"><span class="toc-number">5.2.</span> <span class="toc-text"> Specular Approximation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#classic-shadow-solution"><span class="toc-number">6.</span> <span class="toc-text"> Classic Shadow Solution</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#moving-wave-of-high-quality"><span class="toc-number">7.</span> <span class="toc-text"> Moving Wave of High Quality</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shader-management"><span class="toc-number">8.</span> <span class="toc-text"> Shader Management</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">9.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="Related"><ul><li><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li class="active"><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="Overview"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="AUVeggry" src="/assets/avatar.avif"><p class="name" itemprop="name">AUVeggry</p><div class="description" itemprop="description">The spirit of independence and the freedom of thought </div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">64</span><span class="name">posts</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">categories</span></a></div><div class="item tags"><a href="/tags/"><span class="count">21</span><span class="name">tags</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>Home</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>About</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>About This Site</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>Appreciation</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>Privacy Policy</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>Posts</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>Archives</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>Categories</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>Tags</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>Friends</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>Random Posts</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/">games104系列笔记（五）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/">games104系列笔记（二二）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A08-bit%E4%BD%8E%E7%A0%81%E7%8E%87%E5%8E%8B%E5%88%B6/">第十二章8-bit低码率压制</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="In计算机基础理论">计算机基础理论</a></div><span><a href="/2023/05/22/basic-theory/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E7%89%88%E7%AC%94%E8%AE%B0/">动手学深度学习第二版笔记</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%9B%9B%E7%AB%A0%E8%AE%A4%E8%AF%86%E7%91%95%E7%96%B5/">第四章认识瑕疵</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/">games104系列笔记（十二）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/">games104系列笔记（十八）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E5%8D%81%E7%AB%A0%E5%88%9D%E7%AD%8930fps%E5%A4%84%E7%90%86/">第十章初等30fps处理</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/computer-graphic/" title="In计算机图形学">计算机图形学</a></div><span><a href="/2023/06/24/computer-graphic/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E7%B2%BE%E7%B2%B9%E7%AC%94%E8%AE%B0/">光线追踪精粹笔记</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2023/08/28/thinking/united-93%E4%B9%8B%E6%80%9D/">united_93之思</a></span></li></ul></div><div class="rpost pjax"><h2>Recent Comments</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><div class="status"><div class="copyright">© 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">AUVeggry @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="Symbols count total">1.1m words</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="Reading time total">17:13</span></div><div class="powered-by">Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> &amp; Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><br><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:var(--grey-5);"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号</a></span></div></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2023/06/25/game-engine/games104系列笔记（五）/`,
+    favicon: {
+        show: `(●´3｀●) Here we go again.`,
+        hide: `(´Д｀) It's a disaster!`
+    },
+    search: {
+        placeholder: "Search for Posts",
+        empty: "We didn't find any results for the search: ${query}",
+        stats: "${hits} results found in ${time} ms"
+    },
+    nocopy: "false",
+    copyright: `Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>`,
+    quiz: {
+        choice: `Multiple Choice`,
+        multiple: `Multiple Answer`,
+        true_false: `True/False`,
+        essay: `Questions`,
+        gap_fill: `Gap Filling`,
+        mistake: `Wrong Answer`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script></body></html>

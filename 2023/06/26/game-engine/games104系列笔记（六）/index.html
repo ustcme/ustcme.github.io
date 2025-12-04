@@ -1,0 +1,296 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="sakura" s="" blog""="" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="sakura" s="" blog""="" type="application/atom+xml"><link rel="alternate" type="application/json" title="sakura&quot;s blog&quot;" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://unpkg.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-CEOMSI5S.js"><link rel="modulepreload" href="/js/copy-tex-VNMZZ56J.js"><link rel="modulepreload" href="/js/post-DBDT2P4X.js"><link rel="modulepreload" href="/js/chunk-3NVTWMK7.js"><link rel="modulepreload" href="/js/tcomments-MCLWTQDC.js"><link rel="modulepreload" href="/js/chunk-ERE5SKT5.js"><link rel="modulepreload" href="/js/index.esm-RIWV4EDG.js"><link rel="modulepreload" href="/js/chunk-KXPDGESI.js"><link rel="modulepreload" href="/js/chunk-I5LMONQL.js"><link rel="modulepreload" href="/js/cf-patch.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><script src="/js/cf-patch.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script><link rel="preload" href="https://ptpimg.me/355768.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/623909.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/e8k2yf.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/529px6.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/k1yp55.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/b3w739.jpg" as="image" fetchpriority="high"><meta name="keywords" content="游戏引擎"><meta name="description" content="<blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a href=&quot;https://games104.boomingtech.com/en/&quot;>GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍现代游戏引擎中的地形和大气渲染技术。<br />"><link rel="canonical" href="https://sakurame.eu.org/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/"><link rel="stylesheet" href="/css/post.css?v=0.5.4"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.4"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>games104系列笔记（六）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="pagefind_mount"></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（六）</h1><div class="meta"><span class="item" title="Created: 2023-06-26 12:58:47"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">Posted on</span><time itemprop="dateCreated datePublished" datetime="2023-06-26T12:58:47+08:00">2023-06-26</time></span><span class="item" title="Symbols count in article"><span class="icon"><i class="ic i-pen"></i></span><span class="text">Symbols count in article</span><span>13k</span><span class="text">words</span></span><span class="item" title="Reading time"><span class="icon"><i class="ic i-clock"></i></span><span class="text">Reading time</span><span>12 mins.</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="Toggle navigation bar"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/355768.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/623909.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/e8k2yf.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/529px6.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/k1yp55.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/b3w739.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">Home</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="In游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" data-pagefind-body="data-pagefind-body" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="AUVeggry"><meta itemprop="description" content=", The spirit of independence and the freedom of thought "></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="sakura&quot;s blog&quot;"></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a target="_blank" rel="noopener" href="https://games104.boomingtech.com/en/">GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍现代游戏引擎中的地形和大气渲染技术。<br>
+<span id="more"></span></p>
+</blockquote>
+<p>现实世界中有着丰富的自然场景，如果只使用简单的绘制程序则很难给予玩家真实的游戏体验。因此在本节课中我们会介绍3A游戏中使用的自然场景渲染技术。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/jDU9UTs.png">https://search.pstatic.net/common?src=https://i.imgur.com/jDU9UTs.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/kyjqMAi.png">https://search.pstatic.net/common?src=https://i.imgur.com/kyjqMAi.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="landscape"><a class="anchor" href="#landscape">#</a> Landscape</h2>
+<p>目前的3A游戏中以及可以生成逼真的地形环境渲染效果。以微软的模拟飞行为例，最新一代的模拟飞行已经基本实现了真实地球的地貌绘制，此外基于地形绘制技术我们也可以生成其它星球的地形和地貌。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WvpUiNj.png">https://search.pstatic.net/common?src=https://i.imgur.com/WvpUiNj.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4RBc4Bg.png">https://search.pstatic.net/common?src=https://i.imgur.com/4RBc4Bg.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="terrain-geometry"><a class="anchor" href="#terrain-geometry">#</a> Terrain Geometry</h3>
+<h4 id="heightfield"><a class="anchor" href="#heightfield">#</a> Heightfield</h4>
+<p>表示地形最简单的方法是使用<strong>高度场(heightfield)</strong>。我们可以把地形看做是平面上具有不同高度的函数，然后通过在平面进行均匀采样来近似它。这种方法在遥感等领域仍然有着很多的应用。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BUMI1bU.png">https://search.pstatic.net/common?src=https://i.imgur.com/BUMI1bU.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>高度场的缺陷在于当我们需要表示大规模的地形或者需要更精细的地形时所需的采样点数会成倍的增长。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/8ipmMFn.png">https://search.pstatic.net/common?src=https://i.imgur.com/8ipmMFn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在游戏引擎中由于玩家观察的**视野(field of view, FOV)**是有限的，实际上我们不需要对所有的网格进行加密采样，只需关注视野中的地形即可。在这种思想下人们提出了两条加密采样原则：首先是根据距离和视野来调整网格的疏密，对于不再视野范围内或是距离观察点比较遥远位置的地形无需使用加密的网格；另一条是在对地形进行采样时要考虑对网格进行加密或者化简后地形高度的误差不要超过一定的范围，我们希望近处地形的误差尽可能小而远处的误差可以大一些。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/yrCAWyn.png">https://search.pstatic.net/common?src=https://i.imgur.com/yrCAWyn.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/cvS6LlC.png">https://search.pstatic.net/common?src=https://i.imgur.com/cvS6LlC.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>对三角网格进行加密可以通过三角网剖分算法来实现。对于均匀分布的网格，其中每个三角形都是等腰直角三角形。因此在进行剖分时可以直接选择三角形的斜边中点将它剖分成两个一样的小等腰直角三角形。显然这样的剖分方法等价于为二叉树添加叶节点。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/g4B0POh.png">https://search.pstatic.net/common?src=https://i.imgur.com/g4B0POh.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在进行剖分时还需要注意<strong>T-junction</strong>的问题：当我们对某个三角形进行剖分后必须同时将与它具有相同邻边的三角形同时进行剖分，否则会有顶点落在其它三角形的边上。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7OcPIHA.png">https://search.pstatic.net/common?src=https://i.imgur.com/7OcPIHA.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>利用现代GPU的计算性能和上面介绍的三角剖分算法就可以实现大规模场景地形的实时渲染。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FQjh3Cn.png">https://search.pstatic.net/common?src=https://i.imgur.com/FQjh3Cn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然在游戏行业中更常用的高度场表达方式是使用四叉树来表达地形。这种方法更符合人的直觉，同时也可以直接使用纹理的存储方式来存储这种四叉树的结构。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/W7maqBa.png">https://search.pstatic.net/common?src=https://i.imgur.com/W7maqBa.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Ow3FGeY.png">https://search.pstatic.net/common?src=https://i.imgur.com/Ow3FGeY.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>quad-tree同样需要考虑T-junction的问题。不过在quad-tree中可以通过将三角形顶点之间吸附到其它顶点上的方法来简化处理。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6C9QOZn.png">https://search.pstatic.net/common?src=https://i.imgur.com/6C9QOZn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="triangulated-irregular-network"><a class="anchor" href="#triangulated-irregular-network">#</a> Triangulated Irregular Network</h4>
+<p>在很多场景中均匀采样的地形会造成一些存储空间的浪费。实际上对于高度变化不大的区域只需要少量的三角形就可以进行表达，而对于高程变化剧烈的区域使用数量更多的三角形来还原地形的细节。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FJZUHMc.png">https://search.pstatic.net/common?src=https://i.imgur.com/FJZUHMc.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>不过目前这样的方法在游戏工业界的应用还比较少，主流的地形处理方法仍然是使用均匀采样的网格。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/YMiJrPI.png">https://search.pstatic.net/common?src=https://i.imgur.com/YMiJrPI.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="hardware-tessellation"><a class="anchor" href="#hardware-tessellation">#</a> Hardware Tessellation</h4>
+<p>利用现代GPU的强大计算能力我们可以把地形的细化完全放到GPU上进行实时计算。在DirectX 11中提供了hull shader、tessellator以及domain shader等工具来网格的实时细分。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9VS9DOk.png">https://search.pstatic.net/common?src=https://i.imgur.com/9VS9DOk.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FXYNtPt.png">https://search.pstatic.net/common?src=https://i.imgur.com/FXYNtPt.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在更新的DirectX 12中则将这些概念合并到mesh shader中，通过mesh shader来实现全部的网格细分功能，从而极大地方便来游戏开发和图形程序。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/E9qJF6L.png">https://search.pstatic.net/common?src=https://i.imgur.com/E9qJF6L.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>此外还可以利用GPU的计算性能实现动态的地形绘制，从而进一步提升玩家的游戏体验。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6bk1Rza.png">https://search.pstatic.net/common?src=https://i.imgur.com/6bk1Rza.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="non-heightfield-terrain"><a class="anchor" href="#non-heightfield-terrain">#</a> Non-Heightfield Terrain</h4>
+<p>有些游戏场景如洞穴可能无法使用高度场来进行表示。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/a2fkexF.png">https://search.pstatic.net/common?src=https://i.imgur.com/a2fkexF.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>对于这种场景可以考虑使用体素来表达场景的几何，然后利用marching cube算法来生成表面。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/kLhqRWJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/kLhqRWJ.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4YlsCTZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/4YlsCTZ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然这种方法目前仍处于试验阶段，几乎没有游戏使用相关的技术来表示地形。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BJ5seF5.png">https://search.pstatic.net/common?src=https://i.imgur.com/BJ5seF5.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="terrain-texture"><a class="anchor" href="#terrain-texture">#</a> Terrain Texture</h3>
+<h4 id="texture-splatting"><a class="anchor" href="#texture-splatting">#</a> Texture Splatting</h4>
+<p>有了地形的几何表示后就可以为它添加纹理细节进行渲染。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/LfeXZDs.png">https://search.pstatic.net/common?src=https://i.imgur.com/LfeXZDs.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>基于纹理合成算法，我们可以控制不同纹理之间的混合比例从而获得接近真实地形的纹理。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/g8WSPjC.png">https://search.pstatic.net/common?src=https://i.imgur.com/g8WSPjC.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>此外我们还可以利用地形的高程来动态调节混合比例，从而实现高低起伏上不同的纹理效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/x0FA2Nc.png">https://search.pstatic.net/common?src=https://i.imgur.com/x0FA2Nc.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EWBobK4.png">https://search.pstatic.net/common?src=https://i.imgur.com/EWBobK4.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当需要对多种不同材质进行混合时还可以使用texture array来管理不同材质的混合关系。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/22ESqns.png">https://search.pstatic.net/common?src=https://i.imgur.com/22ESqns.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>除此之外在地形渲染中还大量使用了视差贴图的技术来产生立体感。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/oQ4hgwP.png">https://search.pstatic.net/common?src=https://i.imgur.com/oQ4hgwP.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="virtual-texture"><a class="anchor" href="#virtual-texture">#</a> Virtual Texture</h4>
+<p>直接对地形纹理进行混合时容易造成计算上的性能问题，这是由于对纹理进行插值的计算是相对复杂的。如果没有设计好渲染管线则会导致渲染效率的下降。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gusNEDr.png">https://search.pstatic.net/common?src=https://i.imgur.com/gusNEDr.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在现代游戏引擎中大量使用了**虚拟纹理(virtual texture)**的技术来提高渲染性能。使用虚拟纹理时首先需要把纹理分解成若干个尺寸相同的tile，然后把不同LOD的纹理则需要事先进行烘焙存储在硬盘上。在实际渲染时根据绘制目标的精度来决定所需的LOD以及对应的tile，然后将需要进行渲染的纹理tile加载到内存中作为实际的纹理贴图。这样的方式可以极大地缓解纹理读写的内存需求从而提高渲染效率。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/z91kpNL.png">https://search.pstatic.net/common?src=https://i.imgur.com/z91kpNL.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>显然虚拟纹理的性能瓶颈在于从硬盘加载纹理的IO过程。想要进一步提高效率甚至可以直接让GPU从硬盘进行加载。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/XzcJg6B.png">https://search.pstatic.net/common?src=https://i.imgur.com/XzcJg6B.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="camera-relative-rendering"><a class="anchor" href="#camera-relative-rendering">#</a> Camera-Relative Rendering</h4>
+<p>当渲染物体与相机的距离达到一定程度时就需要考虑浮点数的计算精度问题，如果不进行处理会导致严重的抖动和穿模现象。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FWsKPlL.png">https://search.pstatic.net/common?src=https://i.imgur.com/FWsKPlL.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>想要缓解这种问题可以将相机设置为世界坐标的中心，这样的处理方法称为<strong>camera-relative rendering</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fIS7NIy.png">https://search.pstatic.net/common?src=https://i.imgur.com/fIS7NIy.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="decorator"><a class="anchor" href="#decorator">#</a> Decorator</h4>
+<p>除了各种地貌纹理外，游戏设计中还需要在地面上设置各种植被、草丛、道路等各种<strong>装饰件(decorator)</strong>。这些装饰件看起来很简单，但实际上要想做出比较好的效果仍然需要非常复杂的算法。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gngpnIF.png">https://search.pstatic.net/common?src=https://i.imgur.com/gngpnIF.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/89YtUQm.png">https://search.pstatic.net/common?src=https://i.imgur.com/89YtUQm.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bkN12xN.png">https://search.pstatic.net/common?src=https://i.imgur.com/bkN12xN.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="sky-and-atmosphere"><a class="anchor" href="#sky-and-atmosphere">#</a> Sky and Atmosphere</h2>
+<h3 id="atmosphere"><a class="anchor" href="#atmosphere">#</a> Atmosphere</h3>
+<h4 id="analytic-atmosphere-appearance-modeling"><a class="anchor" href="#analytic-atmosphere-appearance-modeling">#</a> Analytic Atmosphere Appearance Modeling</h4>
+<p>对于天空和大气的渲染，最简单的方法是使用拟合公式来直接计算着色。当然这种方法的缺陷也很多，比如说它只能表示从地表进行观察的效果，而且可以调整的参数也有很多的限制。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/r8dHMFA.png">https://search.pstatic.net/common?src=https://i.imgur.com/r8dHMFA.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="volume-rendering-equation"><a class="anchor" href="#volume-rendering-equation">#</a> Volume Rendering Equation</h4>
+<p>如果想要渲染出真实的大气效果则需要考虑光照与大气相互作用的物理过程。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/K2BTctv.png">https://search.pstatic.net/common?src=https://i.imgur.com/K2BTctv.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当光线与大气中的各种气体分子以及灰尘等气溶胶发生相互作用时有三种可能的现象：<strong>吸收(absorption)</strong>、<strong>发射(emission)<strong>以及</strong>散射(scattering)</strong>，其中散射又可以分为<strong>内散射(in-scattering)<strong>和</strong>外散射(out-scattering)</strong>。基于**辐射传输方程(radiative transfer equation, RTE)**我们可以得到出射光线的radiance在指定方向上的微分。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CjArM5L.png">https://search.pstatic.net/common?src=https://i.imgur.com/CjArM5L.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>通过对RTE沿光路进行积分，我们可以得到光线穿越介质后的radiance。这个方程也称为<strong>体渲染方程(volume rendering equation, VRE)</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/QI285co.png">https://search.pstatic.net/common?src=https://i.imgur.com/QI285co.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="scattering"><a class="anchor" href="#scattering">#</a> Scattering</h4>
+<p>求解VRE最复杂的地方在于如何计算散射项。在大气渲染时我们一般只考虑**Rayleigh散射(Rayleigh scattering)<strong>和</strong>Mie散射(Miew scattering)**两种形式的散射。当大气中介质的尺寸远小于光线的波长时会发生Rayleigh散射，此时散射自身是无方向的而且散射的行为只与光线的波长有关。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/oIMkuv5.png">https://search.pstatic.net/common?src=https://i.imgur.com/oIMkuv5.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/sueQgAm.png">https://search.pstatic.net/common?src=https://i.imgur.com/sueQgAm.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当光线发生Rayleigh散射时太阳光中不同波长的色光会发生不同程度的散射。具体而言短波长的蓝光会出现大量的散射行为，而长波长的红光则只会发生少量的散射。这样的现象就导致了白天我们观察天空时眼睛会接收到来自四面八方散射的蓝光，因此天空呈蓝色；而在日出或是傍晚时太阳方向上只剩下未散射的红光，此时太阳呈红色。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9xA7Kiv.png">https://search.pstatic.net/common?src=https://i.imgur.com/9xA7Kiv.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/oN9r1W1.png">https://search.pstatic.net/common?src=https://i.imgur.com/oN9r1W1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当大气中介质的尺寸接近或大于光线的波长时会发生Mie散射，它的特点是散射程度与波长无关只与观测方向有关。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fUNMroI.png">https://search.pstatic.net/common?src=https://i.imgur.com/fUNMroI.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EeTuGuc.png">https://search.pstatic.net/common?src=https://i.imgur.com/EeTuGuc.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>我们日常生活中常见的雾气和光晕都是Mie散射的结果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/JG2XHhq.png">https://search.pstatic.net/common?src=https://i.imgur.com/JG2XHhq.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="absorption"><a class="anchor" href="#absorption">#</a> Absorption</h4>
+<p>除了散射外，在大气渲染时还需要注意不同的气体分子对于不同波长的光线有着不同的吸收行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/JIqezj1.png">https://search.pstatic.net/common?src=https://i.imgur.com/JIqezj1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="multi-scattering"><a class="anchor" href="#multi-scattering">#</a> Multi Scattering</h4>
+<p>在计算散射时还要注意大气的多重散射行为：在积分时不仅要考虑光路上介质的散射行为，整个空间中介质粒子都会对接收到的光线产生贡献。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/8hZsGsR.png">https://search.pstatic.net/common?src=https://i.imgur.com/8hZsGsR.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/z7s7eAX.png">https://search.pstatic.net/common?src=https://i.imgur.com/z7s7eAX.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="ray-marching"><a class="anchor" href="#ray-marching">#</a> Ray Marching</h4>
+<p>对大气进行渲染时可以利用<strong>ray marching算法</strong>进行计算，它的思想非常简单：我们只需要把整条光线分解成N段然后在每一小段上单独进行积分，最后把N段的积分相加即可。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lektrcB.png">https://search.pstatic.net/common?src=https://i.imgur.com/lektrcB.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而在游戏引擎中更是可以通过预计算的方式提前存储在硬盘中，这样实际渲染时只需要进行查表即可。以透射率为例，我们可以把大气的透射率分布参数化为海拔高度与天顶角的函数，然后通过预计算存储在一张纹理图像上。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BuMdddS.png">https://search.pstatic.net/common?src=https://i.imgur.com/BuMdddS.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>对于单次散射的情况，我们同样通过预计算的方法将散射参数化为海拔高度、观测角度以及太阳角度的函数。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2qMlHs7.png">https://search.pstatic.net/common?src=https://i.imgur.com/2qMlHs7.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>最后我们把透射率的纹理图像以及单次散射的纹理不断进行积分就得到了多次散射情况下大气渲染的预计算纹理。目前很多3A游戏的天空渲染都是基于这样的方式进行处理的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Fid3vR4.png">https://search.pstatic.net/common?src=https://i.imgur.com/Fid3vR4.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Njnirz3.png">https://search.pstatic.net/common?src=https://i.imgur.com/Njnirz3.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>上面介绍的方法虽然可以获得非常好的效果，但它仍然具有一些缺陷：比如说离线的预计算仍然是非常费时的，而且在实时渲染时高维纹理的插值对于一些移动设备不够友好，更重要的是它很难处理大气成分发生变化时的渲染问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ovSGYgl.png">https://search.pstatic.net/common?src=https://i.imgur.com/ovSGYgl.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>为了缓解这些问题，人们还开发出了各种近似方法。比如说我们可以假设大气是各向同性的均匀介质，然后使用一个衰减系数来模拟单次散射后接收到的光线。这样可以使用几何级数来表示光线经过无限次散射后到达相机的能量比例。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/wXTDp9Z.png">https://search.pstatic.net/common?src=https://i.imgur.com/wXTDp9Z.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>对于高维纹理的问题可以假设观察位置和太阳位置是不变的，这样光照就只是观测方向的纹理。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Ysymbkl.png">https://search.pstatic.net/common?src=https://i.imgur.com/Ysymbkl.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>最后通过ray marching沿路径进行积分就可以得到大气散射的近似效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/i9XsRcS.png">https://search.pstatic.net/common?src=https://i.imgur.com/i9XsRcS.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>实践证明这样的近似方法在一些移动设备上也可以实现不错的渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/NLjM6R1.png">https://search.pstatic.net/common?src=https://i.imgur.com/NLjM6R1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="cloud"><a class="anchor" href="#cloud">#</a> Cloud</h3>
+<p>在大气的基础上添加云可以实现更加真实的环境渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bp1aVjo.png">https://search.pstatic.net/common?src=https://i.imgur.com/bp1aVjo.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>早期对云进行渲染的方法是使用网格来建立云的模型。这种方法可以渲染出高质量的云，但由于它非常不灵活现在基本已经弃用。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Jm07fD7.png">https://search.pstatic.net/common?src=https://i.imgur.com/Jm07fD7.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>过去也出现过使用透明通道来近似云效果的方法，不过这种方法很难生成逼真的渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ncDQFPG.png">https://search.pstatic.net/common?src=https://i.imgur.com/ncDQFPG.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>目前3A游戏一般会使用体积云的方式来对云进行渲染，尽管它有着比较高的计算复杂度但却可以实现逼真的渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EOjDENn.png">https://search.pstatic.net/common?src=https://i.imgur.com/EOjDENn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>使用体积云进行渲染时我们需要一张weather texture来表示云在平面以及厚度的分布。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/S9jZpo2.png">https://search.pstatic.net/common?src=https://i.imgur.com/S9jZpo2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>生成体积云模型时首先使用weather texture产生柱状的云层，然后利用Perlin噪声和Worley噪声进行腐蚀就可以产生逼真的云模型。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tE6fT3w.png">https://search.pstatic.net/common?src=https://i.imgur.com/tE6fT3w.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qbSJCGh.png">https://search.pstatic.net/common?src=https://i.imgur.com/qbSJCGh.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>进行渲染时使用ray marching的方式来计算散射就可以实现逼真的渲染效果。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qeWaD1T.png">https://search.pstatic.net/common?src=https://i.imgur.com/qeWaD1T.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="reference"><a class="anchor" href="#reference">#</a> Reference</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1au411y7Fq/?spm_id_from=333.788">Lecture 06：The Challenges and Fun of Rendering the Beautiful Mother Nature I</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1i3411T7QL/?spm_id_from=333.788">Lecture 06：The Challenges and Fun of Rendering the Beautiful Mother Nature II</a></li>
+</ul>
+<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">Total Views: </span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/26/game-engine/games104系列笔记（六）/">Loading...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">Edited on </span><time title="Modified: 2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>Donate</button><p>Give me a cup of [coffee]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/monero.avif" alt="AUVeggry monero"><p>monero</p></div><div><img loading="lazy" src="/assets/bitcoin.avif" alt="AUVeggry Bitcoin"><p>Bitcoin</p></div></div></div><div id="copyright"><ul><li class="author"><strong>Post author: </strong>AUVeggry<i class="ic i-at"><em>@</em></i>sakura"s blog"</li><li class="link"><strong>Post link: </strong><a href="https://sakurame.eu.org/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" title="games104系列笔记（六）">https://sakurame.eu.org/2023/06/26/game-engine/games104系列笔记（六）/</a></li><li class="license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> unless stating additionally.</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/623909.jpg" title="games104系列笔记（五）"><span class="type">Previous Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（五）</h3></a></div><div class="item right"><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="next" itemprop="url" data-background-image="https://ptpimg.me/763frg.jpg" title="games104系列笔记（七）"><span class="type">Next Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（七）</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="Contents"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#landscape"><span class="toc-number">1.</span> <span class="toc-text"> Landscape</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#terrain-geometry"><span class="toc-number">1.1.</span> <span class="toc-text"> Terrain Geometry</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#heightfield"><span class="toc-number">1.1.1.</span> <span class="toc-text"> Heightfield</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#triangulated-irregular-network"><span class="toc-number">1.1.2.</span> <span class="toc-text"> Triangulated Irregular Network</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#hardware-tessellation"><span class="toc-number">1.1.3.</span> <span class="toc-text"> Hardware Tessellation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#non-heightfield-terrain"><span class="toc-number">1.1.4.</span> <span class="toc-text"> Non-Heightfield Terrain</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#terrain-texture"><span class="toc-number">1.2.</span> <span class="toc-text"> Terrain Texture</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#texture-splatting"><span class="toc-number">1.2.1.</span> <span class="toc-text"> Texture Splatting</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#virtual-texture"><span class="toc-number">1.2.2.</span> <span class="toc-text"> Virtual Texture</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#camera-relative-rendering"><span class="toc-number">1.2.3.</span> <span class="toc-text"> Camera-Relative Rendering</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#decorator"><span class="toc-number">1.2.4.</span> <span class="toc-text"> Decorator</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sky-and-atmosphere"><span class="toc-number">2.</span> <span class="toc-text"> Sky and Atmosphere</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#atmosphere"><span class="toc-number">2.1.</span> <span class="toc-text"> Atmosphere</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#analytic-atmosphere-appearance-modeling"><span class="toc-number">2.1.1.</span> <span class="toc-text"> Analytic Atmosphere Appearance Modeling</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#volume-rendering-equation"><span class="toc-number">2.1.2.</span> <span class="toc-text"> Volume Rendering Equation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#scattering"><span class="toc-number">2.1.3.</span> <span class="toc-text"> Scattering</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#absorption"><span class="toc-number">2.1.4.</span> <span class="toc-text"> Absorption</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#multi-scattering"><span class="toc-number">2.1.5.</span> <span class="toc-text"> Multi Scattering</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ray-marching"><span class="toc-number">2.1.6.</span> <span class="toc-text"> Ray Marching</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cloud"><span class="toc-number">2.2.</span> <span class="toc-text"> Cloud</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">3.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="Related"><ul><li><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li class="active"><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="Overview"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="AUVeggry" src="/assets/avatar.avif"><p class="name" itemprop="name">AUVeggry</p><div class="description" itemprop="description">The spirit of independence and the freedom of thought </div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">64</span><span class="name">posts</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">categories</span></a></div><div class="item tags"><a href="/tags/"><span class="count">21</span><span class="name">tags</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>Home</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>About</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>About This Site</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>Appreciation</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>Privacy Policy</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>Posts</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>Archives</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>Categories</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>Tags</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>Friends</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>Random Posts</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%B9%9D%E7%AB%A0%E5%88%9D%E7%BA%A7%E8%A7%86%E9%A2%91%E7%91%95%E7%96%B5%E4%BF%AE%E5%A4%8D/">第九章初级视频瑕疵修复</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/">games104系列笔记（四）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2023/08/28/thinking/united-93%E4%B9%8B%E6%80%9D/">united_93之思</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/">games104系列笔记（九）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2023/06/11/vcbstudio/%E7%A5%9E%E4%B8%80%E6%A0%B7%E7%9A%84%E5%B7%A5%E5%85%B7%E4%BB%AC/">神一样的工具们</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/">games104系列笔记（十一）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/">games104系列笔记（八）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/">games104系列笔记（十四）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2023/05/18/vcbstudio/%E5%BC%80%E6%BA%90%E4%B8%80%E4%B8%8B%E5%8E%8B%E5%88%B6%E7%BB%84%E8%80%83%E8%AF%95%E7%9A%84%E8%AF%95%E9%A2%98/">开源一下压制组考试的试题</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/">games104系列笔记（六）</a></span></li></ul></div><div class="rpost pjax"><h2>Recent Comments</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><div class="status"><div class="copyright">© 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">AUVeggry @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="Symbols count total">1.1m words</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="Reading time total">17:13</span></div><div class="powered-by">Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> &amp; Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><br><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:var(--grey-5);"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号</a></span></div></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2023/06/26/game-engine/games104系列笔记（六）/`,
+    favicon: {
+        show: `(●´3｀●) Here we go again.`,
+        hide: `(´Д｀) It's a disaster!`
+    },
+    search: {
+        placeholder: "Search for Posts",
+        empty: "We didn't find any results for the search: ${query}",
+        stats: "${hits} results found in ${time} ms"
+    },
+    nocopy: "false",
+    copyright: `Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>`,
+    quiz: {
+        choice: `Multiple Choice`,
+        multiple: `Multiple Answer`,
+        true_false: `True/False`,
+        essay: `Questions`,
+        gap_fill: `Gap Filling`,
+        mistake: `Wrong Answer`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script></body></html>

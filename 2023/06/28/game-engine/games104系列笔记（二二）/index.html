@@ -1,0 +1,357 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="sakura" s="" blog""="" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="sakura" s="" blog""="" type="application/atom+xml"><link rel="alternate" type="application/json" title="sakura&quot;s blog&quot;" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://unpkg.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-CEOMSI5S.js"><link rel="modulepreload" href="/js/copy-tex-VNMZZ56J.js"><link rel="modulepreload" href="/js/post-DBDT2P4X.js"><link rel="modulepreload" href="/js/chunk-3NVTWMK7.js"><link rel="modulepreload" href="/js/tcomments-MCLWTQDC.js"><link rel="modulepreload" href="/js/chunk-ERE5SKT5.js"><link rel="modulepreload" href="/js/index.esm-RIWV4EDG.js"><link rel="modulepreload" href="/js/chunk-KXPDGESI.js"><link rel="modulepreload" href="/js/chunk-I5LMONQL.js"><link rel="modulepreload" href="/js/cf-patch.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><script src="/js/cf-patch.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script><link rel="preload" href="https://ptpimg.me/0198zm.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/355768.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/5422e1.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/ysg110.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/4ri7s9.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/7a00lf.jpg" as="image" fetchpriority="high"><meta name="keywords" content="游戏引擎"><meta name="description" content="<blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a href=&quot;https://games104.boomingtech.com/en/&quot;>GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍GPU驱动的几何管线与Nanite技术。<br />"><link rel="canonical" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/"><link rel="stylesheet" href="/css/post.css?v=0.5.4"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.4"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>games104系列笔记（二二）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="pagefind_mount"></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（二二）</h1><div class="meta"><span class="item" title="Created: 2023-06-28 23:13:16"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">Posted on</span><time itemprop="dateCreated datePublished" datetime="2023-06-28T23:13:16+08:00">2023-06-28</time></span><span class="item" title="Symbols count in article"><span class="icon"><i class="ic i-pen"></i></span><span class="text">Symbols count in article</span><span>18k</span><span class="text">words</span></span><span class="item" title="Reading time"><span class="icon"><i class="ic i-clock"></i></span><span class="text">Reading time</span><span>16 mins.</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="Toggle navigation bar"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/0198zm.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/355768.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/5422e1.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/ysg110.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/4ri7s9.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/7a00lf.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">Home</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="In游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" data-pagefind-body="data-pagefind-body" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="AUVeggry"><meta itemprop="description" content=", The spirit of independence and the freedom of thought "></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="sakura&quot;s blog&quot;"></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a target="_blank" rel="noopener" href="https://games104.boomingtech.com/en/">GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍GPU驱动的几何管线与Nanite技术。<br>
+<span id="more"></span></p>
+</blockquote>
+<h2 id="introduction"><a class="anchor" href="#introduction">#</a> Introduction</h2>
+<h3 id="traditional-rendering-pipeline"><a class="anchor" href="#traditional-rendering-pipeline">#</a> Traditional Rendering Pipeline</h3>
+<p>Nanite是虚幻5引擎中提出的虚拟几何系统用来实现渲染超高精度的网格。要理解Nanite首先要回顾一下经典渲染管线：当我们从CPU端发出渲染指令时会首先由CPU来准备各种渲染所需的资源，然后GPU会接收这些数据并计算实际的着色。这种模式的缺陷在于CPU可能无法跟上GPU的计算速度，而且CPU的算力会浪费在准备渲染素材这一过程中。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rAwzzPc.png">https://search.pstatic.net/common?src=https://i.imgur.com/rAwzzPc.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>随着渲染场景的复杂度逐渐提升，CPU端的计算开销会成为整个渲染过程的瓶颈。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/SBDI6x7.png">https://search.pstatic.net/common?src=https://i.imgur.com/SBDI6x7.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/y1HYP0E.png">https://search.pstatic.net/common?src=https://i.imgur.com/y1HYP0E.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="compute-shader"><a class="anchor" href="#compute-shader">#</a> Compute Shader</h3>
+<p>为了提升渲染效率人们开发出了<strong>compute shader</strong>这样的技术，其核心在于把过去只能在CPU端执行的通用计算转移的GPU端，从而节约掉大量的CPU到GPU端的通信开销。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/29Cc3Kd.png">https://search.pstatic.net/common?src=https://i.imgur.com/29Cc3Kd.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="graphics-api"><a class="anchor" href="#graphics-api">#</a> Graphics API</h3>
+<p>在图形API层面上过去只能一次绘制一个网格，而现代图形API则支持在一次DrawCall中同时绘制多个网格。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5Kx1jQi.png">https://search.pstatic.net/common?src=https://i.imgur.com/5Kx1jQi.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="gpu-driven-rendering-pipeline"><a class="anchor" href="#gpu-driven-rendering-pipeline">#</a> GPU Driven Rendering Pipeline</h3>
+<p>总结一下，现代GPU驱动的渲染管线核心思想在于把CPU端的计算直接移动到GPU端，同时渲染所需的数据也会直接由GPU进行加载。在理想情况下CPU端只负责发出绘制指令，一切渲染数据加载和计算都在GPU端直接完成。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/JRByllG.png">https://search.pstatic.net/common?src=https://i.imgur.com/JRByllG.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="gpu-driven-pipeline-in-assassins-creed"><a class="anchor" href="#gpu-driven-pipeline-in-assassins-creed">#</a> GPU Driven Pipeline in Assassins Creed</h2>
+<p>游戏工业对GPU驱动渲染管线的大规模应用可以追溯到《刺客信条：大革命》。在游戏中我们可以看到大量的拥有真实细节的建筑和场景，如何渲染这些极其复杂的几何对象是整个渲染管线的巨大挑战。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Qhjqe2v.png">https://search.pstatic.net/common?src=https://i.imgur.com/Qhjqe2v.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>游戏开发团队提出了<strong>mesh cluster rendering</strong>的技术来提升渲染效率。mesh cluster rendering的思想在于对同一物体上的面片进行聚类，在渲染时首先根据cluster来判断面片的可见性</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/YJCDc7C.png">https://search.pstatic.net/common?src=https://i.imgur.com/YJCDc7C.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>整个游戏的渲染管线如下图所示。通过clustering的方法可以去除掉大量不可见的对象以及三角形，从而极大地缓解了GPU的渲染压力。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WiPViGX.png">https://search.pstatic.net/common?src=https://i.imgur.com/WiPViGX.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而在CPU端只负责非常少量的视锥剔除等工作，初步过滤掉不可见的物体。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/A3WLRd7.png">https://search.pstatic.net/common?src=https://i.imgur.com/A3WLRd7.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>然后GPU端会把过滤后物体上的cluster拓展为chunk，每个instance可以属于不同的chunk而每个chunk可以包含不同的cluster。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bAOPhdZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/bAOPhdZ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>GPU端进行实际的可见性剔除时会先检查chunk的可见性然后计算cluster的可见性。除了利用bounding box进行剔除外，还会同时结合三角形的朝向进行过滤，最后得到所有可见的三角形编号。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2LVkUkv.png">https://search.pstatic.net/common?src=https://i.imgur.com/2LVkUkv.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>所有可见三角形的编号会存储在一个事先申请的巨大buffer中。写入过程是原子化的，因此可以利用GPU并行计算来高效处理。而在进行渲染时可以利用这个buffer来并行处理所有的三角形，从而实现对场景的渲染。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/GPO6E5H.png">https://search.pstatic.net/common?src=https://i.imgur.com/GPO6E5H.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4WIFxjq.png">https://search.pstatic.net/common?src=https://i.imgur.com/4WIFxjq.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="occlusion-culling-for-camera-and-shadow"><a class="anchor" href="#occlusion-culling-for-camera-and-shadow">#</a> Occlusion Culling for Camera and Shadow</h2>
+<p>为了进一步提升渲染效率，除了剔除掉视野外的三角形外我们还希望能够把被遮挡住的三角形也同时剔除掉，这一过程称为<strong>occlusion culling</strong>。当相机在场景中的运动比较光滑时可以把前一帧的深度图投影到当前相机位置上，再结合hierarchy z-buffer就可以估计哪些cluster和三角形是可见的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ocIeFet.png">https://search.pstatic.net/common?src=https://i.imgur.com/ocIeFet.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="two-phase-occlusion-culling"><a class="anchor" href="#two-phase-occlusion-culling">#</a> Two-Phase Occlusion Culling</h3>
+<p>更现代的occlusion culling方法是使用上一帧和这一帧的两个z-buffer来实现。首先利用前一帧的z-buffer来快速选取可能可见的物体，然后使用这些物体来渲染新的z-buffer。显然此时的深度图会有非常多的洞等待填充，而且很多像素的深度可能是错误的。为了修正这个问题还需要再利用这一帧的深度图来测试前面过滤掉的其它物体。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/sZUdyeI.png">https://search.pstatic.net/common?src=https://i.imgur.com/sZUdyeI.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>这种two-phase occlusion culling方法对于非常复杂的场景以及动态物体都有很好的性能。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/vda6izO.png">https://search.pstatic.net/common?src=https://i.imgur.com/vda6izO.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而对于阴影的问题也可以复用前一帧阴影的深度图并结合hierarchy z-buffer来进行剔除。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/y5ue2E6.png">https://search.pstatic.net/common?src=https://i.imgur.com/y5ue2E6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>要进一步提升阴影的渲染效率还可以结合相机的可见性，把所有相机方向不可见的物体全部剔除掉。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/sJYPHs2.png">https://search.pstatic.net/common?src=https://i.imgur.com/sJYPHs2.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/cDuOqst.png">https://search.pstatic.net/common?src=https://i.imgur.com/cDuOqst.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="visibility-buffer"><a class="anchor" href="#visibility-buffer">#</a> Visibility Buffer</h2>
+<p>和Nanite相关的另一个技术是课程前面提到过的G-buffer和<a href="/2022/04/27/GAMES104-NOTES-07.html#deferred-rendering">延迟渲染</a>，我们可以把场景中的各种几何信息记录在G-buffer中从而方便渲染时的计算。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/wov9xPG.png">https://search.pstatic.net/common?src=https://i.imgur.com/wov9xPG.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CUOYeUE.png">https://search.pstatic.net/common?src=https://i.imgur.com/CUOYeUE.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>显然这样的G-buffer会占用非常多的显存，这在画面高分辨率或是复杂场景的情况下读取数据的效率会变得极其低下。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/62WhFDS.png">https://search.pstatic.net/common?src=https://i.imgur.com/62WhFDS.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/KumHdNk.png">https://search.pstatic.net/common?src=https://i.imgur.com/KumHdNk.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p><a href="/2022/04/27/GAMES104-NOTES-07.html#visibility-buffer">V-buffer</a>是为了提升数据读取效率和缓存利用率而提出的一种技术。V-buffer中不会记录太多的几何信息，一般只保存像素上物体的各种编号。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/QihTZh5.png">https://search.pstatic.net/common?src=https://i.imgur.com/QihTZh5.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/1vQb4ww.png">https://search.pstatic.net/common?src=https://i.imgur.com/1vQb4ww.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在进行着色时对每个像素需要先获取该处对应的三角形信息，然后通过插值来得到像素上相应的各种几何材质数据。这种渲染方式的优势在于计算量只与分辨率有关，而与场景的几何复杂度无关，因此拥有非常高的计算效率。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BgzLawZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/BgzLawZ.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/pWqosMI.png">https://search.pstatic.net/common?src=https://i.imgur.com/pWqosMI.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>V-buffer可以很容易地和延迟渲染管线进行结合。我们只需要利用V-buffer中可见物体的编号来重新写入G-buffer就可以完美融入延迟渲染管线中。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5JF3umZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/5JF3umZ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然V-buffer在实际使用时还有很多的细节要处理，比如说如何考虑纹理的梯度、如何选取合适的mip-map等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gk2CKEo.png">https://search.pstatic.net/common?src=https://i.imgur.com/gk2CKEo.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>使用V-buffer可以极大地提升具有复杂几何场景的渲染效率。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/L4zoV4i.png">https://search.pstatic.net/common?src=https://i.imgur.com/L4zoV4i.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="virtual-geometry-nanite"><a class="anchor" href="#virtual-geometry-nanite">#</a> Virtual Geometry - Nanite</h2>
+<h3 id="overview"><a class="anchor" href="#overview">#</a> Overview</h3>
+<p>Nanite的核心任务是实现实时电影级高精度几何模型的渲染，我们希望能够尽可能还原有着无限细节的真实世界。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/XGHH8dn.jpg">https://search.pstatic.net/common?src=https://i.imgur.com/XGHH8dn.jpg</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fAhmUQX.jpg">https://search.pstatic.net/common?src=https://i.imgur.com/fAhmUQX.jpg</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>回忆基于<a href="/2022/04/19/GAMES104-NOTES-06.html#terrain-texture">virtual texture</a>的技术我们可以为物体不同LoD的纹理烘焙在固定大小的纹理贴图上，在渲染时根据相机的位置和实际需要加载所需的纹理。这种材质表达可以提升缓存利用率以及数据加载效率。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/1lNUuu2.png">https://search.pstatic.net/common?src=https://i.imgur.com/1lNUuu2.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>Nanite的思想与virtual texture非常相似，不过Nanite更关心的是如何建立虚拟的几何表示。当然几何数据本身要比纹理贴图要复杂得多，如何建立规范的几何表示至今仍然是一个难题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qz43Qo0.png">https://search.pstatic.net/common?src=https://i.imgur.com/qz43Qo0.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tdktBkz.png">https://search.pstatic.net/common?src=https://i.imgur.com/tdktBkz.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>以体素化表示为例，尽管体素本身是相对规范的但由于其巨大的数据量我们很难在游戏引擎中来直接使用。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/eht0dfS.png">https://search.pstatic.net/common?src=https://i.imgur.com/eht0dfS.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>另一种流行的几何表示方法是<strong>曲面细分(surface subdivision)</strong>，基于这样的技术我们可以把粗略的几何表面细分为高精度包含各种细节的曲面。然而曲面细分的一个缺陷在于很难对曲面进行降采样，即从高精度曲面来获得低精度表示。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3aPSJ7m.png">https://search.pstatic.net/common?src=https://i.imgur.com/3aPSJ7m.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>其它的几何表达方式包括displacement map或是点云也都无法满足我们的需求。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/MYgaLIN.png">https://search.pstatic.net/common?src=https://i.imgur.com/MYgaLIN.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Xs0Yktl.png">https://search.pstatic.net/common?src=https://i.imgur.com/Xs0Yktl.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>因此在Nanite中还是选择了三角网格来表示，然后设计了一套非常复杂的算法流程来表达几何信息。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/R26rVZf.png">https://search.pstatic.net/common?src=https://i.imgur.com/R26rVZf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="geometry-representation"><a class="anchor" href="#geometry-representation">#</a> Geometry Representation</h3>
+<p>Nanite的一个重要想法是利用屏幕的精度来控制渲染时所需计算三角形的数量。尽管三角形的数量可以随着模型精度的提高不断增长，但只要屏幕分辨率不变所需绘制的三角形数量应该是比较稳定的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/pY4vb1l.png">https://search.pstatic.net/common?src=https://i.imgur.com/pY4vb1l.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>因此可以结合前面介绍过的<a href="/2022/12/12/GAMES104-NOTES-22.html#gpu-driven-pipeline-in-assassins-creed">mesh cluster</a>来控制模型的细节。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/jc22ggv.png">https://search.pstatic.net/common?src=https://i.imgur.com/jc22ggv.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>然后根据相机与模型的相对远近关系来生成cluster在不同LoD下的几何表示。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/p8Ie2bS.png">https://search.pstatic.net/common?src=https://i.imgur.com/p8Ie2bS.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/1SoPn2N.png">https://search.pstatic.net/common?src=https://i.imgur.com/1SoPn2N.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在选择cluster的LoD时需要考虑它投影到屏幕上产生的误差。一种直观的选取方法是当误差小于1px时选择当前层的LoD，否则选取下一层的LoD。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FH9VXqO.png">https://search.pstatic.net/common?src=https://i.imgur.com/FH9VXqO.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bsoQaRX.png">https://search.pstatic.net/common?src=https://i.imgur.com/bsoQaRX.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/W9BRyUf.png">https://search.pstatic.net/common?src=https://i.imgur.com/W9BRyUf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>但是在合并cluster时需要考虑不同LoD的cluster之间可能会出现缝隙。当然我们可以把cluster的边锁住，这样不管是使用哪一层的LoD都会有一致的边界。不过这样的处理并不是一个非常好的办法，可能会产生严重的artifact。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ahamxF3.png">https://search.pstatic.net/common?src=https://i.imgur.com/ahamxF3.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5BthesF.png">https://search.pstatic.net/common?src=https://i.imgur.com/5BthesF.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>Nanite中提出了<strong>cluster group</strong>的概念来处理cluster之间的缝隙。cluster group之间的边界会被锁住，而内部的cluster会在生成LoD时一起进行简化。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/C3yJ6e5.png">https://search.pstatic.net/common?src=https://i.imgur.com/C3yJ6e5.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>整个cluster简化的过程如下。需要注意的是简化后的cluster与原始cluster之间并不是一对多的关系，而是多对多的关系。即不同的简化后的cluster可以对应同一个原始cluster。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2H5phIm.png">https://search.pstatic.net/common?src=https://i.imgur.com/2H5phIm.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EgDve8F.png">https://search.pstatic.net/common?src=https://i.imgur.com/EgDve8F.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dq0mgB3.png">https://search.pstatic.net/common?src=https://i.imgur.com/dq0mgB3.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZbmOcOt.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZbmOcOt.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/nkaKgXK.png">https://search.pstatic.net/common?src=https://i.imgur.com/nkaKgXK.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>随着LoD的提高不同cluster group的边界也会发生相应的变化，这样可以避免出现高频噪声。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/MbMxqOu.png">https://search.pstatic.net/common?src=https://i.imgur.com/MbMxqOu.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/UikvI0u.png">https://search.pstatic.net/common?src=https://i.imgur.com/UikvI0u.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/u3fPCuP.png">https://search.pstatic.net/common?src=https://i.imgur.com/u3fPCuP.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ql8fElv.png">https://search.pstatic.net/common?src=https://i.imgur.com/ql8fElv.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>实际上这样的简化cluster过程可以表示为一张DAG，每个cluster在上一层LoD会有多个指向。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5uUx5BU.png">https://search.pstatic.net/common?src=https://i.imgur.com/5uUx5BU.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/mW9eKLE.png">https://search.pstatic.net/common?src=https://i.imgur.com/mW9eKLE.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/8aqT38W.png">https://search.pstatic.net/common?src=https://i.imgur.com/8aqT38W.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而网格本身的简化则可以使用经典的QEM等简化算法来实现。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/O4dXQ3u.png">https://search.pstatic.net/common?src=https://i.imgur.com/O4dXQ3u.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3AgeHDd.png">https://search.pstatic.net/common?src=https://i.imgur.com/3AgeHDd.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="runtime-lod-selection"><a class="anchor" href="#runtime-lod-selection">#</a> Runtime LoD Selection</h3>
+<p>进行渲染时需要根据相机的位置来选择合适的LoD。不过对于DAG这样的数据结构进行访问时仍然是比较复杂的。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ksyj0CF.png">https://search.pstatic.net/common?src=https://i.imgur.com/ksyj0CF.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/kdfxjVX.png">https://search.pstatic.net/common?src=https://i.imgur.com/kdfxjVX.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>Nanite还使用了并行化的技术来加速访问。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EhQzZmv.png">https://search.pstatic.net/common?src=https://i.imgur.com/EhQzZmv.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/yrk24OX.png">https://search.pstatic.net/common?src=https://i.imgur.com/yrk24OX.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/zUJBS3J.png">https://search.pstatic.net/common?src=https://i.imgur.com/zUJBS3J.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gYuc6xo.png">https://search.pstatic.net/common?src=https://i.imgur.com/gYuc6xo.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/8Vea0HP.png">https://search.pstatic.net/common?src=https://i.imgur.com/8Vea0HP.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fNc5Fvw.png">https://search.pstatic.net/common?src=https://i.imgur.com/fNc5Fvw.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>除此之外还可以使用BVH来加速LoD选择。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dQ5NycI.png">https://search.pstatic.net/common?src=https://i.imgur.com/dQ5NycI.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/vAt81U0.png">https://search.pstatic.net/common?src=https://i.imgur.com/vAt81U0.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/VyXHgbj.png">https://search.pstatic.net/common?src=https://i.imgur.com/VyXHgbj.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CKqErz8.png">https://search.pstatic.net/common?src=https://i.imgur.com/CKqErz8.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>BVH的构建过程还可以使用job system来进行加速。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/DJU9z9A.png">https://search.pstatic.net/common?src=https://i.imgur.com/DJU9z9A.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EPeNGyN.png">https://search.pstatic.net/common?src=https://i.imgur.com/EPeNGyN.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="rasterization"><a class="anchor" href="#rasterization">#</a> Rasterization</h3>
+<p>Nanite在渲染时很多三角形的大小已经接近于屏幕上的一个像素，此时需要硬件光栅化来提供支持。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/DcUzBNV.png">https://search.pstatic.net/common?src=https://i.imgur.com/DcUzBNV.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2L4dedd.png">https://search.pstatic.net/common?src=https://i.imgur.com/2L4dedd.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/KOjJXcx.png">https://search.pstatic.net/common?src=https://i.imgur.com/KOjJXcx.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>传统光栅化对于小三角形的支持不够好，在Nanite中会结合compute shader来实现软光栅。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/p0KWN6k.png">https://search.pstatic.net/common?src=https://i.imgur.com/p0KWN6k.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/zgn7m1k.png">https://search.pstatic.net/common?src=https://i.imgur.com/zgn7m1k.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3jznVLB.png">https://search.pstatic.net/common?src=https://i.imgur.com/3jznVLB.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OhlqPzG.png">https://search.pstatic.net/common?src=https://i.imgur.com/OhlqPzG.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在深度测试时，Nanite还利用了一些trick进行加速。实际渲染过程与V-buffer渲染过程类似。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/lA0BmDF.png">https://search.pstatic.net/common?src=https://i.imgur.com/lA0BmDF.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dTZ5FfI.png">https://search.pstatic.net/common?src=https://i.imgur.com/dTZ5FfI.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZlRWBNX.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZlRWBNX.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/0dvYGl4.png">https://search.pstatic.net/common?src=https://i.imgur.com/0dvYGl4.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/UHqEgxm.png">https://search.pstatic.net/common?src=https://i.imgur.com/UHqEgxm.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/bjOgl25.png">https://search.pstatic.net/common?src=https://i.imgur.com/bjOgl25.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/8pLyF6F.png">https://search.pstatic.net/common?src=https://i.imgur.com/8pLyF6F.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="deferred-material"><a class="anchor" href="#deferred-material">#</a> Deferred Material</h3>
+<p>Nanite在绘制材质时会把材质信息转换为深度图，然后对可能出现的深度(材质)进行遍历。这样可以一次性绘制所有具有相同材质的像素。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3iTyUyS.png">https://search.pstatic.net/common?src=https://i.imgur.com/3iTyUyS.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/p6VYBhZ.png">https://search.pstatic.net/common?src=https://i.imgur.com/p6VYBhZ.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/kbHcpvm.png">https://search.pstatic.net/common?src=https://i.imgur.com/kbHcpvm.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>更新的Nanite版本还会把屏幕划分为若干个tile，然后在每个tile上统计出现的材质。这样可以加速对全屏材质的遍历和绘制。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/GO4KN0V.png">https://search.pstatic.net/common?src=https://i.imgur.com/GO4KN0V.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/5cSCV2k.png">https://search.pstatic.net/common?src=https://i.imgur.com/5cSCV2k.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/biIIKFK.png">https://search.pstatic.net/common?src=https://i.imgur.com/biIIKFK.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/EG9C6lG.png">https://search.pstatic.net/common?src=https://i.imgur.com/EG9C6lG.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/81dKGMu.png">https://search.pstatic.net/common?src=https://i.imgur.com/81dKGMu.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="virtual-shadow-map"><a class="anchor" href="#virtual-shadow-map">#</a> Virtual Shadow Map</h3>
+<p>高精度几何模型还会导致阴影渲染时的困难，而且遗憾的是Nanite目前尚不支持实时光追来计算阴影。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/LvILsze.png">https://search.pstatic.net/common?src=https://i.imgur.com/LvILsze.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Fq0mN8i.png">https://search.pstatic.net/common?src=https://i.imgur.com/Fq0mN8i.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>不过计算阴影时也可以结合LoD，在距离相机不同远近的位置使用不同精度的模型。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Jp9JaI7.png">https://search.pstatic.net/common?src=https://i.imgur.com/Jp9JaI7.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/aDHegzJ.png">https://search.pstatic.net/common?src=https://i.imgur.com/aDHegzJ.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7MGXxSP.png">https://search.pstatic.net/common?src=https://i.imgur.com/7MGXxSP.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在这种思想下Nanite提出了virtual shadow map来表示不同精度的物体。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/h3P1mNc.png">https://search.pstatic.net/common?src=https://i.imgur.com/h3P1mNc.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BDaCBpa.png">https://search.pstatic.net/common?src=https://i.imgur.com/BDaCBpa.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>对于不同类型的光源也可以定制划分virtual shadow map的方式。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dbDT3Gj.png">https://search.pstatic.net/common?src=https://i.imgur.com/dbDT3Gj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当相机和光源都不变时我们可以把shadow map相关的信息写入page中方便下一帧读取。而如果相机和光源发生变化则只需更新一部分page即可。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/vDtokJ4.png">https://search.pstatic.net/common?src=https://i.imgur.com/vDtokJ4.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Loxw6aU.png">https://search.pstatic.net/common?src=https://i.imgur.com/Loxw6aU.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当然这种virtual shadow map在场景光源发生变化时会出现一些问题，因此比较适合主光源不变的场景。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/nPoNSLA.png">https://search.pstatic.net/common?src=https://i.imgur.com/nPoNSLA.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/a9pK8mR.png">https://search.pstatic.net/common?src=https://i.imgur.com/a9pK8mR.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/jJIwY56.png">https://search.pstatic.net/common?src=https://i.imgur.com/jJIwY56.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="streaming-and-compression"><a class="anchor" href="#streaming-and-compression">#</a> Streaming and Compression</h3>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9gGOXKY.png">https://search.pstatic.net/common?src=https://i.imgur.com/9gGOXKY.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ammELtw.png">https://search.pstatic.net/common?src=https://i.imgur.com/ammELtw.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/L5pOE3O.png">https://search.pstatic.net/common?src=https://i.imgur.com/L5pOE3O.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2a5GZ0x.png">https://search.pstatic.net/common?src=https://i.imgur.com/2a5GZ0x.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qVifIqC.png">https://search.pstatic.net/common?src=https://i.imgur.com/qVifIqC.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="reference"><a class="anchor" href="#reference">#</a> Reference</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Et4y1P7ro/?spm_id_from=333.788&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 22：GPU-Driven Geometry Pipeline-Nanite (Part I)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV17G4y1x7VX/?spm_id_from=333.788&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 22：GPU-Driven Geometry Pipeline-Nanite (Part II)</a></li>
+</ul>
+<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">Total Views: </span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/28/game-engine/games104系列笔记（二二）/">Loading...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">Edited on </span><time title="Modified: 2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>Donate</button><p>Give me a cup of [coffee]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/monero.avif" alt="AUVeggry monero"><p>monero</p></div><div><img loading="lazy" src="/assets/bitcoin.avif" alt="AUVeggry Bitcoin"><p>Bitcoin</p></div></div></div><div id="copyright"><ul><li class="author"><strong>Post author: </strong>AUVeggry<i class="ic i-at"><em>@</em></i>sakura"s blog"</li><li class="link"><strong>Post link: </strong><a href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" title="games104系列笔记（二二）">https://sakurame.eu.org/2023/06/28/game-engine/games104系列笔记（二二）/</a></li><li class="license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> unless stating additionally.</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/56p569.jpg" title="games104系列笔记（二一）"><span class="type">Previous Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（二一）</h3></a></div><div class="item right"><a href="/2023/07/09/basic-theory/%E9%9B%85%E6%80%9D%E5%A4%87%E8%80%83%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86%E5%BD%92%E7%BA%B3%E9%95%BF%E6%9C%9F%E6%9B%B4%E6%96%B0%E7%89%88/" rel="next" itemprop="url" data-background-image="https://ptpimg.me/46g25q.jpg" title="雅思备考笔记整理归纳长期更新版"><span class="type">Next Post</span><span class="category"><i class="ic i-flag"></i>计算机基础理论</span><h3>雅思备考笔记整理归纳长期更新版</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="Contents"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#introduction"><span class="toc-number">1.</span> <span class="toc-text"> Introduction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#traditional-rendering-pipeline"><span class="toc-number">1.1.</span> <span class="toc-text"> Traditional Rendering Pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#compute-shader"><span class="toc-number">1.2.</span> <span class="toc-text"> Compute Shader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#graphics-api"><span class="toc-number">1.3.</span> <span class="toc-text"> Graphics API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gpu-driven-rendering-pipeline"><span class="toc-number">1.4.</span> <span class="toc-text"> GPU Driven Rendering Pipeline</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gpu-driven-pipeline-in-assassins-creed"><span class="toc-number">2.</span> <span class="toc-text"> GPU Driven Pipeline in Assassins Creed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#occlusion-culling-for-camera-and-shadow"><span class="toc-number">3.</span> <span class="toc-text"> Occlusion Culling for Camera and Shadow</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#two-phase-occlusion-culling"><span class="toc-number">3.1.</span> <span class="toc-text"> Two-Phase Occlusion Culling</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#visibility-buffer"><span class="toc-number">4.</span> <span class="toc-text"> Visibility Buffer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#virtual-geometry-nanite"><span class="toc-number">5.</span> <span class="toc-text"> Virtual Geometry - Nanite</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#overview"><span class="toc-number">5.1.</span> <span class="toc-text"> Overview</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#geometry-representation"><span class="toc-number">5.2.</span> <span class="toc-text"> Geometry Representation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#runtime-lod-selection"><span class="toc-number">5.3.</span> <span class="toc-text"> Runtime LoD Selection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rasterization"><span class="toc-number">5.4.</span> <span class="toc-text"> Rasterization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#deferred-material"><span class="toc-number">5.5.</span> <span class="toc-text"> Deferred Material</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#virtual-shadow-map"><span class="toc-number">5.6.</span> <span class="toc-text"> Virtual Shadow Map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#streaming-and-compression"><span class="toc-number">5.7.</span> <span class="toc-text"> Streaming and Compression</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">6.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="Related"><ul><li><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li class="active"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="Overview"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="AUVeggry" src="/assets/avatar.avif"><p class="name" itemprop="name">AUVeggry</p><div class="description" itemprop="description">The spirit of independence and the freedom of thought </div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">64</span><span class="name">posts</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">categories</span></a></div><div class="item tags"><a href="/tags/"><span class="count">21</span><span class="name">tags</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>Home</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>About</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>About This Site</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>Appreciation</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>Privacy Policy</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>Posts</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>Archives</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>Categories</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>Tags</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>Friends</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/07/09/basic-theory/%E9%9B%85%E6%80%9D%E5%A4%87%E8%80%83%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86%E5%BD%92%E7%BA%B3%E9%95%BF%E6%9C%9F%E6%9B%B4%E6%96%B0%E7%89%88/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>Random Posts</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2023/06/06/thinking/%E5%AF%BC%E5%B8%88%E4%B8%8E%E5%AD%A6%E7%94%9F%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%88%E6%95%B4%E7%90%86%E8%87%AA%E9%80%BC%E4%B9%8E%EF%BC%89/">导师与学生的关系（整理自逼乎）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/">games104系列笔记（二十）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/">games104系列笔记（二）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2022/05/28/thinking/%E4%B8%89%E5%B9%B4%E4%B9%8B%E9%9A%8F%E7%AC%94/">三年之随笔</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">games104系列笔记（三）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/computer-graphic/" title="In计算机图形学">计算机图形学</a></div><span><a href="/2023/05/13/computer-graphic/3D-Graphics-Rendering-Cookbook/">3D-Graphics-Rendering-Cookbook</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/">games104系列笔记（四）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/">games104系列笔记（十一）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/">games104系列笔记（十二）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="In计算机基础理论">计算机基础理论</a></div><span><a href="/2023/05/22/basic-theory/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E7%89%88%E7%AC%94%E8%AE%B0/">动手学深度学习第二版笔记</a></span></li></ul></div><div class="rpost pjax"><h2>Recent Comments</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><div class="status"><div class="copyright">© 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">AUVeggry @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="Symbols count total">1.1m words</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="Reading time total">17:13</span></div><div class="powered-by">Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> &amp; Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><br><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:var(--grey-5);"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号</a></span></div></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2023/06/28/game-engine/games104系列笔记（二二）/`,
+    favicon: {
+        show: `(●´3｀●) Here we go again.`,
+        hide: `(´Д｀) It's a disaster!`
+    },
+    search: {
+        placeholder: "Search for Posts",
+        empty: "We didn't find any results for the search: ${query}",
+        stats: "${hits} results found in ${time} ms"
+    },
+    nocopy: "false",
+    copyright: `Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>`,
+    quiz: {
+        choice: `Multiple Choice`,
+        multiple: `Multiple Answer`,
+        true_false: `True/False`,
+        essay: `Questions`,
+        gap_fill: `Gap Filling`,
+        mistake: `Wrong Answer`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script></body></html>

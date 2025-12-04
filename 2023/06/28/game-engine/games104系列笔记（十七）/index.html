@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"><meta name="renderer" content="webkit"><link rel="icon" type="image/ico" sizes="32x32" href="/assets/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="alternate" href="/rss.xml" title="sakura" s="" blog""="" type="application/rss+xml"><link rel="alternate" href="/atom.xml" title="sakura" s="" blog""="" type="application/atom+xml"><link rel="alternate" type="application/json" title="sakura&quot;s blog&quot;" href="https://sakurame.eu.org/feed.json"><link rel="preconnect" href="https://s4.zstatic.net"><link rel="preconnect" href="https://at.alicdn.com"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://unpkg.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CFredericka%20the%20Great:400,400italic,700,700italic%7CNoto%20Serif%20JP:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CInconsolata:400,400italic,700,700italic&amp;display=swap&amp;subset=latin,latin-ext" media="none" onload="this.media='all'"><link rel="modulepreload" href="/js/siteInit.js"><link rel="modulepreload" href="/js/nyx-player-CEOMSI5S.js"><link rel="modulepreload" href="/js/copy-tex-VNMZZ56J.js"><link rel="modulepreload" href="/js/post-DBDT2P4X.js"><link rel="modulepreload" href="/js/chunk-3NVTWMK7.js"><link rel="modulepreload" href="/js/tcomments-MCLWTQDC.js"><link rel="modulepreload" href="/js/chunk-ERE5SKT5.js"><link rel="modulepreload" href="/js/index.esm-RIWV4EDG.js"><link rel="modulepreload" href="/js/chunk-KXPDGESI.js"><link rel="modulepreload" href="/js/chunk-I5LMONQL.js"><link rel="modulepreload" href="/js/cf-patch.js"><link rel="stylesheet" href="/css/siteInit.css" media="none" onload="this.media='all'"><script src="/js/cf-patch.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script><link rel="preload" href="https://ptpimg.me/qnu794.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/ai0u42.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/996d4a.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/355768.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/p4z097.jpg" as="image" fetchpriority="high"><link rel="preload" href="https://ptpimg.me/oh0zkj.jpg" as="image" fetchpriority="high"><meta name="keywords" content="游戏引擎"><meta name="description" content="<blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a href=&quot;https://games104.boomingtech.com/en/&quot;>GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏AI的高级技术。<br />"><link rel="canonical" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/"><link rel="stylesheet" href="/css/post.css?v=0.5.4"><link rel="stylesheet" href="/css/mermaid.css?v=0.5.4"><!-- 临时处理--><link rel="stylesheet" media="none" onload="this.media='all'" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css"><title>games104系列笔记（十七）</title><meta name="generator" content="Hexo 7.3.0"></head><body itemscope="" itemtype="http://schema.org/WebPage"><div id="loading"><div class="cat"><div class="body"></div><div class="head"><div class="face"></div></div><div class="foot"><div class="tummy-end"></div><div class="bottom"></div><div class="legs left"></div><div class="legs right"></div></div><div class="paw"><div class="hands left"></div><div class="hands right"></div></div></div></div><div id="pagefind_mount"></div><div id="container"><header id="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="inner"><div id="brand"><div class="pjax"><h1 itemprop="name headline">games104系列笔记（十七）</h1><div class="meta"><span class="item" title="Created: 2023-06-28 23:01:16"><span class="icon"><i class="ic i-calendar"></i></span><span class="text">Posted on</span><time itemprop="dateCreated datePublished" datetime="2023-06-28T23:01:16+08:00">2023-06-28</time></span><span class="item" title="Symbols count in article"><span class="icon"><i class="ic i-pen"></i></span><span class="text">Symbols count in article</span><span>15k</span><span class="text">words</span></span><span class="item" title="Reading time"><span class="icon"><i class="ic i-clock"></i></span><span class="text">Reading time</span><span>13 mins.</span></span></div></div></div><nav id="nav"><div class="inner"><div class="toggle"><div class="lines" aria-label="Toggle navigation bar"><span class="line"></span><span class="line"></span><span class="line"></span></div></div><ul class="menu"><li class="item title"><a href="/" rel="start">Sakura's Blog</a></li></ul><ul class="right" id="rightNav"><li class="item theme"><i class="ic i-sun"></i></li><li class="item search"><i class="ic i-search"></i></li></ul></div></nav></div><div class="pjax" id="imgs"><ul><li class="item" style="background-image: url(&quot;https://ptpimg.me/qnu794.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/ai0u42.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/996d4a.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/355768.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/p4z097.jpg&quot;);"></li><li class="item" style="background-image: url(&quot;https://ptpimg.me/oh0zkj.jpg&quot;);"></li></ul></div></header><div id="waves"><svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs><g class="parallax"><use xlink:href="#gentle-wave" x="48" y="0"></use><use xlink:href="#gentle-wave" x="48" y="3"></use><use xlink:href="#gentle-wave" x="48" y="5"></use><use xlink:href="#gentle-wave" x="48" y="7"></use></g></svg></div><main><div class="inner"><div class="pjax" id="main"><div class="article wrap"><div class="breadcrumb" itemlistelement="" itemscope="" itemtype="https://schema.org/BreadcrumbList"><i class="ic i-home"></i><span><a href="/">Home</a></span><i class="ic i-angle-right"></i><span class="current" itemprop="itemListElement" itemscope="itemscope" itemtype="https://schema.org/ListItem"><a href="/categories/game-engine/" itemprop="item" rel="index" title="In游戏引擎实践"><span itemprop="name">游戏引擎实践<meta itemprop="position" content="0"></span></a></span></div><article class="post block" itemscope="itemscope" itemtype="http://schema.org/Article" data-pagefind-body="data-pagefind-body" lang="zh-cn"><link itemprop="mainEntityOfPage" href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/"><span hidden="hidden" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="image" content="/assets/avatar.jpg"><meta itemprop="name" content="AUVeggry"><meta itemprop="description" content=", The spirit of independence and the freedom of thought "></span><span hidden="hidden" itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="sakura&quot;s blog&quot;"></span><div class="body md" itemprop="articleBody"><blockquote>
+<p>这个系列是GAMES104-现代游戏引擎：从入门到实践(<a target="_blank" rel="noopener" href="https://games104.boomingtech.com/en/">GAMES 104: Modern Game Engine-Theory and Practice</a>)的同步课程笔记。本课程会介绍现代游戏引擎所涉及的系统架构、技术点以及引擎系统相关的知识。本节课主要介绍游戏AI的高级技术。<br>
+<span id="more"></span></p>
+</blockquote>
+<h2 id="hierarchical-tasks-network"><a class="anchor" href="#hierarchical-tasks-network">#</a> Hierarchical Tasks Network</h2>
+<p>**层次任务网络(hierarchical tasks network, HTN)**是经典的游戏AI技术，和上一节介绍过的行为树相比HTN可以更好地表达AI自身的意志和驱动力。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4I7FBkU.png">https://search.pstatic.net/common?src=https://i.imgur.com/4I7FBkU.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>HTN的思想是把总体目标分解成若干个步骤，其中每个步骤可以包含不同的选项。AI在执行时需要按照顺序完成每个步骤，并且根据自身的状态选择合适的行为。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WTmq3fH.png">https://search.pstatic.net/common?src=https://i.imgur.com/WTmq3fH.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="htn-framework"><a class="anchor" href="#htn-framework">#</a> HTN Framework</h3>
+<p>HTN框架中包含两部分，<strong>world state</strong>和<strong>sensor</strong>两部分。其中world state是AI对于游戏世界的认知，而sensor则是AI从游戏世界获取信息的渠道。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/PzwkQex.png">https://search.pstatic.net/common?src=https://i.imgur.com/PzwkQex.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>除此之外HTN还包括<strong>domain</strong>，<strong>planner</strong>以及<strong>plan runner</strong>来表示AI的规划以及执行规划的过程。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/NIgzWmt.png">https://search.pstatic.net/common?src=https://i.imgur.com/NIgzWmt.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="htn-task-types"><a class="anchor" href="#htn-task-types">#</a> HTN Task Types</h3>
+<p>在HTN中我们将任务分为两类，<strong>primitive task</strong>和<strong>compound task</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WHd8iWK.png">https://search.pstatic.net/common?src=https://i.imgur.com/WHd8iWK.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>primitive task一般表示一个具体的动作或行为。在HTN中每个primitive task需要包含precondition、action以及effects三个要素。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/8e2Rubm.png">https://search.pstatic.net/common?src=https://i.imgur.com/8e2Rubm.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7LbXg9S.png">https://search.pstatic.net/common?src=https://i.imgur.com/7LbXg9S.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而compound task则包含不同的方法，我们把这些方法按照一定的优先级组织起来并且在执行时按照优先级高到低的顺序进行选择。每个方法还可以包含其它的primitive task或者compound task，当方法内所有的task都执行完毕则表示任务完成。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/uyiZZfx.png">https://search.pstatic.net/common?src=https://i.imgur.com/uyiZZfx.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/0AM4PCH.png">https://search.pstatic.net/common?src=https://i.imgur.com/0AM4PCH.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在此基础上就可以构造出整个HTN的domain，从而实现AI的行为逻辑。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Jak3o9O.png">https://search.pstatic.net/common?src=https://i.imgur.com/Jak3o9O.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gpnKV0x.png">https://search.pstatic.net/common?src=https://i.imgur.com/gpnKV0x.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="planning"><a class="anchor" href="#planning">#</a> Planning</h3>
+<p>接下来就可以进行规划了，我们从root task出发不断进行展开逐步完成每个任务。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6wDGpPe.png">https://search.pstatic.net/common?src=https://i.imgur.com/6wDGpPe.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/jGFZOQn.png">https://search.pstatic.net/common?src=https://i.imgur.com/jGFZOQn.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/8e1rE9T.png">https://search.pstatic.net/common?src=https://i.imgur.com/8e1rE9T.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ZeuFXIu.png">https://search.pstatic.net/common?src=https://i.imgur.com/ZeuFXIu.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CULPkyw.png">https://search.pstatic.net/common?src=https://i.imgur.com/CULPkyw.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/yjPOnj9.png">https://search.pstatic.net/common?src=https://i.imgur.com/yjPOnj9.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Kiq24df.png">https://search.pstatic.net/common?src=https://i.imgur.com/Kiq24df.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="replan"><a class="anchor" href="#replan">#</a> Replan</h3>
+<p>执行plan时需要注意有时任务会失败，这就需要我们重新进行规划，这一过程称为<strong>replan</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/l1qMknL.png">https://search.pstatic.net/common?src=https://i.imgur.com/l1qMknL.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>当plan执行完毕或是发生失败，亦或是world state发生改变后就需要进行replan。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rFOzkJ1.png">https://search.pstatic.net/common?src=https://i.imgur.com/rFOzkJ1.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>总结一下HTN和BT非常相似，但它更加符合人的直觉也更易于设计师进行掌握。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/wzusHJq.png">https://search.pstatic.net/common?src=https://i.imgur.com/wzusHJq.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="goal-oriented-action-planning"><a class="anchor" href="#goal-oriented-action-planning">#</a> Goal-Oriented Action Planning</h2>
+<p>**goal-oriented action planning(GOAP)**是一种基于规划的AI技术，和前面介绍过的方法相比GOAP一般会更适合动态的环境。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/nJGp297.png">https://search.pstatic.net/common?src=https://i.imgur.com/nJGp297.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="structure"><a class="anchor" href="#structure">#</a> Structure</h3>
+<p>GOAP的整体结构与HTN非常相似，不过在GOAP中domain被替换为<strong>goal set</strong>和<strong>action set</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/SEu8fOf.png">https://search.pstatic.net/common?src=https://i.imgur.com/SEu8fOf.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>goal set表示AI所有可以达成的目标。在GOAP中需要显式地定义可以实现的目标，这要求我们把目标使用相应的状态来进行表达。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qrFICyp.png">https://search.pstatic.net/common?src=https://i.imgur.com/qrFICyp.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/XnTavoj.png">https://search.pstatic.net/common?src=https://i.imgur.com/XnTavoj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>而action set则接近于primitive task的概念，它表示AI可以执行的行为。需要注意的是action set还包含**代价(cost)**的概念，它表示不同动作的"优劣"程度。在进行规划时我们希望AI尽可能做出代价小的决策。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/o1RfZ08.png">https://search.pstatic.net/common?src=https://i.imgur.com/o1RfZ08.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="planning-2"><a class="anchor" href="#planning-2">#</a> Planning</h3>
+<p>GOAP在进行规划时会从目标来倒推需要执行的动作，这一过程称为<strong>反向规划(backward planning)</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/CuHnqbo.png">https://search.pstatic.net/common?src=https://i.imgur.com/CuHnqbo.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在进行规划时首先需要根据优先级来选取一个目标，然后查询实现目标需要满足的状态。为了满足这些状态需求，我们需要从action set中选择一系列动作。需要注意的是很多动作也有自身的状态需求，因此我们在选择动作时也需要把这些需求添加到列表中。最后不断地添加动作和需求直到所有的状态需求都得到了满足，这样就完成了反向规划。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/HN9Qc2G.png">https://search.pstatic.net/common?src=https://i.imgur.com/HN9Qc2G.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/PyowWXA.png">https://search.pstatic.net/common?src=https://i.imgur.com/PyowWXA.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gcBOPre.png">https://search.pstatic.net/common?src=https://i.imgur.com/gcBOPre.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/U5N6zrU.png">https://search.pstatic.net/common?src=https://i.imgur.com/U5N6zrU.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>GOAP的难点在于如何从action set进行选择，我们要求状态需求都能够得到满足而且所添加动作的代价要尽可能小。显然这样的问题是一个**动态规划(dynamic programming)**问题，我们可以利用图这样的数据结构来进行求解。在构造图时把状态的组合作为图上的节点，不同节点之间的有向边表示可以执行的动作，边的权重则是动作的代价。这样整个规划问题就等价于在有向图上的最短路径问题。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/pwihLZo.png">https://search.pstatic.net/common?src=https://i.imgur.com/pwihLZo.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/gsJO3uj.png">https://search.pstatic.net/common?src=https://i.imgur.com/gsJO3uj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>总结一下GOAP可以让AI的行为更加动态，而且可以有效地解耦AI的目标与行为；而GOAP的主要缺陷在于它会比较消耗计算资源，一般情况下GOAP需要的计算量会远高于BT和HTN。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ikCwkRc.png">https://search.pstatic.net/common?src=https://i.imgur.com/ikCwkRc.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="monte-carlo-tree-search"><a class="anchor" href="#monte-carlo-tree-search">#</a> Monte Carlo Tree Search</h2>
+<p>**蒙特卡洛树搜索(Monte Carlo tree search, MCTS)**也是经典的AI算法，实际上AlphaGo就是基于MCTS来实现的。简单来说，MCTS的思路是在进行决策时首先模拟大量可行的动作，然后从这些动作中选择最好的那个来执行。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/4ieIubf.png">https://search.pstatic.net/common?src=https://i.imgur.com/4ieIubf.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ujK4M6o.png">https://search.pstatic.net/common?src=https://i.imgur.com/ujK4M6o.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>MCTS的核心是<strong>Monte Carlo方法(Monte Carlo method)</strong>，它指出定积分可以通过随机采样的方法来进行估计。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/LudIyAu.png">https://search.pstatic.net/common?src=https://i.imgur.com/LudIyAu.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>以围棋为例，MCTS会根据当前棋盘上的状态来估计落子的位置。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/3An5WPn.png">https://search.pstatic.net/common?src=https://i.imgur.com/3An5WPn.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>从数学的角度来看，我们把棋盘上棋子的位置称为<strong>状态(state)</strong>，同时把落子的过程称为<strong>行为(action)</strong>。这样整个游戏可以建模为从初始节点出发的状态转移过程，而且所有可能的状态转移可以表示为一棵树。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/tZaXkiQ.png">https://search.pstatic.net/common?src=https://i.imgur.com/tZaXkiQ.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/vuF8yKH.png">https://search.pstatic.net/common?src=https://i.imgur.com/vuF8yKH.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/7GUChUW.png">https://search.pstatic.net/common?src=https://i.imgur.com/7GUChUW.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>显然构造出完整的树结构可能是非常困难的，不过实际上我们并不需要完整的树。在使用MCTS时，完成每一个行为后只需要重新以当前状态构造一棵新树即可。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/vjnGXgI.png">https://search.pstatic.net/common?src=https://i.imgur.com/vjnGXgI.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="simulation"><a class="anchor" href="#simulation">#</a> Simulation</h3>
+<p>**模拟(simulation)**是MCTS中的重要一环，这里的"模拟"是指AI利用当前的策略快速地完成整个游戏过程。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/WEhWhLW.png">https://search.pstatic.net/common?src=https://i.imgur.com/WEhWhLW.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="backpropagate"><a class="anchor" href="#backpropagate">#</a> Backpropagate</h3>
+<p>我们从同一节点出发进行不断的模拟就可以估计该节点的价值(胜率)。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/z9uwLvH.png">https://search.pstatic.net/common?src=https://i.imgur.com/z9uwLvH.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>然后把模拟的结果从下向上进行传播就可以更新整个决策序列上所有节点的价值。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/v5BJp2x.png">https://search.pstatic.net/common?src=https://i.imgur.com/v5BJp2x.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="iteration-steps"><a class="anchor" href="#iteration-steps">#</a> Iteration Steps</h3>
+<p>这样我们就可以定义MCTS的迭代步骤如下：</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/DHXs8wg.png">https://search.pstatic.net/common?src=https://i.imgur.com/DHXs8wg.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/PZ4bgIj.png">https://search.pstatic.net/common?src=https://i.imgur.com/PZ4bgIj.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="selection"><a class="anchor" href="#selection">#</a> Selection</h4>
+<p>在对节点进行选择时，MCTS会优先选择可拓展的节点。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2YYCxQ6.png">https://search.pstatic.net/common?src=https://i.imgur.com/2YYCxQ6.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>在进行拓展时往往还要权衡一些exploitation和exploration，因此我们可以把UCB可以作为一种拓展的准则。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/h9uaKy5.png">https://search.pstatic.net/common?src=https://i.imgur.com/h9uaKy5.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/BVxMdUV.png">https://search.pstatic.net/common?src=https://i.imgur.com/BVxMdUV.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>这样在进行选择时首先需要从根节点出发然后不断选择当前UCB最大的那个节点向下进行访问，当访问到一个没有拓展过的节点时选择该节点进行展开。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/OMpPE0Q.png">https://search.pstatic.net/common?src=https://i.imgur.com/OMpPE0Q.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="expansion"><a class="anchor" href="#expansion">#</a> Expansion</h4>
+<p>对节点进行展开时我们需要根据可执行的动作选择一组进行模拟，然后把模拟的结果自下而上进行传播。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/JP9pHzs.png">https://search.pstatic.net/common?src=https://i.imgur.com/JP9pHzs.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/svfwwgQ.png">https://search.pstatic.net/common?src=https://i.imgur.com/svfwwgQ.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h4 id="the-end-condition"><a class="anchor" href="#the-end-condition">#</a> The End Condition</h4>
+<p>当对树的探索达到一定程度后就可以终止拓展过程，此时我们就得到了树结构上每个节点的价值。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Q04XZMp.png">https://search.pstatic.net/common?src=https://i.imgur.com/Q04XZMp.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>然后只需要回到根节点选择一个最优的子节点进行执行即可。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/0krzkYb.png">https://search.pstatic.net/common?src=https://i.imgur.com/0krzkYb.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>总结一下，MCTS是一种非常强大的决策算法而且很适合搜索空间巨大的决策问题；而它的主要缺陷在于它具有过大的计算复杂度，而且它的效果很大程度上依赖于状态和行为空间的设计。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ncm3OPv.png">https://search.pstatic.net/common?src=https://i.imgur.com/ncm3OPv.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="machine-learning-basic"><a class="anchor" href="#machine-learning-basic">#</a> Machine Learning Basic</h2>
+<h3 id="ml-types"><a class="anchor" href="#ml-types">#</a> ML Types</h3>
+<p>近几年在**机器学习(machine learning, ML)**技术的不断发展下有越来越多的游戏AI开始使用机器学习来进行实现。根据学习的方式，机器学习大致可以分为监督学习、无监督学习、半监督学习以及强化学习等几类。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/KirOIOL.png">https://search.pstatic.net/common?src=https://i.imgur.com/KirOIOL.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Q4kuYnv.png">https://search.pstatic.net/common?src=https://i.imgur.com/Q4kuYnv.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/YoTgaVU.png">https://search.pstatic.net/common?src=https://i.imgur.com/YoTgaVU.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6hK3EYE.png">https://search.pstatic.net/common?src=https://i.imgur.com/6hK3EYE.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>**强化学习(reinforcement learning, RL)**是游戏AI技术的基础。在强化学习中我们希望AI能够通过和环境的不断互动来学习到一个合理的策略。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/GFfBQ24.png">https://search.pstatic.net/common?src=https://i.imgur.com/GFfBQ24.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Au7Diie.png">https://search.pstatic.net/common?src=https://i.imgur.com/Au7Diie.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="markov-decision-process"><a class="anchor" href="#markov-decision-process">#</a> Markov Decision Process</h3>
+<p>强化学习的理论基础是<strong>Markov决策过程(Markov decision process, MDP)</strong>。在MDP中智能体对环境的感知称为<strong>状态(state)</strong>，环境对于智能体的反馈称为<strong>奖励(reward)</strong>。MDP的目标是让智能体通过和环境不断的互动来学习到如何在不同的环境下进行决策，这样的一个决策函数称为<strong>策略(policy)</strong>。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rwzXfAH.png">https://search.pstatic.net/common?src=https://i.imgur.com/rwzXfAH.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/B8yB5bO.png">https://search.pstatic.net/common?src=https://i.imgur.com/B8yB5bO.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/2rSrHCU.png">https://search.pstatic.net/common?src=https://i.imgur.com/2rSrHCU.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/74fN1x4.png">https://search.pstatic.net/common?src=https://i.imgur.com/74fN1x4.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/0Wx8eD9.png">https://search.pstatic.net/common?src=https://i.imgur.com/0Wx8eD9.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/9SrZJ3H.png">https://search.pstatic.net/common?src=https://i.imgur.com/9SrZJ3H.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="build-advanced-game-ai"><a class="anchor" href="#build-advanced-game-ai">#</a> Build Advanced Game AI</h2>
+<p>尽管目前基于机器学习的游戏AI技术大多还处于试验阶段，但已经有一些很优秀的项目值得借鉴和学习，包括DeepMind的AlphaStar以及OpenAI的Five等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/Zi9wKOO.png">https://search.pstatic.net/common?src=https://i.imgur.com/Zi9wKOO.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>这些基于**深度强化学习(deep reinforcement learning, DRL)**的游戏AI都是使用一个深度神经网络来进行决策，整个框架包括接收游戏环境的观测，利用神经网络获得行为，以及从游戏环境中得到反馈。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/GQfYwXT.png">https://search.pstatic.net/common?src=https://i.imgur.com/GQfYwXT.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="state"><a class="anchor" href="#state">#</a> State</h3>
+<p>以AlphaStar为例，智能体可以直接从游戏环境获得的信息包括地图、统计数据、场景中的单位以及资源数据等。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/THHWUGS.png">https://search.pstatic.net/common?src=https://i.imgur.com/THHWUGS.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/ShPvtmz.png">https://search.pstatic.net/common?src=https://i.imgur.com/ShPvtmz.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/FvMjfmM.png">https://search.pstatic.net/common?src=https://i.imgur.com/FvMjfmM.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="actions"><a class="anchor" href="#actions">#</a> Actions</h3>
+<p>在AlphaStar中智能体的行为还取决于当前选中的单位。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/nIDeT85.png">https://search.pstatic.net/common?src=https://i.imgur.com/nIDeT85.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="rewards"><a class="anchor" href="#rewards">#</a> Rewards</h3>
+<p>奖励函数的设计对于模型的训练以及最终的性能都有着重要的影响。在AlphaStar中使用了非常简单的奖励设计，智能体仅在获胜时获得+1的奖励；而在OpenAI Five中则采用了更加复杂的奖励函数并以此来鼓励AI的进攻性。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/k3foZZp.png">https://search.pstatic.net/common?src=https://i.imgur.com/k3foZZp.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/s0ykcHe.png">https://search.pstatic.net/common?src=https://i.imgur.com/s0ykcHe.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="network"><a class="anchor" href="#network">#</a> Network</h3>
+<p>在AlphaStar中使用了不同种类的神经网络来处理不同类型的输入数据，比如说对于定长的输入使用了MLP，对于图像数据使用了CNN，对于非定长的序列使用了Transformer，而对于整个决策过程还使用了LSTM进行处理。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/fNjxQRD.png">https://search.pstatic.net/common?src=https://i.imgur.com/fNjxQRD.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/23BXyl5.png">https://search.pstatic.net/common?src=https://i.imgur.com/23BXyl5.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/dZAGsOi.png">https://search.pstatic.net/common?src=https://i.imgur.com/dZAGsOi.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/6Gaa8pE.png">https://search.pstatic.net/common?src=https://i.imgur.com/6Gaa8pE.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qdyb42p.png">https://search.pstatic.net/common?src=https://i.imgur.com/qdyb42p.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/e6wTx96.png">https://search.pstatic.net/common?src=https://i.imgur.com/e6wTx96.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h3 id="training-strategy"><a class="anchor" href="#training-strategy">#</a> Training Strategy</h3>
+<p>除此之外，AlphaStar还对模型的训练过程进行了大规模的革新。在AlphaStar的训练过程中首先使用了监督学习的方式来从人类玩家的录像中进行学习。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/00HJFrp.png">https://search.pstatic.net/common?src=https://i.imgur.com/00HJFrp.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>接着，AlphaStar使用了强化学习的方法来进行自我训练。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/eSUJEhD.png">https://search.pstatic.net/common?src=https://i.imgur.com/eSUJEhD.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/d91TqXp.png">https://search.pstatic.net/common?src=https://i.imgur.com/d91TqXp.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>试验结果分析表明基于监督学习训练的游戏AI其行为会比较接近于人类玩家，但基本无法超过人类玩家的水平；而基于强化学习训练的AI则可能会有超过玩家的游戏水平，不过需要注意的是使用强化学习可能需要非常多的训练资源。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/35w2RVS.png">https://search.pstatic.net/common?src=https://i.imgur.com/35w2RVS.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/G38F34e.png">https://search.pstatic.net/common?src=https://i.imgur.com/G38F34e.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<p>因此对于游戏AI到底是使用监督学习还是使用强化学习进行训练需要结合实际的游戏环境进行考虑。对于奖励比较密集的环境可以直接使用强化学习进行训练，而对于奖励比较稀疏的环境则推荐使用监督学习。</p>
+<p>&lt;div align=center&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/rUP1LAI.png">https://search.pstatic.net/common?src=https://i.imgur.com/rUP1LAI.png</a>" width="80%"&gt;<br>
+&lt;img src="<a target="_blank" rel="noopener" href="https://search.pstatic.net/common?src=https://i.imgur.com/qaEZ2k5.png">https://search.pstatic.net/common?src=https://i.imgur.com/qaEZ2k5.png</a>" width="80%"&gt;<br>
+&lt;/div&gt;</p>
+<h2 id="reference"><a class="anchor" href="#reference">#</a> Reference</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iG4y1i78Q?spm_id_from=333.337.search-card.all.click&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 17：Advanced Artificial Intelligence (Part I)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ja411U7zK/?spm_id_from=333.788&amp;vd_source=7a2542c6c909b3ee1fab551277360826">Lecture 17：Advanced Artificial Intelligence (Part II)</a></li>
+</ul>
+<div class="tags"><a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E/" rel="tag"><i class="ic i-tag"></i>游戏引擎</a></div></div><footer><div class="meta"><span class="item"><span class="icon"><i class="ic i-eye"></i></span><span class="text">Total Views: </span><span class="waline-pageview-count" id="twikoo_visitors" data-path="/2023/06/28/game-engine/games104系列笔记（十七）/">Loading...</span></span><span class="item"><span class="icon"><i class="ic i-calendar-check"></i></span><span class="text">Edited on </span><time title="Modified: 2024-03-13 00:01:09" itemprop="dateModified" datetime="2024-03-13T00:01:09+08:00">2024-03-13</time></span></div><div class="reward"><button><i class="ic i-heartbeat"></i>Donate</button><p>Give me a cup of [coffee]~(￣▽￣)~*</p><div id="qr"><div><img loading="lazy" src="/assets/monero.avif" alt="AUVeggry monero"><p>monero</p></div><div><img loading="lazy" src="/assets/bitcoin.avif" alt="AUVeggry Bitcoin"><p>Bitcoin</p></div></div></div><div id="copyright"><ul><li class="author"><strong>Post author: </strong>AUVeggry<i class="ic i-at"><em>@</em></i>sakura"s blog"</li><li class="link"><strong>Post link: </strong><a href="https://sakurame.eu.org/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" title="games104系列笔记（十七）">https://sakurame.eu.org/2023/06/28/game-engine/games104系列笔记（十七）/</a></li><li class="license"><strong>Copyright Notice: </strong>All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"><i class="ic i-creative-commons"><em>(CC)</em></i>BY-NC-SA</a> unless stating additionally.</li></ul></div></footer></article></div><div class="post-nav"><div class="item left"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="prev" itemprop="url" data-background-image="https://ptpimg.me/13lwuc.jpg" title="games104系列笔记（十六）"><span class="type">Previous Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十六）</h3></a></div><div class="item right"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="next" itemprop="url" data-background-image="https://ptpimg.me/5n0t71.jpg" title="games104系列笔记（十八）"><span class="type">Next Post</span><span class="category"><i class="ic i-flag"></i>游戏引擎实践</span><h3>games104系列笔记（十八）</h3></a></div></div><div class="wrap" id="comments"></div></div><div id="sidebar"><div class="inner"><div class="panels"><div class="inner"><div class="contents panel pjax" data-title="Contents"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#hierarchical-tasks-network"><span class="toc-number">1.</span> <span class="toc-text"> Hierarchical Tasks Network</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#htn-framework"><span class="toc-number">1.1.</span> <span class="toc-text"> HTN Framework</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#htn-task-types"><span class="toc-number">1.2.</span> <span class="toc-text"> HTN Task Types</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#planning"><span class="toc-number">1.3.</span> <span class="toc-text"> Planning</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#replan"><span class="toc-number">1.4.</span> <span class="toc-text"> Replan</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#goal-oriented-action-planning"><span class="toc-number">2.</span> <span class="toc-text"> Goal-Oriented Action Planning</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#structure"><span class="toc-number">2.1.</span> <span class="toc-text"> Structure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#planning-2"><span class="toc-number">2.2.</span> <span class="toc-text"> Planning</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#monte-carlo-tree-search"><span class="toc-number">3.</span> <span class="toc-text"> Monte Carlo Tree Search</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#simulation"><span class="toc-number">3.1.</span> <span class="toc-text"> Simulation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#backpropagate"><span class="toc-number">3.2.</span> <span class="toc-text"> Backpropagate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iteration-steps"><span class="toc-number">3.3.</span> <span class="toc-text"> Iteration Steps</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#selection"><span class="toc-number">3.3.1.</span> <span class="toc-text"> Selection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#expansion"><span class="toc-number">3.3.2.</span> <span class="toc-text"> Expansion</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#the-end-condition"><span class="toc-number">3.3.3.</span> <span class="toc-text"> The End Condition</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#machine-learning-basic"><span class="toc-number">4.</span> <span class="toc-text"> Machine Learning Basic</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ml-types"><span class="toc-number">4.1.</span> <span class="toc-text"> ML Types</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#markov-decision-process"><span class="toc-number">4.2.</span> <span class="toc-text"> Markov Decision Process</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#build-advanced-game-ai"><span class="toc-number">5.</span> <span class="toc-text"> Build Advanced Game AI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#state"><span class="toc-number">5.1.</span> <span class="toc-text"> State</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#actions"><span class="toc-number">5.2.</span> <span class="toc-text"> Actions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rewards"><span class="toc-number">5.3.</span> <span class="toc-text"> Rewards</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#network"><span class="toc-number">5.4.</span> <span class="toc-text"> Network</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#training-strategy"><span class="toc-number">5.5.</span> <span class="toc-text"> Training Strategy</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">6.</span> <span class="toc-text"> Reference</span></a></li></ol></div><div class="related panel pjax" data-title="Related"><ul><li><a href="/2023/06/24/game-engine/games104%E7%AC%94%E8%AE%B0/" rel="bookmark" title="games104笔记">games104笔记</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（一）">games104系列笔记（一）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二）">games104系列笔记（二）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（三）">games104系列笔记（三）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（四）">games104系列笔记（四）</a></li><li><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（五）">games104系列笔记（五）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（六）">games104系列笔记（六）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（七）">games104系列笔记（七）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（八）">games104系列笔记（八）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（九）">games104系列笔记（九）</a></li><li><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（十）">games104系列笔记（十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（十一）">games104系列笔记（十一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（十二）">games104系列笔记（十二）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" rel="bookmark" title="games104系列笔记（十三）">games104系列笔记（十三）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" rel="bookmark" title="games104系列笔记（十四）">games104系列笔记（十四）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89/" rel="bookmark" title="games104系列笔记（十五）">games104系列笔记（十五）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="bookmark" title="games104系列笔记（十六）">games104系列笔记（十六）</a></li><li class="active"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/" rel="bookmark" title="games104系列笔记（十七）">games104系列笔记（十七）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="bookmark" title="games104系列笔记（十八）">games104系列笔记（十八）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B9%9D%EF%BC%89/" rel="bookmark" title="games104系列笔记（十九）">games104系列笔记（十九）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89/" rel="bookmark" title="games104系列笔记（二十）">games104系列笔记（二十）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/" rel="bookmark" title="games104系列笔记（二一）">games104系列笔记（二一）</a></li><li><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%BA%8C%EF%BC%89/" rel="bookmark" title="games104系列笔记（二二）">games104系列笔记（二二）</a></li></ul></div><div class="overview panel" data-title="Overview"><div class="author" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><img class="image" loading="lazy" decoding="async" itemprop="image" alt="AUVeggry" src="/assets/avatar.avif"><p class="name" itemprop="name">AUVeggry</p><div class="description" itemprop="description">The spirit of independence and the freedom of thought </div></div><nav class="state"><div class="item posts"><a href="/archives/"><span class="count">64</span><span class="name">posts</span></a></div><div class="item categories"><a href="/categories/"><span class="count">6</span><span class="name">categories</span></a></div><div class="item tags"><a href="/tags/"><span class="count">21</span><span class="name">tags</span></a></div></nav><div class="social"><a target="_blank" rel="noopener" href="https://github.com/auveggry" class="item github" title="https://github.com/auveggry"><i class="ic i-github"></i></a><a href="mailto:mail@sakurame.eu.org" class="item email" title="mailto:mail@sakurame.eu.org"><i class="ic i-envelope"></i></a></div><div class="menu"><li class="item"><a href="/" rel="section"><i class="ic i-home"></i>Home</a></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-user"></i>About</a><ul class="submenu"><li class="item"><a href="/about/" rel="section"><i class="ic i-user"></i>About This Site</a></li><li class="item"><a href="/admiration/" rel="section"><i class="ic i-coffee"></i>Appreciation</a></li><li class="item"><a href="/privacy/" rel="section"><i class="ic i-user"></i>Privacy Policy</a></li></ul></li><li class="item dropdown"><a href="#" onclick="return false;"><i class="ic i-feather"></i>Posts</a><ul class="submenu"><li class="item"><a href="/archives/" rel="section"><i class="ic i-list-alt"></i>Archives</a></li><li class="item"><a href="/categories/" rel="section"><i class="ic i-th"></i>Categories</a></li><li class="item"><a href="/tags/" rel="section"><i class="ic i-tags"></i>Tags</a></li></ul></li><li class="item"><a href="/friends/" rel="section"><i class="ic i-sakura"></i>Friends</a></li></div></div></div></div><ul id="quick"><li class="prev pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AB%EF%BC%89/" rel="prev" title="Previous Post"><i class="ic i-chevron-left"></i></a></li><li class="up"><i class="ic i-arrow-up"></i></li><li class="down"><i class="ic i-arrow-down"></i></li><li class="next pjax"><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E5%85%AD%EF%BC%89/" rel="next" title="Next Post"><i class="ic i-chevron-right"></i></a></li><li class="percent"></li></ul></div></div><div class="dimmer"></div></div><div id="player"></div></main><footer id="footer"><div class="inner"><div class="widgets"><div class="rpost pjax"><h2>Random Posts</h2><ul><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2024/03/16/vcbstudio/%E7%AC%AC%E4%B8%83%E7%AB%A0%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81%E5%99%A8%E5%9F%BA%E7%A1%80/">第七章视频编码器基础</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2023/08/28/thinking/united-93%E4%B9%8B%E6%80%9D/">united_93之思</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89/">games104系列笔记（十七）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/vcbstudio/" title="In视频压制技术">视频压制技术</a></div><span><a href="/2023/06/11/vcbstudio/VapourSynth%E5%9F%BA%E7%A1%80/">VapourSynth基础</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/28/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%E4%B8%80%EF%BC%89/">games104系列笔记（二一）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/25/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/">games104系列笔记（四）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/game-engine/" title="In游戏引擎实践">游戏引擎实践</a></div><span><a href="/2023/06/26/game-engine/games104%E7%B3%BB%E5%88%97%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AB%EF%BC%89/">games104系列笔记（八）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/thinking/" title="In思考随笔记录">思考随笔记录</a></div><span><a href="/2023/05/30/thinking/%E5%85%B3%E4%BA%8Ept%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83%EF%BC%88%E4%B8%BB%E8%A6%81%E6%9D%A5%E8%87%AA%E4%BA%8E%E4%BA%92%E8%81%94%E7%BD%91%E6%95%B4%E7%90%86%EF%BC%89/">关于pt的一点思考（主要来自于互联网整理）</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/basic-theory/" title="In计算机基础理论">计算机基础理论</a></div><span><a href="/2023/05/16/basic-theory/%E9%9D%A2%E5%90%91cloudflare%E7%9A%84%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA-1%E5%88%86%E9%92%9F%E5%BF%AB%E9%80%9F%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA%E6%9C%89ssl%E8%AF%81%E4%B9%A6%E7%9A%84wordpress%E5%8D%9A%E5%AE%A2/">面向cloudflare的网站搭建,1分钟快速启动一个有ssl证书的wordpress博客</a></span></li><li class="item"><div class="breadcrumb"><a href="/categories/privacy/" title="In隐私保护指北">隐私保护指北</a></div><span><a href="/2023/06/09/privacy/the-pgp-problem/">the-pgp-problem</a></span></li></ul></div><div class="rpost pjax"><h2>Recent Comments</h2><ul class="leancloud-recent-comment" id="new-comment"></ul></div></div><div class="status"><div class="copyright">© 2023 -<span itemprop="copyrightYear">2025</span><span class="with-love"><i class="ic i-sakura rotate"></i></span><span class="author" itemprop="copyrightHolder">AUVeggry @ Sakura's Blog</span></div><div class="count"><span class="post-meta-item-icon"><i class="ic i-chart-area"></i></span><span title="Symbols count total">1.1m words</span><span class="post-meta-divider"> | </span><span class="post-meta-item-icon"><i class="ic i-coffee"></i></span><span title="Reading time total">17:13</span></div><div class="powered-by">Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> &amp; Theme.<a target="_blank" rel="noopener" href="https://github.com/theme-shoka-x/hexo-theme-shokaX/">ShokaX</a></div><br><span style="display:inline;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:var(--grey-5);"><a target="_blank" rel="noopener" href="https://icp.gov.moe/?keyword=20233555">萌ICP备20233555号</a></span></div></div></footer></div><script data-config="" type="text/javascript">var LOCAL = {
+    ispost: true,
+    path: `2023/06/28/game-engine/games104系列笔记（十七）/`,
+    favicon: {
+        show: `(●´3｀●) Here we go again.`,
+        hide: `(´Д｀) It's a disaster!`
+    },
+    search: {
+        placeholder: "Search for Posts",
+        empty: "We didn't find any results for the search: ${query}",
+        stats: "${hits} results found in ${time} ms"
+    },
+    nocopy: "false",
+    copyright: `Copied to clipboard successfully! <br> All articles in this blog are licensed under <i class="ic i-creative-commons"></i>BY-NC-SA.`,
+    copy_tex: false,
+    katex: false,
+    mermaid: false,
+    audio: undefined,
+    nocopy: false,
+    outime: true,
+    template: `<div class="note warning"><p><span class="label warning">Article Timeliness Alert</span><br>This is an article published {{publish}} days ago and last updated {{updated}} days ago. Some information may have changed, so please be careful to screen it.</p></div>`,
+    quiz: {
+        choice: `Multiple Choice`,
+        multiple: `Multiple Answer`,
+        true_false: `True/False`,
+        essay: `Questions`,
+        gap_fill: `Gap Filling`,
+        mistake: `Wrong Answer`
+    }
+};
+</script><script src="/js/siteInit.js?v=0.5.4" type="module" fetchpriority="high" defer=""></script></body></html>
