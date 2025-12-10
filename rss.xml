@@ -10,11 +10,319 @@
         </author>
         <description>The spirit of independence and the freedom of thought </description>
         <language>zh-cn</language>
-        <pubDate>Mon, 03 Jun 2024 10:44:24 +0800</pubDate>
-        <lastBuildDate>Mon, 03 Jun 2024 10:44:24 +0800</lastBuildDate>
+        <pubDate>Wed, 10 Dec 2025 22:35:08 +0800</pubDate>
+        <lastBuildDate>Wed, 10 Dec 2025 22:35:08 +0800</lastBuildDate>
         <category term="Security" />
         <category term=" Privacy" />
         <category term=" Linux" />
+        <item>
+            <guid isPermalink="true">https://sakurame.eu.org/2025/12/10/privacy/Bitunlocker/</guid>
+            <title>BitUnlocker - Leveraging Windows Recovery to Extract BitLocker Secrets</title>
+            <link>https://sakurame.eu.org/2025/12/10/privacy/Bitunlocker/</link>
+            <category term="隐私保护指北" scheme="https://sakurame.eu.org/categories/privacy/" />
+            <category term="Security" scheme="https://sakurame.eu.org/tags/Security/" />
+            <pubDate>Wed, 10 Dec 2025 22:35:08 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;bitunlocker-leveraging-windows-recovery-to-extract-bitlocker-secrets&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#bitunlocker-leveraging-windows-recovery-to-extract-bitlocker-secrets&#34;&gt;#&lt;/a&gt; BitUnlocker: Leveraging Windows Recovery to Extract BitLocker Secrets&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://techcommunity.microsoft.com/users/alon-leviev/3118637&#34;&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/dS0zMTE4NjM3LW91dHpXbw?image-coordinates=0%2C0%2C874%2C874&amp;amp;image-dimensions=50x50&#34; alt=&#34;alon-leviev&#39;s avatar&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://techcommunity.microsoft.com/users/alon-leviev/3118637&#34;&gt;alon-leviev&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/cmstNC05WEo0blc?image-dimensions=100x16&amp;amp;constrain-image=true&#34; alt=&#34;Icon for Microsoft rank&#34; /&gt;Microsoft&lt;/p&gt;
+&lt;p&gt;Aug 14, 2025&lt;/p&gt;
+&lt;h5 id=&#34;table-of-contents&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#table-of-contents&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;Introduction&lt;/li&gt;
+&lt;li&gt;BitLocker Overview&lt;/li&gt;
+&lt;li&gt;WinRE Overview&lt;/li&gt;
+&lt;li&gt;Attacking Boot.sdi Parsing&lt;/li&gt;
+&lt;li&gt;Attacking ReAgent.xml Parsing&lt;/li&gt;
+&lt;li&gt;Attacking Boot Configuration Data (BCD) Parsing&lt;/li&gt;
+&lt;li&gt;Vulnerability Fixes&lt;/li&gt;
+&lt;li&gt;BitLocker Countermeasures&lt;/li&gt;
+&lt;li&gt;About the STORM Researchers&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;introduction&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#introduction&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;In Windows, the cornerstone of data protection is BitLocker, a Full Volume Encryption technology designed to secure sensitive data on disk. This ensures that even if an adversary gains physical access to the device, the data remains secure and inaccessible.&lt;/p&gt;
+&lt;p&gt;One of the most critical aspects of any data protection feature is its ability to support recovery operations in case of failure. To enable BitLocker recovery, significant design changes were implemented in the Windows Recovery Environment (WinRE). This led us to a pivotal question: did these changes introduce any new attack surfaces impacting BitLocker?&lt;/p&gt;
+&lt;p&gt;Our recent research project - first presented at Black Hat USA 2025 and DEF CON 33 (2025) – set out to explore the WinRE attack surfaces impacting BitLocker: finding new vulnerabilities, developing exploits, implementing fixes and ultimately hardening and further securing both WinRE and BitLocker. The research resulted in new vulnerabilities identified in WinRE and its boot procedure – most of which fall into the class of logical vulnerabilities.&lt;/p&gt;
+&lt;p&gt;In this blog post, we will share the research journey: we will begin with an overview of the WinRE architecture, followed by a retrospective analysis of the attack surfaces exposed with the introduction of BitLocker. We will then discuss our methodology for effectively researching and exploiting these exposed attack surfaces. We will reveal how we identified new vulnerabilities and developed exploits, enabling us to bypass BitLocker and extract the protected data.&lt;/p&gt;
+&lt;p&gt;To conclude this blog post, we will outline countermeasure that you can apply today to further harden BitLocker and highlight our commitment to continue our proactive and continues security work around WinRE, BitLocker and the related components.&lt;/p&gt;
+&lt;h3 id=&#34;bitlocker-overview&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#bitlocker-overview&#34;&gt;#&lt;/a&gt; &lt;strong&gt;BitLocker Overview&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;BitLocker is a Windows security feature that provides data-at-rest protection for disk volumes. BitLocker protection is based on Full Volume Encryption (FVE) technology that once enabled, encrypts the target volume, protecting all the data stored on it. Users have the flexibility to choose which volumes to encrypt based on their specific needs. By default, BitLocker targets the OS volume, ensuring that all data within the OS environment is protected.&lt;/p&gt;
+&lt;p&gt;Figure 1: Volume layout and BitLocker encryption&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWNUaDRJcQ?image-dimensions=915x303&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;h5 id=&#34;bitlocker-threat-model&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#bitlocker-threat-model&#34;&gt;#&lt;/a&gt; &lt;strong&gt;BitLocker Threat Model&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;BitLocker aims to defend against theft scenarios, where a thief steals your laptop, aiming to extract your sensitive information, compromise your machine and even backdoor it. Consequently, the BitLocker threat model assumes an attacker like a common thief -&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Full physical access&lt;/li&gt;
+&lt;li&gt;No advanced credentials (usernames, passwords, etc.)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;BitLocker is one of the few Windows features that explicitly considers physical attackers in its threat model. Protecting against physical attacker significantly raises the bar for countermeasures, as these possess far greater capabilities than remote ones.&lt;/p&gt;
+&lt;h5 id=&#34;the-hidden-attack-surface-windows-recovery-environment-winre&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#the-hidden-attack-surface-windows-recovery-environment-winre&#34;&gt;#&lt;/a&gt; &lt;strong&gt;The Hidden Attack Surface – Windows Recovery Environment (WinRE)&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;Naturally, BitLocker’s attack surfaces are shaped by interfaces accessible to an attacker fitting within the BitLocker threat model. As we examined the different interfaces one stood out – the Windows Recovery Environment (WinRE). Any BitLocker attacker can directly boot into WinRE by holding the Shift key while selecting “Restart” from the logon screen.&lt;/p&gt;
+&lt;p&gt;Figure 2: Booting into WinRE from to logon screen&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LVl2MXJNaQ?image-dimensions=940x343&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Given WinRE’s fit within the BitLocker threat model, the lack of prior research, and its high vulnerability potential, we decided to conduct security review focused on finding new vulnerabilities, exploiting them, fixing them, and hardening WinRE by mitigating common vulnerability and exploitation patterns. Our end goal was to increase the security and resiliency of both WinRE and BitLocker.&lt;/p&gt;
+&lt;p&gt;With that in mind, let’s dive into the research journey.&lt;/p&gt;
+&lt;h3 id=&#34;winre-overview&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#winre-overview&#34;&gt;#&lt;/a&gt; &lt;strong&gt;WinRE Overview&lt;/strong&gt;&lt;/h3&gt;
+&lt;h5 id=&#34;winre-introduction&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#winre-introduction&#34;&gt;#&lt;/a&gt; &lt;strong&gt;WinRE Introduction&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;WinRE is Windows’s recovery platform – it’s designed to recover from critical system issues such as startup failures, persistent crashes, BitLocker errors, and more.&lt;/p&gt;
+&lt;p&gt;For example, if your machine crashes, WinRE is the component responsible for analyzing the issue, identifying corruption and resolving it by using its recovery tools.&lt;/p&gt;
+&lt;p&gt;If you use Windows, chances are that you’ve encountered WinRE at least a few times in your lifetime.&lt;/p&gt;
+&lt;p&gt;Figure 3: WinRE UI&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LVI1MlZ3Zw?image-dimensions=875x666&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;h5 id=&#34;winre-architecture&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#winre-architecture&#34;&gt;#&lt;/a&gt; &lt;strong&gt;WinRE Architecture&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;Architecturally, WinRE operates with its own standalone OS, known as the Recovery OS. This Recovery OS is a lean version of Windows with recovery-specific customizations.&lt;/p&gt;
+&lt;p&gt;The recovery customizations include a unique set of recovery tools that are integrated into the known blue screened recovery UI. Among the exposed recovery tools are familiar options such as Startup Repair, System Reset, System Restore, and others.&lt;/p&gt;
+&lt;p&gt;For storage, the entire Recovery OS - including all executables, DLLs, and drivers - is compressed into a single WIM file named WinRE.wim, which is stored on disk.&lt;/p&gt;
+&lt;p&gt;Figure 4: Recovery OS compression into WinRE.wim&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWowbllFeQ?image-dimensions=940x333&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Then, when WinRE boots, the entire WIM file is decompressed from disk into RAM, creating a temporary RAM disk that hosts the Recovery OS runtime. Any changes made within this environment are not saved back to the original WinRE.wim file, making the Recovery OS runtime inherently volatile - modifications are discarded upon reboot.&lt;/p&gt;
+&lt;p&gt;Figure 5: WinRE.wim RAM disk boot&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LU1mblhvSA?image-dimensions=940x386&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;h5 id=&#34;winre-bitlocker-design-changes&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#winre-bitlocker-design-changes&#34;&gt;#&lt;/a&gt; &lt;strong&gt;WinRE BitLocker Design Changes&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;When BitLocker was first introduced, WinRE had to evolve to support recovery from BitLocker-related failures. This led to several architectural and design changes to enable that recovery functionality. Let’s briefly review these changes.&lt;/p&gt;
+&lt;h6 id=&#34;winre-design-change-1-winrewim-relocation&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#winre-design-change-1-winrewim-relocation&#34;&gt;#&lt;/a&gt; &lt;strong&gt;WinRE Design Change #1 – WinRE.wim Relocation&lt;/strong&gt;&lt;/h6&gt;
+&lt;p&gt;The first design change focused on the location of the compressed Recovery OS –WinRE.wim. This file was moved from residing in the OS volume - now encrypted by BitLocker - to a dedicated unencrypted recovery volume.&lt;/p&gt;
+&lt;p&gt;This change was required because WinRE must remain accessible in the event of BitLocker failures. If the OS volume is BitLocker-encrypted and becomes unreadable due to a decryption issue, placing WinRE on that volume would block recovery. Since WinRE is a critical component that must be available, it was moved to a separate recovery volume. This helps ensure it can function even if the OS volume is not accessible.&lt;/p&gt;
+&lt;p&gt;Figure 6: WinRE.wim relocation&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LTRVc3Boeg?image-dimensions=940x467&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;h6 id=&#34;winre-design-change-2-trusted-wim-boot&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#winre-design-change-2-trusted-wim-boot&#34;&gt;#&lt;/a&gt; &lt;strong&gt;WinRE Design Change #2 – Trusted WIM Boot&lt;/strong&gt;&lt;/h6&gt;
+&lt;p&gt;The second design change focused on the integrity of the WinRE.wim file. To support integrity verification of WinRE.wim, a feature called Trusted WIM Boot was introduced. It verifies WinRE’s integrity by comparing its hash to a known-trusted hash.&lt;/p&gt;
+&lt;p&gt;If the hashes match - the OS volume is automatically unlocked. If hashes don’t match - the OS volume remains locked.&lt;/p&gt;
+&lt;p&gt;Figure 7: Trusted WIM boot hash comparison&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LXAzOHU3OA?image-dimensions=940x184&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The two states - auto-unlocked and locked - define the level of access WinRE has to the main OS. In the auto-unlocked state, WinRE has full access to the OS, whereas in the locked state, it has no access at all.&lt;/p&gt;
+&lt;p&gt;This change was necessary because WinRE now resides on the unencrypted recovery volume and can no longer be blindly trusted. With Trusted WIM Boot, any unauthorized modification to WinRE.wim breaks its trust - effectively blocking any tempering.&lt;/p&gt;
+&lt;h6 id=&#34;winre-design-change-3-volumes-re-lock&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#winre-design-change-3-volumes-re-lock&#34;&gt;#&lt;/a&gt; &lt;strong&gt;WinRE Design Change #3 – Volumes Re-Lock&lt;/strong&gt;&lt;/h6&gt;
+&lt;p&gt;The third design change focused on limiting recovery tools that are inherently risky to BitLocker. For example, among the exposed recovery tools is the Command Prompt. To prevent a scenario where an attacker abuses the command prompt to access BitLocker protected data, a volume re-lock functionality was added to WinRE. This functionality is triggered every time that a risky recovery tool is selected and it re-locks the OS volume. To re-gain access to the OS volume, the user must manually enter the BitLocker recovery key - otherwise, all contents remain completely inaccessible.&lt;/p&gt;
+&lt;p&gt;Figure 8: WinRE UI Volumes Re-Lock Functionality&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LVY1NDZLSw?image-dimensions=940x143&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;For example, if an attacker launches the Command Prompt recovery tool without inserting the BitLocker recovery key, access to BitLocker-encrypted volumes will be denied, resulting in the following lock error:&lt;/p&gt;
+&lt;p&gt;Figure 9: WinRE UI Volumes Re-Lock Demonstration&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LXJJalZwcA?image-dimensions=940x550&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;h5 id=&#34;winre-design-changes-summary&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#winre-design-changes-summary&#34;&gt;#&lt;/a&gt; &lt;strong&gt;WinRE Design Changes Summary&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;To summarize the impact of the design changes, as long as WinRE.wim is trusted, and no risky recovery tools are triggered, the OS volume is auto-unlocked allowing WinRE to recover it without requiring any user intervention. In contrast, If WinRE.wim is modified without authorization or a risky recovery tool is triggered, the OS volume is re-locked, preventing WinRE from accessing it.&lt;/p&gt;
+&lt;h5 id=&#34;exposed-attack-surfaces&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#exposed-attack-surfaces&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Exposed Attack Surfaces&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;So now the critical question arises – were any attack surfaces exposed because of these design adjustments?&lt;/p&gt;
+&lt;p&gt;As it turned out, during the auto-unlock state, WinRE parses files from unprotected volumes - specifically the EFI volume and the recovery volume.&lt;/p&gt;
+&lt;p&gt;Figure 10: WinRE parsing files from unprotected volumes&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWExTVhvSw?image-dimensions=940x430&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This parsing presents a very interesting attack surface, which wasn’t valuable to explore before BitLocker’s introduction – since there was no security boundary to cross. Before BitLocker, even full code execution within WinRE didn’t grant a physical attacker any new capabilities. In contrast, with BitLocker, any code execution within WinRE during the auto-unlock state can be utilized to bypass BitLocker and extract all the protected secrets.&lt;/p&gt;
+&lt;h5 id=&#34;this-blog-focus&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#this-blog-focus&#34;&gt;#&lt;/a&gt; &lt;strong&gt;This Blog Focus&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;In this blog, we will focus on exploring 3 such external files –&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Boot.sdi – located on the recovery volume&lt;/li&gt;
+&lt;li&gt;ReAgent.xml – located on the recovery volume&lt;/li&gt;
+&lt;li&gt;Boot Configuration Data (BCD) store – located on the EFI volume&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Figure 11: Files focused on this blog post&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LVNEbkh6dQ?image-dimensions=940x504&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The rest of this blog post will be focused on attacking the parsers of each of these files.&lt;/p&gt;
+&lt;h3 id=&#34;attacking-bootsdi-parsing&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#attacking-bootsdi-parsing&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Attacking Boot.sdi Parsing&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;The SDI extension stands for System Deployment Image. SDI files are optionally used when booting from RAM disk.&lt;/p&gt;
+&lt;p&gt;RAM disk boot is the procedure of extracting and creating a RAM-based disk from a static OS image. Unlike traditional boot scenarios where the OS disk is on a physical storage, in this case, the OS disk is entirely in RAM. Subsequently, disk I/O requests are routed to the RAM disk instead of the physical storage.&lt;/p&gt;
+&lt;p&gt;One example of RAM disk boot is WinRE boot – where WinRE.wim is the static OS image.&lt;/p&gt;
+&lt;p&gt;Figure 12: RAM disk boot demonstration&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUhONnJ3aA?image-dimensions=940x318&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In terms of SDI usage - when specified, the SDI file gets prepended to the virtual disk within the allocated RAM disk memory region.&lt;/p&gt;
+&lt;p&gt;Figure 13: RAM disk buffer layout with an SDI file&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUlpUkxyRg?image-dimensions=886x842&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The SDI file format primarily consists of binary blobs, organized through a “blob table” that holds metadata for each blob, including its type, size and relative offset within the file. While we won’t delve into the full SDI format, we’ll focus on the specific blobs specified in the SDI when used to boot WinRE.wim:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;WIM blob – a blob describing the WIM image&lt;/li&gt;
+&lt;li&gt;NTFS blob – a blob describing an NTFS volume&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Below is a demonstration of the entire RAM disk buffer layout. First, the SDI file, containing a WIM blob which points to the WinRE.wim file, and an NTFS blob which points to an empty NTFS volume.&lt;/p&gt;
+&lt;p&gt;Figure 14: RAM disk buffer layout in WinRE.wim boot&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LVdBRDJvTw?image-dimensions=940x664&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;At this stage, you might wonder why an empty NTFS volume is necessary. It&#39;s required to maintain compatibility with Windows components that cannot operate directly on a WIM volume as the OS volume. The empty NTFS volume allows the WIM volume to be presented as a standard NTFS volume, enabling seamless interaction with Windows components that cannot operate directly on WIM volumes.&lt;/p&gt;
+&lt;p&gt;With better understanding of the SDI file, and the overall RAM disk boot procedure, let’s take a closer look at the code responsible for the RAM disk loading.&lt;/p&gt;
+&lt;p&gt;Figure 15: RAM Disk loading pseudo code&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUN5UlpuRA?image-dimensions=940x639&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The code first allocates the RAM disk buffer large enough for both the SDI and WIM files. Then, it loads the SDI file into the allocated buffer. Then, it loads the WIM file into the allocated buffer, following the SDI. The loading API calculates the hash of the loaded WIM file, and this hash is later used as part of the Trusted WIM boot integrity verification. Lastly, the address of the WIM to boot from is calculated by adding the SDI WIM blob specified offset to the start of the RAM disk buffer. &lt;strong&gt;Notably, there is no correlation linking between the verified hashed WIM, and the booted WIM.&lt;/strong&gt; The lack of correlation allows setting the WIM offset arbitrarily.&lt;/p&gt;
+&lt;p&gt;Since we can set the WIM offset arbitrarily, we can append an untrusted WIM to the SDI file and adjust the WIM offset accordingly.&lt;/p&gt;
+&lt;p&gt;As Trusted WIM boot hash verification uses the hash of the WIM on stored disk rather than the one indicated by the SDI WIM offset, the hash verification will succeed - because the trusted WIM on disk remains unchanged. However, the system will boot using the untrusted WIM specified by the SDI WIM offset.&lt;/p&gt;
+&lt;p&gt;Below is a demonstration of the entire RAM disk buffer layout the exploitation scenario.&lt;/p&gt;
+&lt;p&gt;Figure 16: RAM disk buffer layout in exploitation scenario&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUtQckVzMA?image-dimensions=940x690&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This vulnerability allows bypassing the Trusted WIM boot verification – we can boot an untrusted WIM as trusted, and have our untrusted WIM benefit the auto-unlock functionality – thereby bypassing BitLocker and extracting the secrets.&lt;/p&gt;
+&lt;p&gt;To demonstrate secrets extraction, we created a clone of WinRE.wim with and changed its launch app to the Command Prompt, instead of the recovery environment program. Then, appended this WIM to Boot.sdi, verified offsets are correct, and booted into WinRE. The result was the Command Prompt being launched in auto-unlock state.&lt;/p&gt;
+&lt;p&gt;Figure 17: Demo – cmd.exe in auto-unlock – launched from untrusted WIM&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LU9QRlVlSw?image-dimensions=940x501&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This vulnerability was patched in 2025’s July Patch Tuesday and received the ID of &lt;strong&gt;CVE-2025-48804&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;attacking-reagentxml-parsing&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#attacking-reagentxml-parsing&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Attacking ReAgent.xml Parsing&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;The ReAgent.xml file represents the current recovery state and configuration of WinRE.&lt;/p&gt;
+&lt;p&gt;Figure 18: ReAgent.xml&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LU1Ta1BtOQ?image-dimensions=940x445&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In the early stages of WinRE runtime, it parses this XML file.&lt;/p&gt;
+&lt;h5 id=&#34;reagentxml-scheduled-operations&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#reagentxml-scheduled-operations&#34;&gt;#&lt;/a&gt; &lt;strong&gt;ReAgent.xml Scheduled Operations&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;Among the interesting fields in the XML file is the “ScheduledOperation” field. This field instructs WinRE to run a recovery operation by ID. The supported operations include the known recovery tools such as startup repair, system reset and others.&lt;/p&gt;
+&lt;p&gt;Simply, scheduled operations offer an alternative method to execute recovery tools in WinRE. As opposed to the known execution method, which is triggered manually through the WinRE UI, scheduled operations, if specified, execute automatically before the UI is displayed.&lt;/p&gt;
+&lt;p&gt;Additionally, risky scheduled operations (e.g. Command Prompt), would trigger the re-lock functionality.&lt;/p&gt;
+&lt;p&gt;Figure 19: Scheduled Operations&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LVlCQjNqZA?image-dimensions=940x116&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In this blog post, we will focus on two scheduled operations –&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Offline Scanning&lt;/li&gt;
+&lt;li&gt;WinRE Apps&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;offline-scanning-scheduled-operation&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#offline-scanning-scheduled-operation&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Offline Scanning Scheduled Operation&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;The offline scanning scheduled operation allows running Anti-Virus scan from within WinRE against the OS volume. This functionality is beneficial against malware that does not persist in WinRE runtime.&lt;/p&gt;
+&lt;p&gt;Figure 20: Offline Scanning Scheduled Operation Demonstration&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWtUY1MxMA?image-dimensions=925x396&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To avoid misuse of this feature, which runs in the auto-unlock state, there are multiple limitations that narrow down the apps allowed to perform Offline Scanning –&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Offline Scanning apps are executed from the offline OS volume&lt;/li&gt;
+&lt;li&gt;Offline Scanning apps must be digitally signed by Microsoft or WHQL&lt;/li&gt;
+&lt;li&gt;The digital signature must be embedded in the app (not catalog signed)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Of course, a BitLocker attacker can’t insert his own signed app, as the OS volume is assumed BitLocker encrypted, and out of attacker’s reach.&lt;/p&gt;
+&lt;p&gt;Figure 21: Offline Scanning App Execution and Limitations&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUxmNms4bw?image-dimensions=940x438&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We enumerated the applicable apps and discovered approximately 30. No, the Command Prompt is not among them. Additionally, most of the applicable applications could not execute in WinRE mainly due to compatibility reasons.&lt;/p&gt;
+&lt;p&gt;We reviewed allowed and applicable apps one by one to see if they could potentially be mis-used. That’s when we found that the tttracer.exe app fits within the limitation.&lt;/p&gt;
+&lt;p&gt;Tttracer.exe is a time-travel debugging utility that supports tracing arbitrary apps. WinRE does not enforce strict validation of the Offline Scanning app arguments, which is reasonable given that each app may use a different argument format. As a result, it&#39;s possible to trace Command Prompt (cmd.exe) under tttracer.exe without triggering the re-lock functionality. The traced cmd.exe will benefit the auto-unlock functionality – thereby bypassing BitLocker and extracting the secrets.&lt;/p&gt;
+&lt;p&gt;Figure 22: Exploiting the allowed tttracer.exe to proxy-execute cmd.exe&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LURPdlNBeg?image-dimensions=841x439&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Figure 23: Demo – cmd.exe in auto-unlock - traced by tttracer.exe&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUNRNGVpUg?image-dimensions=940x501&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This vulnerability was patched in 2025’s July Patch Tuesday and received the ID of &lt;strong&gt;CVE-2025-48800&lt;/strong&gt;.&lt;/p&gt;
+&lt;h5 id=&#34;winre-apps-scheduled-operation&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#winre-apps-scheduled-operation&#34;&gt;#&lt;/a&gt; &lt;strong&gt;WinRE Apps Scheduled Operation&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;The WinRE apps scheduled operation simply allows running apps within WinRE. Specified apps are verified before benefiting from the auto-unlock functionality. Only those that pass verification can leverage auto-unlock, which is particularly useful for apps that require access to the BitLocker-encrypted OS volume.&lt;/p&gt;
+&lt;p&gt;Figure 24: WinRE Apps Scheduled Operation Demonstration&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUM4a1V5WA?image-dimensions=940x211&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The trust verification is based on a simple comparison of the executed app name and hash against a pre-defined list of allowed entries.&lt;/p&gt;
+&lt;p&gt;The list of allowed entries is stored in the WinRE registry, which is part of the WinRE.wim file. Since WinRE.wim is integrity-protected by Trusted WIM boot verification, a BitLocker attacker cannot modify the registry to insert unauthorized entries - doing so would break the WIM trust.&lt;/p&gt;
+&lt;p&gt;Figure 25: WinRE Apps Verification&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LVRnaTA4MA?image-dimensions=940x265&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Similarly to the Offline Scanning operation research – we find that the verifications are implemented correctly, and we can’t directly execute our own custom apps. That said, the same question arises: any existing trusted apps that could be mis-used?&lt;/p&gt;
+&lt;p&gt;We enumerated the allowed entries list and found one registered trusted app - SetupPlatform.exe. This app is registered as trusted during Windows Upgrade. Only once the upgrade is completed, the trusted app entry remains in the allowed list and is not removed.&lt;/p&gt;
+&lt;p&gt;This adds SetupPlatform.exe as a potential attack surface, since it can be executed in the auto-unlock state.&lt;/p&gt;
+&lt;p&gt;We then delve deeper into SetupPlatform.exe and found that it has an execution path that registers the Shift+F10 hotkey as cmd.exe launcher. When triggered, this hotkey launches cmd.exe without re-locking the OS volume. This mechanism is used to facilitate troubleshooting during upgrade failures.&lt;/p&gt;
+&lt;p&gt;The first thing we tried to do is to schedule the SetupPlatform.exe WinRE app and see if we can trigger the Shift+F10 hotkey to interact with cmd.exe. We failed. It turned out that even though the desired execution path is triggered, it immediately exits due to missing configuration on the OS volume.&lt;/p&gt;
+&lt;p&gt;Figure 26: SetupPlatform.exe execution flow&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LTdkSm1tag?image-dimensions=940x297&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Of course, a BitLocker attacker can’t create the configuration, as the OS volume is assumed BitLocker encrypted, and out of attacker’s reach.&lt;/p&gt;
+&lt;p&gt;The time window between the hotkey registration and the termination is too short, making it impossible to manually trigger.&lt;/p&gt;
+&lt;p&gt;Figure 27: Impossible time Window&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUszUmxVdQ?image-dimensions=940x334&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We decided to dig even deeper into SetupPlatform.exe, to see if other execution paths may help widening the short time window. That’s when we discovered an interesting flow. It turned out that after the hotkey registration, the app can spawn a blocking message box. The decision on whether to spawn this message box is based on an INI file that is searched for in the recovery volume, which is under out full control.&lt;/p&gt;
+&lt;p&gt;Figure 28: Creating an infinite time window&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWhmR0V2Zw?image-dimensions=940x281&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;By configuring this INI file correctly, we can create an infinite time window that would allow triggering the Shift+F10 hotkey to launch and interact with cmd.exe. The launched cmd.exe will benefit the auto-unlock functionality – thereby bypassing BitLocker and extracting the secrets.&lt;/p&gt;
+&lt;p&gt;Figure 29: Demo – cmd.exe in auto-unlock – launched via Shift+F10 hotkey&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUtPVEpDQg?image-dimensions=940x507&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This vulnerability was patched in 2025’s July Patch Tuesday and received the ID of &lt;strong&gt;CVE-2025-48003&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;attacking-boot-configuration-data-bcd-parsing&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#attacking-boot-configuration-data-bcd-parsing&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Attacking Boot Configuration Data (BCD) Parsing&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;BCD stands for Boot Configuration Data, and it’s the file that defines how Windows boots. It stores boot entries, controls the boot parameters, recovery settings and many more boot-related configurations.&lt;/p&gt;
+&lt;p&gt;Figure 30: BCD store&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LXpudDJBVA?image-dimensions=940x623&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In the context of WinRE, the usage of BCD is minimal - as most BCD parsing occurs during the boot phase - prior to the WinRE runtime.&lt;/p&gt;
+&lt;p&gt;WinRE uses BCD mainly to determine the location of the target OS volume on disk, so that it knows which volume to aim the recovery operations to. Specifically, the OS device BCD element is the element queried by WinRE to calculate the target volume location. This element can point to any volume on disk, though by default, it points to the OS volume – commonly mapped to the C: drive.&lt;/p&gt;
+&lt;p&gt;Figure 31: WinRE BCD Usage Demonstration&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWJ6cWR0Nw?image-dimensions=940x291&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The first question that came into our minds when we investigated WinRE BCD usage, is what can we potentially gain from targeting BCD in the context of WinRE?&lt;/p&gt;
+&lt;p&gt;As it turned out - WinRE fully trusts the target OS it recovers, and it sometimes queries sensitive configuration from that target OS, assuming it’s out of attacker’s reach. This assumption is solid from a design perspective, because with BitLocker enabled, the target OS is encrypted, and the attacker has no access whatsoever.&lt;/p&gt;
+&lt;p&gt;Having said that, we wondered, can we challenge this assumption that target OS is out of attacker’s reach?&lt;/p&gt;
+&lt;h5 id=&#34;hunting-target-os-location-impersonation-primitive&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#hunting-target-os-location-impersonation-primitive&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Hunting Target OS Location Impersonation Primitive&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;What if we could trick WinRE into thinking that an attacker-controlled volume is the trusted BitLocker-encrypted one? Our focus has shifted toward identifying a primitive that allows impersonation of the target OS location. The goal is to manipulate the osdevice element so that it points to an attacker-controlled volume - such as the Recovery volume - instead of pointing to the trusted, BitLocker-encrypted volume.&lt;/p&gt;
+&lt;p&gt;This primitive, if gained, would break the trust assumption.&lt;/p&gt;
+&lt;p&gt;Figure 32: Desired Primitive Demonstration&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LXl6M2ZaVg?image-dimensions=940x354&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We already know that the OS device is controlled in the BCD store, which we can directly modify – as it resides on the EFI volume. One might think, why can’t you just change the device directly in the BCD?&lt;/p&gt;
+&lt;p&gt;Well, theoretically, it’s possible, but it isn’t valuable. Let me explain - the OS device location isn’t used only by WinRE, but also by the Boot Manager – which uses it to know which volume it should auto-unlock. The challenge here is that the same store is used in both the boot and OS phases, so any change will affect both.&lt;/p&gt;
+&lt;p&gt;In this scenario, modifying the OS device location to point to the Recovery volume prevents the Boot Manager from auto-unlocking the BitLocker-encrypted OS volume that contains the secrets. This is because the OS volume is no longer associated with the WinRE boot. While this scenario could theoretically break the trust assumption, it still wouldn’t allow extraction of BitLocker secrets - even with full code execution in WinRE.&lt;/p&gt;
+&lt;p&gt;Figure 33: Directly Modifying OS device – not valuable&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWFRdENBcA?image-dimensions=940x333&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Our primitive must not interfere with the boot procedure and the auto-unlock functionality. We must go deeper.&lt;/p&gt;
+&lt;p&gt;We decided to dig deeper into the way WinRE searches for the BCD store. Any potential flaws at this stage wouldn’t interfere with the boot procedure or the auto-unlock functionality, as it occurs after the boot is completed.&lt;/p&gt;
+&lt;p&gt;To locate the BCD store - WinRE iterates over disk volumes and searches each one for a BCD store. The first store found is the one used to further calculate the target OS location.&lt;/p&gt;
+&lt;p&gt;Figure 34: WinRE BCD lookup logic demonstration&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWJnZGNNdg?image-dimensions=900x393&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This volume iteration is an interesting point to further inspect – because only EFI volume contain the BCD store. Any attempt to locate the store on other volumes could be potentially abused.&lt;/p&gt;
+&lt;p&gt;The functions used to iterate over volumes are &lt;a href=&#34;https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstvolumew&#34;&gt;FindFirstVolume&lt;/a&gt; and &lt;a href=&#34;https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findnextvolumew&#34;&gt;FindNextVolume&lt;/a&gt;. Notably, the remarks section highlights a very interesting point:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;“You should not assume any correlation between the order of the volumes that are returned by these functions and the order of the volumes that are on the computer. In particular, do not assume any correlation between volume order and drive letters as assigned by the BIOS (if any) or the Disk Administrator.”&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Under the hood, these functions perform further filtering which causes an inconsistency in the returned volume order.&lt;/p&gt;
+&lt;p&gt;The typical volume order, returned by diskpart list vol command is as follows –&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;OS volume&lt;/li&gt;
+&lt;li&gt;EFI volume&lt;/li&gt;
+&lt;li&gt;Recovery volume&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Figure 35: diskpart list vol command output&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUROamxIVQ?image-dimensions=940x180&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;However, the volume iteration functions would return a different order –&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;OS volume&lt;/li&gt;
+&lt;li&gt;Recovery volume&lt;/li&gt;
+&lt;li&gt;EFI volume&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Can you spot the inconsistency? With the volume iteration functions, the Recovery volume is iterated over and checked for a BCD store before the EFI volume.&lt;/p&gt;
+&lt;p&gt;By placing a custom, attacker-controlled store in the recovery volume – we can trick WinRE into using it, instead of using the boot store. With this setup, WinRE doesn’t even reach the point of querying the EFI volume.&lt;/p&gt;
+&lt;p&gt;Figure 36: Exploiting the volume iteration order&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LXB0dUdDbA?image-dimensions=940x625&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Any modification or corruption we make to that attacker store will only impact WinRE and will not disrupt the boot procedure at all!&lt;/p&gt;
+&lt;p&gt;This flaw allows us to achieve the desired primitive: during the boot phase, the boot manager locates and uses a legitimate BCD store from the EFI volume to unlock BitLocker-encrypted OS volume. In the boot phase, there are no issues in the BCD store lookup logic.&lt;/p&gt;
+&lt;p&gt;Figure 37: BCD usage in boot phase – EFI volume BCD store is used&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWFYMUZEVw?image-dimensions=940x262&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;However, during the OS phase, WinRE instead locates and uses the attacker-controlled BCD store in the recovery volume - leading it to recover an attacker-controlled volume.&lt;/p&gt;
+&lt;p&gt;Figure 38: BCD usage in WinRE phase – Recovery volume BCD store is used&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LWc1WmJwZw?image-dimensions=940x280&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;h5 id=&#34;going-beyond-theoretical-concepts-exploitation-strategy&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#going-beyond-theoretical-concepts-exploitation-strategy&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Going Beyond Theoretical Concepts – Exploitation Strategy&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;We successfully gained the desired primitive, but can it be further leveraged to extract BitLocker secrets?&lt;/p&gt;
+&lt;p&gt;The reason we went after this primitive is because it allows us to break WinRE’s assumption that the target OS is out of attacker’s reach. However, given its novelty and unexplored exploitability, it was our responsibility to move beyond theoretical concepts and develop a fully functional exploit.&lt;/p&gt;
+&lt;p&gt;To do so, we came up with the following exploitation strategy: Find a WinRE flow with two characteristics -&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;A flow that does not trigger the volumes re-lock functionality&lt;/li&gt;
+&lt;li&gt;A flow that queries configuration from the target OS to perform operations&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The idea is to chain this WinRE flow with the gained impersonation primitive – to trigger sensitive operations in the auto-unlock state.&lt;/p&gt;
+&lt;p&gt;After exploring different WinRE behaviors, we found a potential candidate - the Push Button Reset (PBR) feature. PBR is Windows’s system reset tool, and it provides various reset functionalities.&lt;/p&gt;
+&lt;p&gt;Figure 39: Push Button Reset Demonstration&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUpZcGEybA?image-dimensions=940x710&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;PBR supports multiple trigger modes, with one of its modes, known as “Online PBR” meeting the characteristics we defined for the exploit -&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;It does not trigger the re-lock functionality – thereby benefited the auto-unlock functionality&lt;/li&gt;
+&lt;li&gt;It queries configuration from the target OS to perform sensitive operations – thereby can be controlled with the impersonation primitive&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Additionally, Online PBR can be scheduled freely through ReAgent.xml’s scheduled operations.&lt;/p&gt;
+&lt;p&gt;With full control over the PBR configuration, the remaining task was to determine the exact sensitive directive required to extract BitLocker secrets. We found that the ResetSession.xml file - responsible for defining all operations executed by PBR - includes the DecryptVolume directive, which instructs PBR to decrypt any arbitrary BitLocker-encrypted volume -&lt;/p&gt;
+&lt;p&gt;Figure 40: PBR ResetSession.xml BitLocker Volume Decryption&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LUMwemNIWQ?image-dimensions=940x287&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;h5 id=&#34;full-exploit-chain&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#full-exploit-chain&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Full Exploit Chain&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;We now have all the pieces required for the full BitLocker bypass exploit chain. The exploit required creating and modifying few files on the Recovery volume -&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The BCD store – with the OS device element pointing to the Recovery volume&lt;/li&gt;
+&lt;li&gt;The PBR configuration – with the DecryptVolume PBR operation specifying the BitLocker-encrypted OS volume as the volume to decrypt&lt;/li&gt;
+&lt;li&gt;The ReAgent.xml file – with Online PBR scheduled operation&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Figure 41: Exploitation setup&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LVlndUFOdQ?image-dimensions=940x375&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;With this setup, the next WinRE boot will go through the Online PBR flow. During the BCD store lookup, PBR will locate the attacker&#39;s BCD store and mistakenly identify its target volume as the Recovery volume. Consequently, PBR will load its configuration from the Recovery volume, which instructs it to decrypt the BitLocker-encrypted OS volume. Once PBR completes its process, BitLocker secrets become freely accessible, as BitLocker was disabled by PBR.&lt;/p&gt;
+&lt;p&gt;Figure 42: Exploitation flow&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LU9RckphUw?image-dimensions=940x458&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Figure 43: Demo – cmd.exe with OS volume fully-decrypted&lt;/p&gt;
+&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;https://techcommunity.microsoft.com/t5/s/gxcuf89792/images/bS00NDQyODA2LTF1YVNVdA?image-dimensions=940x501&amp;amp;revision=8&#34; alt=&#34;img&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This vulnerability and the entire exploitation chain was patched in 2025’s July Patch Tuesday and received the ID of &lt;strong&gt;CVE-2025-48818.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;vulnerability-fixes&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#vulnerability-fixes&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Vulnerability Fixes&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;All the discovered vulnerabilities and exploitation techniques were fixed in 2025’s July Patch Tuesday. The assigned IDs are –&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CVE-2025-48800&lt;/li&gt;
+&lt;li&gt;CVE-2025-48003&lt;/li&gt;
+&lt;li&gt;CVE-2025-48804&lt;/li&gt;
+&lt;li&gt;CVE-2025-48818&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;bitlocker-countermeasures&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#bitlocker-countermeasures&#34;&gt;#&lt;/a&gt; &lt;strong&gt;BitLocker Countermeasures&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;To further enhance the security of BitLocker, we recommend enabling TPM+PIN for pre-boot authentication. This significantly reduces the BitLocker attack surfaces by limiting exposure to only the TPM.&lt;/p&gt;
+&lt;p&gt;To mitigate BitLocker downgrade attacks, we advise enabling the &lt;a href=&#34;https://support.microsoft.com/en-us/topic/how-to-manage-the-windows-boot-manager-revocations-for-secure-boot-changes-associated-with-cve-2023-24932-41a975df-beb2-40c1-99a3-b3ff139f832d&#34;&gt;REVISE mitigation&lt;/a&gt;. This mechanism enforces secure versioning across critical boot components, preventing downgrades that could reintroduce known vulnerabilities in BitLocker and Secure Boot.&lt;/p&gt;
+&lt;p&gt;For more information about BitLocker countermeasures, please read the “BitLocker Countermeasures” article: &lt;a href=&#34;https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/countermeasures&#34;&gt;BitLocker countermeasures | Microsoft Learn&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;closing-remarks&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#closing-remarks&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Closing Remarks&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;To wrap up - we want to emphasize that our journey never ends, we continue to proactively research BitLocker, WinRE and the related components with the never-ending goal of increasing their security and resiliency.&lt;/p&gt;
+&lt;h3 id=&#34;about-the-storm-researchers&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#about-the-storm-researchers&#34;&gt;#&lt;/a&gt; &lt;strong&gt;About the STORM Researchers&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;This blog is a joint work by Netanel Ben Simon and Alon Leviev, security researchers working with the Security Testing &amp;amp; Offensive Research at Microsoft (STORM).&lt;/p&gt;
+&lt;p&gt;The STORM team mission is to unlock engineers’ security excellence and focus our expertise to ensure Azure Edge &amp;amp; Platform products are secure and trusted. We aim to reduce security risks in shipped and soon-to-be-shipped products.&lt;/p&gt;
+&lt;p&gt;Updated Aug 15, 2025&lt;/p&gt;
+ ]]></description>
+        </item>
         <item>
             <guid isPermalink="true">https://sakurame.eu.org/2024/06/03/thinking/%E8%87%B4%E6%95%AC%E6%9D%BF%E7%A0%96%E7%BE%8E%E5%AD%A6/</guid>
             <title>致敬板砖美学之长寿板砖蓝天P775DM2笔记本电脑评测(转载自Bob&#39;s Coding Lab)</title>
@@ -5462,32 +5770,6 @@ vsp 的输出节点不与键盘数字绑定，而是按照脚本中 set_output �
 &lt;p&gt;遗憾的是，这么一部在世界思想史上的经典著作，居然没有很好的中译本。听过它的人远多于读过它的人。之前的译本和大多数政治学、哲学书一样，艰涩难懂。&lt;/p&gt;
 &lt;p&gt;今天，这部经典在中文世界里终于有了一个易读易懂的译本，我和朋友们心中的喜悦无以复加。回顾刚刚经历的魔幻之月，想说很多又不知如何说起。总之，以我辈微薄之力，愿文明不分东西。&lt;/p&gt;
 &lt;p&gt;我相信，文明的科普，会成为一个无限的游戏，它的目的不在于胜利，它不会结束，没有赢家，没有王者，但会有更多的人参与其中，从而延续这场游戏。&lt;/p&gt;
- ]]></description>
-        </item>
-        <item>
-            <guid isPermalink="true">https://sakurame.eu.org/2023/08/28/thinking/united-93%E4%B9%8B%E6%80%9D/</guid>
-            <title>united_93之思</title>
-            <link>https://sakurame.eu.org/2023/08/28/thinking/united-93%E4%B9%8B%E6%80%9D/</link>
-            <category term="思考随笔记录" scheme="https://sakurame.eu.org/categories/thinking/" />
-            <category term="随笔" scheme="https://sakurame.eu.org/tags/%E9%9A%8F%E7%AC%94/" />
-            <pubDate>Mon, 28 Aug 2023 00:59:36 +0800</pubDate>
-            <description><![CDATA[ &lt;p&gt;公元2023年8月28日00:09&lt;/p&gt;
-&lt;p&gt;我看完了一部讲述曾经没有经历过，但却始终有所耳闻的事件所制作的电影-------United 93&lt;/p&gt;
-&lt;p&gt;一个简单的航班号，背后是45个人，裂变开来，就是45个家庭，在持续的扩散，就是一整个社会，国家，乃至世界。&lt;/p&gt;
-&lt;p&gt;911,一个曾经熟悉而又陌生的名词。再一次接触是在看ACICFG关于这段空难的调查与纪实。911不是孤立的事件，是当天同时有先后四架飞机被劫持，然后撞击到了预定的目标。但是只有united 93 没有撞击到预定目标。&lt;/p&gt;
-&lt;p&gt;一个需要补充的背景知识，在那之前，多数劫机主要是为了赎金，都会让飞机安全迫降到机场，然后有训练有素的相关人员进行对接，尽可能的保证机上乘客和机组人员的安全。所以，大部分人都是听从他们的要求。在ACICFG里面有补充到这个。但是，这是自杀式恐怖袭击，和以往的没有任何相同之处。united 93在与其他四架航班结局是相同的，最后所有人牺牲，无一幸免。但是又是不同的，这是唯一一架在911中没有袭击到预定目标的。&lt;/p&gt;
-&lt;p&gt;开篇的前半部分很稀疏平常，就像你我日常的生活。但是，突然之间，就好像平地惊雷一般，劫机突然开始，并且很快的就有乘客被暴徒刺伤，再加上炸弹的恐吓，机场所有的人都被迫躲到了机舱的后面。然后，很快就发生了驾驶舱入侵，但是有一点要说的，应答机的提醒被飞行员掉以轻心以及劫机安保人员的缺失，也为后面的悲壮埋下了伏笔。很快乘务员被劫持，驾驶舱被入侵。需要补充的一点是，根据ACICFG纪录片的补充知识，主谋不仅在策划实施之前，进行了大约半年左右的客机驾驶训练，同时还踩点了前几次的头等舱的乘务员和飞行员关系。摸准送咖啡的时机，顺利实现驾驶舱入侵。在入侵之后，用一段时间的AP，并没有让乘客发现驾驶和副驾驶已经遇难的事实。&lt;/p&gt;
-&lt;p&gt;在空乘发现驾驶和副驾驶被害之后，结合卫星电话得到的新闻，逐渐的有乘客清醒的认识到这是自杀式恐怖袭击，于是大家经过短暂的分析之后，开始将手边能作为武器的东西进行分发，然后寻找驾驶员，制服暴徒的人，以及进行信息传递让大家一起奋起抵抗。&lt;/p&gt;
-&lt;p&gt;狭小的空间和自杀式恐怖袭击的暴徒，在生死攸关的混乱中形成了极其鲜明的冲击，还有乘客交代后事，弥补遗憾，更是让人揪心，觉得紧张，以及久久难以释怀。&lt;/p&gt;
-&lt;p&gt;之后大伙一路制服了暴徒，到了驾驶室但是却也无力回天，更是让人窒息与绝望。但是仍然有其意义所在，避免了更大范围内的伤亡。看完之后，思绪万千，因为好久没有写什么文字了，也更少写影评。也算是从ACICFG和united 93给自己补全了当年911的知识。&lt;/p&gt;
-&lt;p&gt;回头又看了看影评，说出了很多我这匮乏的语言没有说出的话。&lt;/p&gt;
-&lt;p&gt;一部好的电影，至少在还原事件的角度上，从一个旁观者或者上帝视角客观的展示这一切，将思考留给观众，是一个优秀的做法。这也是我爱看纪录片一个非常重要的原因。至少我们也可以看到，每一个人都是凡人，恐怖分子在害怕和犹豫的时候也会诵读经文祈求真主的帮助，普通人趁最后的机会表达爱意，将遗憾说出口。曾经和老友进行过探讨，或许人生就应该把每一天当作是最后一天来活，因为你永远也不知道明天和以外那个会先来临。&lt;/p&gt;
-&lt;p&gt;我看过记录历史的片子，我看过还原灾难的片子，我也看喜剧，番剧，看多了之后，仿佛有种疏离的感觉。美好之短暂，短暂到很快就会过去。稀疏的日常是大部分你我真实的写照，也就是平凡。但是，真的当意外来临的时候，你还有机会去改变的时候，会去做什么。&lt;/p&gt;
-&lt;p&gt;微缩的机舱，折射的人间百态，有人交代完事情之后，有人决定奋起反抗，有人为之斗争。我无法想象，自己遇到这类的事情会是什么样的反应。但是我觉得，应该就是一种“尽人事，听天命”的态度吧。你说消极认命也好，你说主观能动也罢。&lt;/p&gt;
-&lt;p&gt;翻看影评，很多都停留在十年前，乃至二十年前。我想到的是记录，记录我当下的所思所感，纵然我文笔贫瘠，我也能证明我思考过，我来过，存在于这世界上。纪录片 Timelapse of the Future A Journey to the End of Time 从一个极为宏观的视角在短短的三十分钟内展现了宇宙的从生到死，生命在其中的占比也不过时短短的一瞬之一瞬，哀吾生之须臾，确实是这样。纵然肉体消逝，思想仍然可以流传，后人仍然可以根据你所留下的只言片语，蛛丝马迹，拼凑出你一个人。不再是数字意义的一个数量，也不再是文字的符号。而是思想的传承，我想，科学技术，文学历史，哲学思辨应该都是如此。&lt;/p&gt;
-&lt;p&gt;洋洋洒洒，我也好久没有这么深的情感触动了。果然人到了深夜，就容易思维活跃，天马行空。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;谨以我绵薄的文字，致敬逝者，致敬历史，记录思想，在这广袤的天地和短暂的时空之间留下一丝丝微小的，属于自己的痕迹。尽人事听天命，把每一天都过好，不要叹息于明日，留憾于今日。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;2023.08.28 00:58 伏案于明亮的书桌前，记录与书写&lt;/p&gt;
  ]]></description>
         </item>
     </channel>
